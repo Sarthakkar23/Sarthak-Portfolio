@@ -67,7 +67,3 @@ This site can be easily deployed to platforms like:
 ## License
 
 This project is open source and available under the MIT License.
-
-## Credits
-
-Design inspired by [Soumyajit's Portfolio](https://soumyajit.vercel.app/)
