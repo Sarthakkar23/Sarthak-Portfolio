@@ -1,0 +1,61 @@
+.resume-section {
+  position: relative !important;
+  padding-top: 110px !important;
+  padding-bottom: 30px !important;
+  background-image: var(--section-background-color) !important;
+  color: white !important;
+}
+
+.resume {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  justify-content: center;
+}
+
+.resume-card {
+  padding: 20px;
+  margin: 20px;
+  background-color: transparent !important;
+  border: 1px solid #00eeff !important;
+  color: white !important;
+  box-shadow: 0 0 10px #00eeff !important;
+}
+
+.resume .react-pdf__Document {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.resume .react-pdf__Page {
+  margin: 1em;
+  box-shadow: 0 0 20px rgba(0, 238, 255, 0.5);
+  border-radius: 5px;
+}
+
+.resume .react-pdf__Page__canvas {
+  border-radius: 5px;
+}
+
+.resume-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.resume-page-info {
+  color: white;
+  text-align: center;
+  margin-top: 10px;
+}
+
+@media (max-width: 767px) {
+  .resume-section {
+    padding-top: 80px !important;
+  }
+  
+  .resume .react-pdf__Page {
+    margin: 0;
+  }
+}

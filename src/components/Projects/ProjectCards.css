@@ -1,0 +1,111 @@
+.project-card-view {
+  transition: all 0.5s ease 0s;
+  overflow: hidden;
+  height: 100%;
+  position: relative;
+}
+
+.project-card-view:hover {
+  transform: scale(1.02);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-component {
+  width: 100%;
+  border-top-left-radius: calc(0.25rem - 1px);
+  border-top-right-radius: calc(0.25rem - 1px);
+  overflow: hidden;
+}
+
+.project-card-view .card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.project-card-view .card-title {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.project-card-view .btn {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Add a subtle gradient overlay to images */
+.project-card-view .card-img-top,
+.card-img-component {
+  position: relative;
+}
+
+.project-card-view .card-img-top::after,
+.card-img-component::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+  pointer-events: none;
+}
+
+/* AI-enhanced content styles */
+.ai-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(106, 90, 205, 0.8);
+  color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.ai-badge:hover {
+  transform: scale(1.1);
+  background-color: rgba(106, 90, 205, 1);
+}
+
+.ai-generate-btn {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 20px;
+  background-color: rgba(106, 90, 205, 0.1);
+  border-color: rgba(106, 90, 205, 0.3);
+  color: rgba(106, 90, 205, 0.8);
+  transition: all 0.3s ease;
+}
+
+.ai-generate-btn:hover {
+  background-color: rgba(106, 90, 205, 0.2);
+  border-color: rgba(106, 90, 205, 0.5);
+  color: rgba(106, 90, 205, 1);
+}
+
+/* Animation for AI-generated content */
+@keyframes aiContentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ai-generated-content {
+  animation: aiContentFadeIn 0.5s ease forwards;
+}

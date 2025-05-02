@@ -1,0 +1,48 @@
+.particle-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.particle-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0f0c29;
+  background-image: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.particle {
+  position: absolute;
+  background-color: #00eeff;
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: float linear infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(50px, 50px);
+  }
+  50% {
+    transform: translate(0, 100px);
+  }
+  75% {
+    transform: translate(-50px, 50px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}

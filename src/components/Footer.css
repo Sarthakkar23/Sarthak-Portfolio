@@ -1,0 +1,21 @@
+.footer-links {
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.privacy-link {
+  color: #c5c5c5;
+  text-decoration: none;
+  transition: color 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.privacy-link:hover {
+  color: #cd5ff8;
+}
+
+.privacy-link svg {
+  font-size: 1.1rem;
+}
