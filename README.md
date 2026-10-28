@@ -67,3 +67,13 @@ This site can be easily deployed to platforms like:
 ## License
 
 This project is open source and available under the MIT License.
+
+## Updating the site
+
+- **New projects appear automatically.** The Home and Projects pages read your public GitHub repos live
+  (no redeploy needed). For a good-looking card, give the repo a **description**, a few **topics**
+  (e.g. `llm`, `computer-vision`) and, if it has one, a **website** link — that becomes the "Live demo" button.
+- **Feature a project with metrics:** add it to `src/data/projects.js` with the same `repo` name.
+- **Hide a repo:** add its name to `hiddenRepos` in `src/data/projects.js`.
+- **About page / résumé facts:** edit `src/data/resume.js`. Replace the PDF in `src/assets/resume/`.
+- **Images:** `src/assets/avatar.webp` (hero, 3D) and `src/assets/portrait.webp` (About photo).

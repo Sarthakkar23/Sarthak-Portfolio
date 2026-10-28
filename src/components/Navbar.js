@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { FiArrowUpRight, FiMenu, FiX } from "react-icons/fi";
-import avatar from "../assets/avatar.png";
+import avatar from "../assets/avatar.webp";
 import { scrollToId } from "./Cinema/Cinema";
 import "./Navbar.css";
 

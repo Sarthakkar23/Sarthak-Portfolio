@@ -383,7 +383,7 @@ button.sk-btn { border: 0; cursor: pointer; }
   align-items: flex-end;
   justify-content: center;
 }
-.sk-about-photo img { width: 110%; max-width: none; margin-bottom: -2px; }
+.sk-about-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
 .sk-about-card {
   position: absolute;
   left: 16px;
@@ -539,6 +539,80 @@ button.sk-btn { border: 0; cursor: pointer; }
 .sk-float-cta strong { font-size: 0.85rem; }
 .sk-float-cta small { font-size: 0.7rem; color: var(--sk-muted); }
 
+.pj-sync { display: inline-flex; align-items: center; gap: 8px; color: #8b8b92; font-size: 0.82rem; }
+.pj-sync.is-loading .sk-dot { background: #f59e0b; box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.18); }
+.pj-sync.is-error .sk-dot { background: #8b8b92; box-shadow: none; animation: none; }
+
+/* ---------- Recruiter additions ---------- */
+.sk-hero-kicker {
+  position: relative;
+  z-index: 4;
+  margin: 0 0 18px;
+  color: #d4d4d8;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+.sk-hero-kicker span { color: var(--sk-red); margin: 0 6px; }
+.sk-hero-tagline b { color: #fff; font-weight: 600; }
+.sk-row-tight { margin-top: 0; gap: 10px; }
+.sk-btn-outline-white { border: 1px solid rgba(255, 255, 255, 0.6); color: #fff; }
+.sk-btn-outline-white:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+
+.sk-impact-wrap { padding-top: 56px; }
+.sk-impact {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--sk-line);
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--sk-surface);
+}
+.sk-impact > div { padding: 28px 26px; display: flex; flex-direction: column; gap: 4px; border-right: 1px solid var(--sk-line); }
+.sk-impact > div:last-child { border-right: 0; }
+.sk-impact strong { font-family: "Archivo", sans-serif; font-weight: 900; font-size: clamp(2rem, 3.6vw, 3rem); color: var(--sk-red); line-height: 1; letter-spacing: -0.03em; }
+.sk-impact span { color: #fff; font-weight: 600; margin-top: 8px; }
+.sk-impact small { color: var(--sk-muted); font-size: 0.8rem; }
+
+.sk-heading-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 48px; }
+.sk-heading-row .sk-heading { margin-bottom: 0; }
+
+.sk-project { position: relative; }
+.sk-project-stretch { position: absolute; inset: 0; z-index: 3; border-radius: inherit; }
+.sk-project-foot { margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.sk-project-foot .sk-project-tags { margin: 0; }
+.sk-project-links { display: flex; gap: 12px; align-items: center; }
+.sk-project-stars { display: inline-flex; gap: 4px; align-items: center; color: #d4d4d8; font-size: 0.82rem; }
+.sk-project-demo {
+  position: relative;
+  z-index: 4;
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--sk-red);
+  padding: 6px 12px;
+  border-radius: 999px;
+  text-decoration: none;
+}
+.sk-project-demo:hover { color: #fff; background: #ff2a40; }
+.sk-project.is-new .sk-project-badge { background: var(--sk-red); border-color: var(--sk-red); }
+.sk-art-gen-a { background: linear-gradient(135deg, #2b1203, #0a0604); }
+.sk-art-gen-a .sk-art-orb { background: #f97316; }
+.sk-art-gen-a .sk-art-orb-2 { background: #e5192e; }
+.sk-art-gen-b { background: linear-gradient(135deg, #031f2b, #04080a); }
+.sk-art-gen-b .sk-art-orb { background: #06b6d4; }
+.sk-art-gen-b .sk-art-orb-2 { background: #6366f1; }
+.sk-art-gen-c { background: linear-gradient(135deg, #2b0320, #0a0408); }
+.sk-art-gen-c .sk-art-orb { background: #ec4899; }
+.sk-art-gen-c .sk-art-orb-2 { background: #e5192e; }
+.sk-art-gen-d { background: linear-gradient(135deg, #1d2b03, #070a04); }
+.sk-art-gen-d .sk-art-orb { background: #84cc16; }
+.sk-art-gen-d .sk-art-orb-2 { background: #14b8a6; }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
   .sk-projects,
@@ -550,6 +624,9 @@ button.sk-btn { border: 0; cursor: pointer; }
   .sk-faq-card { position: static; }
   .sk-section { padding-top: 88px; }
   .sk-about-photo { max-width: 420px; }
+  .sk-impact { grid-template-columns: 1fr 1fr; }
+  .sk-impact > div:nth-child(2) { border-right: 0; }
+  .sk-impact > div:nth-child(-n + 2) { border-bottom: 1px solid var(--sk-line); }
 }
 @media (max-width: 640px) {
   .sk-hero { padding: 100px 16px 0; }

@@ -41,50 +41,6 @@ const config = {
     linkedin: "https://www.linkedin.com/in/sarthak-kar-2283692a7/",
     instagram: "https://www.instagram.com/sarxthak_23/",
     // Add more social media links as needed
-  },
-  
-  // Project section customization
-  projects: {
-    // The catchy tagline shown under the Projects heading
-    tagline: "Turning coffee into code and ideas into reality, one commit at a time."
-  },
-  
-  // AI generation settings
-  ai: {
-    // Enable or disable automatic AI generation for new repositories
-    enabled: true,
-    
-    // How often to check for new repositories (in minutes)
-    checkInterval: 120, // 2 hours
-    
-    // OpenAI API key for generating descriptions and images
-    // ⚠️ IMPORTANT: Set this in your .env file as REACT_APP_OPENAI_KEY
-    // See .env.example for instructions
-    openAiKey: process.env.REACT_APP_OPENAI_KEY || "",
-    
-    // Image generation settings
-    images: {
-      enabled: true,
-      width: 800,
-      height: 600,
-      style: "modern", // Options: "modern", "minimalist", "colorful", "tech"
-    },
-    
-    // Description generation settings
-    descriptions: {
-      enabled: true,
-      maxLength: 150, // Maximum length in characters
-      tone: "professional", // Options: "professional", "casual", "technical"
-    },
-    
-    // Storage settings
-    storage: {
-      // Where to store generated content
-      type: "localStorage", // Options: "localStorage", "firebase", "api"
-      
-      // How long to cache generated content before regenerating (in days)
-      cacheDuration: 30,
-    }
   }
 };
 

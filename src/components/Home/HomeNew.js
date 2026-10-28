@@ -28,23 +28,24 @@ import {
 import { AiFillGithub, AiFillInstagram } from "react-icons/ai";
 import { FaLinkedinIn } from "react-icons/fa";
 import { FiArrowUpRight, FiPlus, FiMinus, FiDownload } from "react-icons/fi";
-import avatar from "../../assets/avatar.png";
-import portrait from "../../assets/portrait.png";
+import avatar from "../../assets/avatar.webp";
+import portrait from "../../assets/portrait.webp";
 import resumePdf from "../../assets/resume/Sarthak Kar Resume.pdf";
+import ProjectCard from "../Projects/ProjectCard";
+import useGithubProjects from "../../hooks/useGithubProjects";
+import { profile, experience } from "../../data/resume";
 import config from "../../config";
 import "./HomeNew.css";
-
-const EMAIL = "sarthakkar05@gmail.com";
 
 const tools = [
   { icon: SiPython, name: "Python" },
   { icon: SiPytorch, name: "PyTorch" },
-  { icon: SiNumpy, name: "NumPy" },
-  { icon: SiFlask, name: "Flask" },
   { icon: SiScikitlearn, name: "scikit-learn" },
   { icon: SiOpencv, name: "OpenCV" },
+  { icon: SiNumpy, name: "NumPy" },
   { icon: SiPandas, name: "pandas" },
   { icon: SiFastapi, name: "FastAPI" },
+  { icon: SiFlask, name: "Flask" },
   { icon: SiPostgresql, name: "PostgreSQL" },
   { icon: SiDocker, name: "Docker" },
   { icon: SiAmazonaws, name: "AWS" },
@@ -53,220 +54,77 @@ const tools = [
   { icon: SiGit, name: "Git" },
 ];
 
-const projects = [
-  {
-    name: "AMRIP-India",
-    subtitle: "AI-Centric Medical Record Interoperability Platform",
-    badge: "Capstone · In progress",
-    tags: ["LangGraph", "LoRA / PEFT", "LayoutLMv3", "TrOCR", "FastAPI"],
-    description:
-      "A 9-stage pipeline that turns phone photos of Indian prescriptions and lab reports into ABDM-compliant FHIR R4 records — OCR, handwriting recognition, clinical NER and a LoRA-tuned LLM with a verifier-and-repair loop.",
-    metrics: [
-      ["9", "pipeline stages"],
-      ["2.5L", "medicine brands"],
-      ["4-bit", "LoRA fine-tune"],
-    ],
-    link: config.socialMedia.github,
-    art: "med",
-  },
-  {
-    name: "CloudOptima",
-    subtitle: "Multi-Cloud Resource Orchestrator",
-    badge: "Published · SSRN",
-    tags: ["PyTorch DQN", "XGBoost", "Optuna", "SHAP / LIME"],
-    description:
-      "A Deep Q-Network decides which VM each task goes to, with workload forecasting, anomaly-based failover and an explainable Streamlit dashboard.",
-    metrics: [
-      ["34%", "less compute cost"],
-      ["0.89", "R² CPU forecast"],
-      ["99.2%", "availability"],
-    ],
-    link: "https://github.com/Sarthakkar23/Cloud-Resource-Optimizer",
-    art: "cloud",
-  },
-  {
-    name: "ClearPixel AI",
-    subtitle: "Digital Image Restoration Suite",
-    badge: "Personal project",
-    tags: ["OpenCV", "Flask", "NumPy", "DeOldify"],
-    description:
-      "Restoration, HED edge detection and DeOldify colourisation behind one Flask API, vectorised to run fast on CPU.",
-    metrics: [
-      ["31.2dB", "PSNR on Set14"],
-      ["0.914", "SSIM"],
-      ["<140ms", "per 1080p frame"],
-    ],
-    link: "https://github.com/Sarthakkar23/Clear-Pixel-AI",
-    art: "pixel",
-  },
-  {
-    name: "Fraud Detection",
-    subtitle: "Credit Card Fraud Detection",
-    badge: "Personal project",
-    tags: ["XGBoost", "SMOTE", "scikit-learn"],
-    description:
-      "Tuned XGBoost with SMOTE and class weights on 284,807 transactions where only 0.17% are fraud — fast enough for a live payment check.",
-    metrics: [
-      ["0.83", "fraud-class F1"],
-      ["86.4%", "precision"],
-      ["3.8ms", "per transaction"],
-    ],
-    link: config.socialMedia.github,
-    art: "fraud",
-  },
+const impact = [
+  ["34%", "lower compute cost", "CloudOptima · Deep Q-Network scheduler"],
+  ["0.83", "fraud-class F1", "on data that's 0.17% fraud"],
+  ["31.2 dB", "PSNR restoration", "ClearPixel AI on Set14"],
+  ["1", "SSRN preprint", "co-authored, Jul 2026"],
 ];
 
-const services = [
+const expertise = [
   {
-    title: "LLMs & NLP",
-    body: "Agentic pipelines with LangGraph, LoRA fine-tuning of small LLMs in 4-bit, and clinical NER on Indian-language text.",
-    chips: ["LangGraph", "LangChain", "Transformers", "LoRA / PEFT", "Qwen2.5", "Llama 3.2"],
+    title: "LLM & Document AI Pipelines",
+    body: "Agentic LangGraph workflows with verification and human-in-the-loop review, LoRA fine-tuning of small LLMs in 4-bit, and OCR-to-structured-data for real documents.",
+    chips: ["LangGraph", "LangChain", "Transformers", "LoRA / PEFT", "LayoutLMv3", "TrOCR"],
   },
   {
-    title: "Machine & Deep Learning",
-    body: "From imbalanced classification to deep reinforcement learning — tuned, evaluated and explained.",
+    title: "Machine Learning & Deep RL",
+    body: "Forecasting, imbalanced classification and reinforcement learning — tuned with Optuna and judged on the metric that matters, not just accuracy.",
     chips: ["PyTorch", "XGBoost", "LightGBM", "Deep Q-Networks", "Optuna", "SMOTE"],
   },
   {
-    title: "Vision & OCR",
-    body: "Layout-aware document understanding, handwriting recognition and image restoration.",
-    chips: ["OpenCV", "LayoutLMv3", "TrOCR", "Donut", "PaddleOCR", "DeOldify"],
+    title: "Computer Vision",
+    body: "Image restoration, edge detection and colourisation, optimised to run in real time on CPU.",
+    chips: ["OpenCV", "HED", "DeOldify", "PaddleOCR", "Donut", "Pillow"],
   },
   {
-    title: "Data & Explainable AI",
-    body: "Clean data pipelines, record linkage and explanations people without an ML background can follow.",
-    chips: ["pandas", "PostgreSQL", "DuckDB", "Splink", "SHAP", "LIME"],
+    title: "Explainable & Responsible AI",
+    body: "SHAP and LIME explanations for non-ML stakeholders, source-grounded LLM outputs, and local-first pipelines that keep sensitive data private.",
+    chips: ["SHAP", "LIME", "Isolation Forest", "Splink", "DPDP-aware design"],
   },
   {
-    title: "Cloud & Serving",
-    body: "Shipping models as real products: APIs, containers, dashboards and AWS infrastructure.",
-    chips: ["AWS", "FastAPI", "Flask", "Docker", "Streamlit", "MLflow"],
-  },
-];
-
-const timeline = [
-  {
-    when: "Dec 2025 – Jan 2026",
-    title: "Cloud Computing Intern",
-    where: "Central Tool Room & Training Centre (CTTC), Bhubaneswar",
-    body: "Hands-on AWS programme — EC2, S3, VPC networking and load balancing on CTTC's server infrastructure.",
-  },
-  {
-    when: "Jul 2026",
-    title: "Co-author, SSRN preprint",
-    where: "Cloud Computing Resource Optimizer",
-    body: "Sahoo, A. A., & Kar, S. (2026). 7 pp.",
-    link: "https://papers.ssrn.com/abstract=6957438",
-  },
-  {
-    when: "Sep 2024 – present",
-    title: "Committee Head, Sponsorship",
-    where: "Directorate of Student Affairs, SRMIST",
-    body: "Sponsorship and logistics for Milan (60,000+ participants, 350 colleges). Brought in AJIO for ₹2 lakh in coupons; vendor stalls generated ₹1.2 lakh.",
-  },
-  {
-    when: "Jul 2025 – present",
-    title: "Lead, Sponsorship",
-    where: "TEDxSRMIST",
-    body: "Own sponsorship outreach and speaker acquisition; secured a ₹50,000 sponsorship and brought a speaker on board.",
+    title: "Shipping to Production",
+    body: "Models served behind APIs, containerised, tracked and wrapped in dashboards people actually use.",
+    chips: ["FastAPI", "Flask", "Docker", "AWS", "MLflow", "Weights & Biases"],
   },
 ];
 
 const faqs = [
   {
-    q: "What kind of roles are you looking for?",
-    a: "Applied AI/ML engineering roles and internships — especially work involving LLMs, document AI, computer vision or ML systems that ship to real users.",
+    q: "What roles are you looking for?",
+    a: "Applied AI/ML engineering roles — especially work on LLM and document-AI pipelines, computer vision, or ML systems that ship to real users. I graduate in May 2027.",
   },
   {
-    q: "What are you working on right now?",
-    a: "AMRIP-India, my capstone: a LoRA-tuned LLM pipeline that converts photographed Indian prescriptions into standards-validated FHIR health records, built as a LangGraph state graph with a verifier-and-repair loop.",
+    q: "What's your strongest area?",
+    a: "Building end-to-end ML pipelines: from messy real-world data (phone photos, raw logs, highly imbalanced transactions) to a measured, explainable model served behind an API.",
   },
   {
-    q: "Where do you study?",
-    a: "I'm a final-year B.Tech Computer Science & Engineering student at SRM Institute of Science and Technology, Kattankulathur, specialising in AI and Machine Learning (2023 – May 2027).",
+    q: "What are you building right now?",
+    a: "AMRIP-India, my capstone: a 9-stage LangGraph pipeline that converts photographed Indian prescriptions into ABDM-compliant FHIR R4 records, with a verifier that rejects any LLM output it can't trace back to the source image.",
   },
   {
-    q: "Can you take a model from notebook to product?",
-    a: "Yes — that's the part I enjoy most. My projects ship behind FastAPI or Flask, run in Docker, and come with dashboards (Streamlit, React) and explanations (SHAP, LIME).",
+    q: "Do you have industry or research experience?",
+    a: "I interned as a Cloud Computing Intern at CTTC Bhubaneswar (AWS: EC2, S3, VPC, load balancing), and co-authored an SSRN preprint on cloud resource optimisation based on my CloudOptima project.",
   },
   {
-    q: "Do you have published work?",
-    a: "I co-authored “Cloud Computing Resource Optimizer”, an SSRN preprint (July 2026) based on my CloudOptima project.",
+    q: "Can you work in a team and lead?",
+    a: "Yes — I lead sponsorship for Milan, SRMIST's national cultural festival (60,000+ participants from 350 colleges), and for TEDxSRMIST. Two of my ML projects were built in teams of two.",
   },
 ];
 
 const reveal = {
   initial: { opacity: 0, y: 40 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.15 },
+  viewport: { once: true, amount: 0.2 },
   transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
 };
-
-function ProjectArt({ kind }) {
-  return (
-    <div className={`sk-art sk-art-${kind}`} aria-hidden="true">
-      <div className="sk-art-grid" />
-      <div className="sk-art-orb" />
-      <div className="sk-art-orb sk-art-orb-2" />
-    </div>
-  );
-}
-
-function ProjectCard({ p, i }) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const artY = useTransform(scrollYProgress, [0, 1], ["-12%", "12%"]);
-  return (
-    <motion.a
-      ref={ref}
-      href={p.link}
-      target="_blank"
-      rel="noreferrer"
-      className="sk-project"
-      data-cursor="View"
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: (i % 2) * 0.12 }}
-    >
-      <motion.div
-        className="sk-project-media"
-        initial={{ clipPath: "inset(18% 10% 18% 10% round 24px)" }}
-        whileInView={{ clipPath: "inset(0% 0% 0% 0% round 0px)" }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 1.3, ease: [0.76, 0, 0.24, 1], delay: 0.1 + (i % 2) * 0.12 }}
-      >
-        <motion.div className="sk-art-parallax" style={{ y: artY }}>
-          <ProjectArt kind={p.art} />
-        </motion.div>
-        <span className="sk-project-badge">{p.badge}</span>
-        <span className="sk-project-title-overlay">{p.name}</span>
-        <span className="sk-project-arrow">
-          <FiArrowUpRight />
-        </span>
-      </motion.div>
-      <div className="sk-project-meta">
-        <h3>
-          {p.name} <small>{p.subtitle}</small>
-        </h3>
-        <p className="sk-project-desc">{p.description}</p>
-        <div className="sk-metrics">
-          {p.metrics.map(([v, l]) => (
-            <div key={l}>
-              <strong>{v}</strong>
-              <span>{l}</span>
-            </div>
-          ))}
-        </div>
-        <p className="sk-project-tags">{p.tags.join(" · ")}</p>
-      </div>
-    </motion.a>
-  );
-}
 
 function HomeNew({ ready = true }) {
   const [activeService, setActiveService] = useState(0);
   const [openFaq, setOpenFaq] = useState(0);
+  const { curated, auto, status } = useGithubProjects();
+  // Highlights, plus the two newest repos so fresh work shows up on the home page too.
+  const homeProjects = [...curated, ...auto.slice(0, 2)];
 
   // Hero: the title drifts and shrinks, the avatar rises slower, everything fades as you scroll away.
   const heroRef = useRef(null);
@@ -293,8 +151,17 @@ function HomeNew({ ready = true }) {
       {/* ---------- HERO ---------- */}
       <section className="sk-hero" id="home" ref={heroRef} onMouseMove={onHeroMove}>
         <motion.div className="sk-hero-glow" style={{ opacity: glowOpacity }} />
+        <motion.p
+          className="sk-hero-kicker"
+          initial={{ opacity: 0, y: 12 }}
+          animate={ready ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.1 }}
+          style={{ opacity: heroFade }}
+        >
+          Sarthak Kar <span>—</span> AI / ML Engineer
+        </motion.p>
         <motion.div className="sk-hero-stage" style={{ y: titleY, scale: titleScale, opacity: heroFade }}>
-          <h1 className="sk-hero-title" aria-label="Think Intelligently">
+          <h1 className="sk-hero-title" aria-label="Sarthak Kar, AI/ML Engineer. Think Intelligently.">
             {[
               ["Think", "sk-line-white"],
               ["Intelligently", "sk-line-red"],
@@ -316,10 +183,13 @@ function HomeNew({ ready = true }) {
           </h1>
         </motion.div>
 
-        <motion.div className="sk-hero-avatar-wrap" style={{ y: avatarY, rotateX: tiltX, rotateY: tiltY, transformPerspective: 900 }}>
+        <motion.div
+          className="sk-hero-avatar-wrap"
+          style={{ y: avatarY, rotateX: tiltX, rotateY: tiltY, transformPerspective: 900 }}
+        >
           <motion.img
             src={avatar}
-            alt="Sarthak Kar avatar"
+            alt="3D avatar of Sarthak Kar"
             className="sk-hero-avatar"
             initial={{ opacity: 0, scale: 1.15, y: 80, filter: "blur(14px)" }}
             animate={ready ? { opacity: 1, scale: 1, y: 0, filter: "blur(0px)" } : {}}
@@ -335,17 +205,22 @@ function HomeNew({ ready = true }) {
           style={{ opacity: heroFade }}
         >
           <p className="sk-hero-tagline">
-            AI/ML engineer in the making — <br />
-            I build LLM pipelines, vision <br />
-            systems and ML that ships.
+            I build <b>LLM pipelines</b>, <b>computer vision</b> <br />
+            and <b>ML systems</b> that ship — with <br />
+            results you can measure.
           </p>
           <div className="sk-hero-cta">
             <span className="sk-status">
-              <span className="sk-dot" /> Open to AI/ML roles
+              <span className="sk-dot" /> Open to applied AI/ML roles · Graduating May 2027
             </span>
-            <button className="sk-btn sk-btn-red" onClick={() => scrollToId("contact")}>
-              Let's talk <FiArrowUpRight />
-            </button>
+            <div className="sk-row sk-row-tight">
+              <a className="sk-btn sk-btn-ghost" href={resumePdf} download="Sarthak-Kar-Resume.pdf">
+                Résumé <FiDownload />
+              </a>
+              <button className="sk-btn sk-btn-red" onClick={() => scrollToId("contact")}>
+                Get in touch <FiArrowUpRight />
+              </button>
+            </div>
           </div>
         </motion.div>
 
@@ -371,31 +246,46 @@ function HomeNew({ ready = true }) {
         </div>
       </section>
 
+      {/* ---------- IMPACT ---------- */}
+      <section className="sk-section sk-impact-wrap" aria-label="Impact in numbers">
+        <div className="sk-impact">
+          {impact.map(([v, l, s], i) => (
+            <motion.div key={l} {...reveal} transition={{ ...reveal.transition, delay: i * 0.08 }}>
+              <strong>{v}</strong>
+              <span>{l}</span>
+              <small>{s}</small>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
       {/* ---------- PROJECTS ---------- */}
       <section className="sk-section" id="work">
         <SceneLabel n={1}>Selected work</SceneLabel>
-        <MaskText className="sk-heading" lines={[<>Latest <span className="sk-red">Projects</span></>]} />
+        <div className="sk-heading-row">
+          <MaskText className="sk-heading" lines={["Real problems.", <span className="sk-red">Measured results.</span>]} />
+          <span className={`pj-sync is-${status}`}>
+            <span className="sk-dot" /> {status === "ready" ? "Synced live with GitHub" : status === "loading" ? "Syncing with GitHub…" : "Highlights"}
+          </span>
+        </div>
         <div className="sk-projects">
-          {projects.map((p, i) => (
-            <ProjectCard p={p} i={i} key={p.name} />
+          {homeProjects.map((p, i) => (
+            <ProjectCard p={p} i={i} key={p.repo || p.name} />
           ))}
         </div>
         <div className="sk-center">
           <Link to="/project" className="sk-link">
-            View all my projects <FiArrowUpRight />
+            View all projects <FiArrowUpRight />
           </Link>
         </div>
       </section>
 
-      {/* ---------- SERVICES / SKILLS ---------- */}
+      {/* ---------- EXPERTISE ---------- */}
       <section className="sk-section sk-services" id="services">
         <motion.div className="sk-services-left" {...reveal}>
-          <SceneLabel n={2}>Skills</SceneLabel>
-          <MaskText
-            className="sk-heading"
-            lines={["What I help", <>you <span className="sk-red">Build…</span></>]}
-          />
-          <p className="sk-muted">Tools that I use</p>
+          <SceneLabel n={2}>Expertise</SceneLabel>
+          <MaskText className="sk-heading" lines={["What I bring", <>to your <span className="sk-red">team.</span></>]} />
+          <p className="sk-muted">Tools I use day to day</p>
           <div className="sk-tool-grid">
             {tools.map(({ icon: Icon, name }) => (
               <span className="sk-tool" key={name} title={name}>
@@ -403,12 +293,10 @@ function HomeNew({ ready = true }) {
               </span>
             ))}
           </div>
-          <p className="sk-muted sk-langs">
-            Languages: Python, SQL, Java, C/C++, JavaScript, HTML/CSS
-          </p>
+          <p className="sk-muted sk-langs">Languages: Python, SQL, Java, C/C++, JavaScript, HTML/CSS</p>
         </motion.div>
         <div className="sk-services-right">
-          {services.map((s, i) => (
+          {expertise.map((s, i) => (
             <motion.div
               key={s.title}
               className={`sk-service ${activeService === i ? "is-active" : ""}`}
@@ -437,89 +325,60 @@ function HomeNew({ ready = true }) {
       {/* ---------- ABOUT ---------- */}
       <section className="sk-section" id="about">
         <SceneLabel n={3}>About</SceneLabel>
-        <MaskText
-          className="sk-heading"
-          lines={["Building systems", <span className="sk-red">that make sense.</span>]}
-        />
+        <MaskText className="sk-heading" lines={["Engineer first.", <span className="sk-red">Always shipping.</span>]} />
         <div className="sk-about">
           <motion.div className="sk-about-photo" {...reveal}>
             <img src={portrait} alt="Sarthak Kar" />
             <div className="sk-about-card">
-              <strong>Sarthak Kar</strong>
-              <span>B.Tech CSE (AI/ML) · SRMIST · Chennai, India</span>
+              <strong>{profile.name}</strong>
+              <span>B.Tech CSE (AI & ML) · SRMIST · {profile.location}</span>
             </div>
           </motion.div>
           <motion.div className="sk-about-text" {...reveal}>
             <p>
-              I'm a final-year <b>B.Tech Computer Science</b> student at <b>SRM Institute of Science
-              and Technology</b>, specialising in <b>AI/ML</b>. Right now I'm building a LoRA-tuned LLM
-              pipeline that converts photographed Indian prescriptions into standards-validated FHIR
-              health records.
+              I'm a final-year <b>Computer Science (AI & ML)</b> student at <b>SRM Institute of Science and
+              Technology</b>. I like problems where the data is messy and the stakes are real — handwritten
+              prescriptions, noisy cloud logs, transactions where fraud is 0.17% of the data.
             </p>
             <p>
-              I've shipped projects in <b>deep reinforcement learning</b>, <b>imbalanced
-              classification</b> and <b>computer vision</b>, and co-authored an SSRN preprint on
-              multi-cloud resource optimisation. Outside the code, I lead sponsorship for SRMIST's
-              national cultural festival and TEDxSRMIST.
+              My work spans <b>LLM pipelines</b>, <b>deep reinforcement learning</b>, <b>imbalanced
+              classification</b> and <b>computer vision</b>. I care about results I can measure and explain,
+              and about shipping models behind real APIs and dashboards.
+            </p>
+            <p>
+              Previously: <b>{experience[0].role}</b> at {experience[0].org}. Outside the code I lead
+              sponsorship for SRMIST's national cultural festival and TEDxSRMIST.
             </p>
             <div className="sk-stats">
               <div>
-                <strong>4+</strong>
-                <span>Shipped projects</span>
+                <strong>4</strong>
+                <span>End-to-end ML projects</span>
               </div>
               <div>
                 <strong>1</strong>
-                <span>Published preprint</span>
+                <span>Research preprint</span>
               </div>
               <div>
                 <strong>60K+</strong>
-                <span>Festival attendees managed</span>
+                <span>Attendee festival — sponsorship lead</span>
               </div>
             </div>
             <div className="sk-row">
-              <Link to="/resume" className="sk-btn sk-btn-red">
-                View resume <FiArrowUpRight />
+              <Link to="/about" className="sk-btn sk-btn-red">
+                Full story <FiArrowUpRight />
               </Link>
               <a href={resumePdf} download="Sarthak-Kar-Resume.pdf" className="sk-btn sk-btn-ghost">
-                Download PDF <FiDownload />
+                Download résumé <FiDownload />
               </a>
             </div>
           </motion.div>
         </div>
-
-        <MaskText as="h3" className="sk-subheading" lines={[<>My <span className="sk-red">journey</span></>]} />
-        <div className="sk-timeline">
-          {timeline.map((t, i) => (
-            <motion.div
-              className="sk-timeline-item"
-              key={t.title}
-              {...reveal}
-              transition={{ ...reveal.transition, delay: i * 0.06 }}
-            >
-              <span className="sk-timeline-when">{t.when}</span>
-              <h4>{t.title}</h4>
-              <span className="sk-timeline-where">{t.where}</span>
-              <p>
-                {t.body}{" "}
-                {t.link && (
-                  <a href={t.link} target="_blank" rel="noreferrer" className="sk-red">
-                    Read paper <FiArrowUpRight />
-                  </a>
-                )}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-        <p className="sk-muted sk-certs">
-          Certifications: Cloud Computing — CTTC (Jan 2026) · JPMorgan Chase & Co. Virtual Job
-          Simulation — Forage
-        </p>
       </section>
 
       {/* ---------- FAQ ---------- */}
       <section className="sk-section" id="faq">
-        <SceneLabel n={4}>Questions</SceneLabel>
-        <MaskText className="sk-heading" lines={["FAQs"]} />
+        <SceneLabel n={4}>For recruiters</SceneLabel>
+        <MaskText className="sk-heading" lines={["Quick answers."]} />
         <div className="sk-faq-wrap">
           <div className="sk-faq">
             {faqs.map((f, i) => (
@@ -548,13 +407,18 @@ function HomeNew({ ready = true }) {
           <motion.div className="sk-faq-card" {...reveal}>
             <img src={avatar} alt="" />
             <h3>
-              Hiring or building <br />
-              something cool?
+              Hiring for <br />
+              AI/ML?
             </h3>
-            <p>I'm looking for applied AI/ML engineering roles. Let's talk about what you're working on.</p>
-            <a className="sk-btn sk-btn-white" href={`mailto:${EMAIL}`}>
-              Email me <FiArrowUpRight />
-            </a>
+            <p>Everything you need is on one page of my résumé — or just say hello.</p>
+            <div className="sk-row sk-row-tight">
+              <a className="sk-btn sk-btn-white" href={`mailto:${profile.email}`}>
+                Email me <FiArrowUpRight />
+              </a>
+              <a className="sk-btn sk-btn-outline-white" href={resumePdf} download="Sarthak-Kar-Resume.pdf">
+                Résumé <FiDownload />
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -567,16 +431,16 @@ function HomeNew({ ready = true }) {
           lines={[<>Let's <span className="sk-red">build</span></>, "intelligent things", "together."]}
         />
         <div className="sk-contact-grid">
-          <a href={`mailto:${EMAIL}`}>
+          <a href={`mailto:${profile.email}`}>
             <span className="sk-muted">Email</span>
-            <strong>{EMAIL}</strong>
+            <strong>{profile.email}</strong>
           </a>
           <a href={config.socialMedia.linkedin} target="_blank" rel="noreferrer">
             <span className="sk-muted">LinkedIn</span>
-            <strong>Sarthak Kar</strong>
+            <strong>in/sarthak-kar</strong>
           </a>
           <div>
-            <span className="sk-muted">Social</span>
+            <span className="sk-muted">Elsewhere</span>
             <div className="sk-socials">
               <a href={config.socialMedia.github} target="_blank" rel="noreferrer" aria-label="GitHub">
                 <AiFillGithub />
@@ -602,7 +466,7 @@ function HomeNew({ ready = true }) {
       >
         <img src={avatar} alt="" />
         <span>
-          <strong>Speak to me</strong>
+          <strong>Hiring? Let's talk</strong>
           <small>Email or LinkedIn</small>
         </span>
       </a>

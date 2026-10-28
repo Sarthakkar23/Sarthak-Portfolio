@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { FiArrowUpRight, FiDownload, FiPlus, FiMinus } from "react-icons/fi";
-import portrait from "../../assets/portrait.png";
+import portrait from "../../assets/portrait.webp";
 import resumePdf from "../../assets/resume/Sarthak Kar Resume.pdf";
 import { MaskText, SceneLabel } from "../Cinema/Cinema";
 import config from "../../config";

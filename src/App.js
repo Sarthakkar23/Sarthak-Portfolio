@@ -22,16 +22,29 @@ const Projects = lazy(() => import("./components/Projects/Projects"));
 const Resume = lazy(() => import("./components/Resume/Resume"));
 const Privacy = lazy(() => import("./components/Privacy/Privacy"));
 
+// Play the opening sequence once per visit, not on every reload.
+const introSeen = () => {
+  try {
+    return sessionStorage.getItem("sk-intro") === "1";
+  } catch (e) {
+    return false;
+  }
+};
+
 function App() {
-  const [load, setLoad] = useState(true);
+  const [load, setLoad] = useState(() => !introSeen());
 
   useEffect(() => {
+    if (!load) return;
     const timer = setTimeout(() => {
       setLoad(false);
+      try {
+        sessionStorage.setItem("sk-intro", "1");
+      } catch (e) {}
     }, INTRO_MS);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [load]);
 
   return (
     <>
