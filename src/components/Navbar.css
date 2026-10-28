@@ -1,0 +1,98 @@
+.sk-nav {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 6px 6px 8px;
+  border-radius: 999px;
+  background: rgba(20, 20, 22, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: "Inter", system-ui, sans-serif;
+  transition: background 0.3s, box-shadow 0.3s;
+  max-width: calc(100vw - 32px);
+}
+.sk-nav.is-scrolled { background: rgba(14, 14, 16, 0.85); box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6); }
+
+.sk-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding-right: 8px;
+  white-space: nowrap;
+}
+.sk-nav-brand:hover { color: #fff; }
+.sk-nav-brand img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top;
+  background: #e5192e;
+}
+
+.sk-nav-links { display: flex; align-items: center; gap: 2px; }
+.sk-nav-links a,
+.sk-nav-links button {
+  background: none;
+  border: 0;
+  color: #a1a1aa;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+.sk-nav-links a:hover,
+.sk-nav-links button:hover { color: #fff; background: rgba(255, 255, 255, 0.06); }
+.sk-nav-links a.active { color: #fff; }
+
+.sk-nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: #e5192e;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 9px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.sk-nav-cta:hover { background: #ff2a40; }
+
+.sk-nav-toggle {
+  display: none;
+  background: rgba(255, 255, 255, 0.06);
+  border: 0;
+  color: #fff;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  place-items: center;
+  cursor: pointer;
+}
+
+@media (max-width: 760px) {
+  .sk-nav { width: calc(100vw - 32px); justify-content: space-between; flex-wrap: wrap; border-radius: 24px; }
+  .sk-nav-links { display: none; order: 3; width: 100%; flex-direction: column; align-items: stretch; padding: 8px 0 6px; }
+  .sk-nav.is-open .sk-nav-links { display: flex; }
+  .sk-nav-links a,
+  .sk-nav-links button { text-align: left; font-size: 1rem; padding: 12px 14px; }
+  .sk-nav-cta { margin-left: auto; }
+  .sk-nav-toggle { display: grid; }
+}

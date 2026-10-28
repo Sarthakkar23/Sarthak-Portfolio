@@ -11,7 +11,7 @@
 }
 
 .error-boundary h2 {
-  color: #cd5ff8;
+  color: #ff2a40;
   margin-bottom: 20px;
 }
 
@@ -22,13 +22,13 @@
 
 .error-boundary button {
   margin-bottom: 20px;
-  background-color: #623686;
-  border-color: #623686;
+  background-color: #e5192e;
+  border-color: #e5192e;
 }
 
 .error-boundary button:hover {
-  background-color: #cd5ff8;
-  border-color: #cd5ff8;
+  background-color: #ff2a40;
+  border-color: #ff2a40;
 }
 
 .error-boundary details {
@@ -42,7 +42,7 @@
 
 .error-boundary summary {
   cursor: pointer;
-  color: #cd5ff8;
+  color: #ff2a40;
   font-weight: bold;
   margin-bottom: 10px;
 }

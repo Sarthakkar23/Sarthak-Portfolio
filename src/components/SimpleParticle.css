@@ -14,8 +14,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #0f0c29;
-  background-image: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+  background-color: #0a0a0b;
+  background-image: linear-gradient(to right, #0a0a0b, #140608, #0a0a0b);
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;
@@ -23,7 +23,7 @@
 
 .particle {
   position: absolute;
-  background-color: #00eeff;
+  background-color: #e5192e;
   border-radius: 50%;
   opacity: 0.5;
   animation: float linear infinite;

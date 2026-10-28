@@ -1,111 +1,72 @@
-import React, { useState } from "react";
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
-import Container from "react-bootstrap/Container";
-import { Link } from "react-router-dom";
-import { CgGitFork } from "react-icons/cg";
-import {
-  AiFillStar,
-  AiOutlineHome,
-  AiOutlineFundProjectionScreen,
-  AiOutlineUser,
-} from "react-icons/ai";
-import { CgFileDocument } from "react-icons/cg";
-import { RiRobot2Fill } from "react-icons/ri";
+import React, { useEffect, useState } from "react";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { FiArrowUpRight, FiMenu, FiX } from "react-icons/fi";
+import avatar from "../assets/homedown.png";
+import "./Navbar.css";
+
+const links = [
+  { label: "Work", hash: "work" },
+  { label: "Skills", hash: "services" },
+  { label: "About", to: "/about" },
+  { label: "Projects", to: "/project" },
+  { label: "Resume", to: "/resume" },
+];
 
 function NavBar() {
-  const [expand, updateExpanded] = useState(false);
-  const [navColour, updateNavbar] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  function scrollHandler() {
-    if (window.scrollY >= 20) {
-      updateNavbar(true);
-    } else {
-      updateNavbar(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll();
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => setOpen(false), [location.pathname]);
+
+  // Section links live on the home page: go there first, then scroll.
+  const goToSection = (hash) => {
+    setOpen(false);
+    const scroll = () => document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" });
+    if (location.pathname === "/") scroll();
+    else {
+      navigate("/");
+      setTimeout(scroll, 400);
     }
-  }
-
-  window.addEventListener("scroll", scrollHandler);
+  };
 
   return (
-    <Navbar
-      expanded={expand}
-      fixed="top"
-      expand="md"
-      className={navColour ? "sticky" : "navbar"}
-    >
-      <Container>
-        <Navbar.Brand href="/" className="d-flex">
-          <RiRobot2Fill className="logo" style={{ color: "var(--accent-color)" }} />
-          <span style={{ marginLeft: "10px", fontWeight: "bold" }}>Sarthak Kar</span>
-        </Navbar.Brand>
-        <Navbar.Toggle
-          aria-controls="responsive-navbar-nav"
-          onClick={() => {
-            updateExpanded(expand ? false : "expanded");
-          }}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </Navbar.Toggle>
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="ms-auto" defaultActiveKey="#home">
-            <Nav.Item>
-              <Nav.Link as={Link} to="/" onClick={() => updateExpanded(false)}>
-                <AiOutlineHome style={{ marginBottom: "2px" }} /> Home
-              </Nav.Link>
-            </Nav.Item>
+    <header className={`sk-nav ${scrolled ? "is-scrolled" : ""} ${open ? "is-open" : ""}`}>
+      <Link to="/" className="sk-nav-brand" onClick={() => window.scrollTo({ top: 0 })}>
+        <img src={avatar} alt="" />
+        <span>Sarthak Kar</span>
+      </Link>
 
-            <Nav.Item>
-              <Nav.Link
-                as={Link}
-                to="/about"
-                onClick={() => updateExpanded(false)}
-              >
-                <AiOutlineUser style={{ marginBottom: "2px" }} /> About
-              </Nav.Link>
-            </Nav.Item>
+      <nav className="sk-nav-links">
+        {links.map((l) =>
+          l.hash ? (
+            <button key={l.label} onClick={() => goToSection(l.hash)}>
+              {l.label}
+            </button>
+          ) : (
+            <NavLink key={l.label} to={l.to}>
+              {l.label}
+            </NavLink>
+          )
+        )}
+      </nav>
 
-            <Nav.Item>
-              <Nav.Link
-                as={Link}
-                to="/project"
-                onClick={() => updateExpanded(false)}
-              >
-                <AiOutlineFundProjectionScreen
-                  style={{ marginBottom: "2px" }}
-                />{" "}
-                Projects
-              </Nav.Link>
-            </Nav.Item>
+      <button className="sk-nav-cta" onClick={() => goToSection("contact")}>
+        Contact <FiArrowUpRight />
+      </button>
 
-            <Nav.Item>
-              <Nav.Link
-                as={Link}
-                to="/resume"
-                onClick={() => updateExpanded(false)}
-              >
-                <CgFileDocument style={{ marginBottom: "2px" }} /> Resume
-              </Nav.Link>
-            </Nav.Item>
-
-
-
-            <Nav.Item className="fork-btn">
-              <Nav.Link
-                href="https://github.com/Sarthakkar23"
-                target="_blank"
-                className="fork-btn-inner"
-              >
-                <CgGitFork style={{ fontSize: "1.2em" }} />{" "}
-                <AiFillStar style={{ fontSize: "1.1em" }} />
-              </Nav.Link>
-            </Nav.Item>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+      <button className="sk-nav-toggle" aria-label="Toggle menu" onClick={() => setOpen(!open)}>
+        {open ? <FiX /> : <FiMenu />}
+      </button>
+    </header>
   );
 }
 

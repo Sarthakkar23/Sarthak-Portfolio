@@ -16,9 +16,9 @@
   padding: 20px;
   margin: 20px;
   background-color: transparent !important;
-  border: 1px solid #00eeff !important;
+  border: 1px solid #e5192e !important;
   color: white !important;
-  box-shadow: 0 0 10px #00eeff !important;
+  box-shadow: 0 0 10px #e5192e !important;
 }
 
 .resume .react-pdf__Document {

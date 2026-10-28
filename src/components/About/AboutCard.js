@@ -11,7 +11,7 @@ function AboutCard() {
             fontSize: "1.5em", 
             fontWeight: "bold", 
             marginBottom: "15px", 
-            color: "#c770f0",
+            color: "#e5192e",
             textShadow: "1px 1px 2px rgba(0,0,0,0.3)"
           }}>
             🚀 Hey there! I&apos;m <span className="purple" style={{fontSize: "1.1em"}}>Sarthak Kar</span> 👋
@@ -21,10 +21,10 @@ function AboutCard() {
             fontSize: "1.1em", 
             marginBottom: "20px", 
             color: "#8a8fa3",
-            borderLeft: "3px solid #c770f0",
+            borderLeft: "3px solid #e5192e",
             paddingLeft: "10px"
           }}>
-            🌍 From <span className="purple">India</span> | 🎓 AIML Enthusiast | 💡 Future Innovator
+            🌍 From <span className="purple">Chennai, India</span> | 🎓 B.Tech CSE (AI/ML), SRMIST | 💡 Applied AI/ML Engineer
           </p>
           
           <p style={{ 
@@ -33,17 +33,19 @@ function AboutCard() {
             lineHeight: "1.6",
             marginBottom: "20px"
           }}>
-            I&apos;m a second-year student diving deep into the world of Artificial Intelligence and Machine Learning, 
-            where data meets creativity and logic sparks innovation! I&apos;m driven by curiosity, fueled by challenges, 
-            and excited by the endless possibilities AI has to offer.
+            I&apos;m a final-year B.Tech Computer Science student at SRM Institute of Science and Technology,
+            specialising in AI/ML. I&apos;m currently building a LoRA-tuned LLM pipeline that converts photographed
+            Indian prescriptions into standards-validated FHIR health records. I&apos;ve shipped projects in deep
+            reinforcement learning, imbalanced classification and computer vision, and co-authored an SSRN preprint
+            on multi-cloud resource optimisation.
           </p>
           
           <p style={{ 
             fontSize: "1.1em", 
             fontWeight: "bold",
             marginBottom: "15px", 
-            color: "#c770f0",
-            borderLeft: "3px solid #c770f0",
+            color: "#e5192e",
+            borderLeft: "3px solid #e5192e",
             paddingLeft: "10px"
           }}>
             💥 Beyond the Code – What Fires Me Up:
@@ -55,7 +57,7 @@ function AboutCard() {
             lineHeight: "1.6",
             marginBottom: "10px"
           }}>
-            <ImPointRight style={{ color: "#c770f0", marginRight: "10px" }} /> 
+            <ImPointRight style={{ color: "#e5192e", marginRight: "10px" }} /> 
             🔬 Geeking out over the latest AI breakthroughs
           </p>
           
@@ -65,7 +67,7 @@ function AboutCard() {
             lineHeight: "1.6",
             marginBottom: "10px"
           }}>
-            <ImPointRight style={{ color: "#c770f0", marginRight: "10px" }} /> 
+            <ImPointRight style={{ color: "#e5192e", marginRight: "10px" }} /> 
             📚 Diving into cutting-edge research papers
           </p>
           
@@ -75,7 +77,7 @@ function AboutCard() {
             lineHeight: "1.6",
             marginBottom: "20px"
           }}>
-            <ImPointRight style={{ color: "#c770f0", marginRight: "10px" }} /> 
+            <ImPointRight style={{ color: "#e5192e", marginRight: "10px" }} /> 
             ⚡ Bringing ideas to life in hackathons and tech sprints
           </p>
           
@@ -84,7 +86,7 @@ function AboutCard() {
             fontSize: "1.05em",
             lineHeight: "1.6",
             marginBottom: "20px",
-            borderLeft: "3px solid #c770f0",
+            borderLeft: "3px solid #e5192e",
             paddingLeft: "10px"
           }}>
             I believe in learning by building, growing through collaboration, and making tech that truly matters. 
@@ -92,7 +94,7 @@ function AboutCard() {
           </p>
 
           <p style={{ 
-            color: "rgb(155 126 172)",
+            color: "#a1a1aa",
             fontStyle: "italic",
             fontSize: "1.1em",
             textAlign: "center",
