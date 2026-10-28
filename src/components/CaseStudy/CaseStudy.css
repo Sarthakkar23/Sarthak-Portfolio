@@ -9,7 +9,7 @@
   overflow: hidden;
   padding: 140px 24px 64px;
 }
-.cs-hero .sk-art-orb { width: 45%; }
+.cs-hero .sk-art-orb { width: 60%; }
 .cs-hero::after {
   content: "";
   position: absolute;

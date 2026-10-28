@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { motion, useScroll, useSpring, useMotionValue, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useSpring, useMotionValue, AnimatePresence, frame, cancelFrame } from "framer-motion";
 import Lenis from "lenis";
 import "./Cinema.css";
 
@@ -94,16 +94,16 @@ export function SmoothScroll() {
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const lenis = new Lenis({ duration: 1.25, easing: (t) => 1 - Math.pow(1 - t, 4) });
+    // lerp = glide a fixed fraction of the remaining distance every frame. Unlike a fixed-duration ease,
+    // it never restarts on each wheel tick, so speed stays continuous ("butter") instead of pulsing.
+    const lenis = new Lenis({ lerp: 0.09, smoothWheel: true, wheelMultiplier: 0.9, touchMultiplier: 1.5 });
     window.__lenis = lenis;
-    let raf;
-    const loop = (time) => {
-      lenis.raf(time);
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
+    // Drive Lenis from Framer Motion's frame loop so the scroll position and every scroll-linked
+    // animation (parallax, progress bar) update in the same frame — no one-frame lag or shimmer.
+    const update = ({ timestamp }) => lenis.raf(timestamp);
+    frame.update(update, true);
     return () => {
-      cancelAnimationFrame(raf);
+      cancelFrame(update);
       lenis.destroy();
       window.__lenis = null;
     };

@@ -299,29 +299,31 @@ button.sk-btn { border: 0; cursor: pointer; }
 }
 .sk-art-orb {
   position: absolute;
-  width: 60%;
+  width: 75%;
   aspect-ratio: 1;
   border-radius: 50%;
-  top: -15%;
-  right: -10%;
-  filter: blur(40px);
+  top: -30%;
+  right: -20%;
+  /* A soft gradient looks like a blurred circle but costs nothing to repaint (no filter). */
+  background: radial-gradient(circle, var(--orb, #e5192e) 0%, transparent 68%);
   opacity: 0.85;
   animation: sk-float 9s ease-in-out infinite;
+  will-change: transform;
 }
-.sk-art-orb-2 { width: 40%; top: auto; bottom: -15%; right: auto; left: 10%; animation-delay: -4s; opacity: 0.6; }
+.sk-art-orb-2 { width: 55%; top: auto; bottom: -28%; right: auto; left: 0; animation-delay: -4s; opacity: 0.6; }
 @keyframes sk-float { 50% { transform: translate(-6%, 8%) scale(1.08); } }
 .sk-art-med { background: linear-gradient(135deg, #3b0a12, #12060a); }
-.sk-art-med .sk-art-orb { background: #e5192e; }
-.sk-art-med .sk-art-orb-2 { background: #ff8a5c; }
+.sk-art-med .sk-art-orb { --orb: #e5192e; }
+.sk-art-med .sk-art-orb-2 { --orb: #ff8a5c; }
 .sk-art-cloud { background: linear-gradient(135deg, #0b1630, #07080f); }
-.sk-art-cloud .sk-art-orb { background: #3b82f6; }
-.sk-art-cloud .sk-art-orb-2 { background: #e5192e; }
+.sk-art-cloud .sk-art-orb { --orb: #3b82f6; }
+.sk-art-cloud .sk-art-orb-2 { --orb: #e5192e; }
 .sk-art-pixel { background: linear-gradient(135deg, #2a0f44, #0b0614); }
-.sk-art-pixel .sk-art-orb { background: #a855f7; }
-.sk-art-pixel .sk-art-orb-2 { background: #f59e0b; }
+.sk-art-pixel .sk-art-orb { --orb: #a855f7; }
+.sk-art-pixel .sk-art-orb-2 { --orb: #f59e0b; }
 .sk-art-fraud { background: linear-gradient(135deg, #062a1f, #050a08); }
-.sk-art-fraud .sk-art-orb { background: #10b981; }
-.sk-art-fraud .sk-art-orb-2 { background: #e5192e; }
+.sk-art-fraud .sk-art-orb { --orb: #10b981; }
+.sk-art-fraud .sk-art-orb-2 { --orb: #e5192e; }
 
 /* ---------- Services ---------- */
 .sk-services { display: grid; grid-template-columns: 1fr 1.15fr; gap: 64px; align-items: start; }
@@ -392,7 +394,7 @@ button.sk-btn { border: 0; cursor: pointer; }
   padding: 14px 18px;
   border-radius: 16px;
   background: rgba(10, 10, 11, 0.7);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
   display: flex;
   flex-direction: column;
 }
@@ -520,7 +522,7 @@ button.sk-btn { border: 0; cursor: pointer; }
   padding: 6px 18px 6px 6px;
   border-radius: 999px;
   background: rgba(20, 20, 22, 0.85);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
   border: 1px solid var(--sk-line);
   text-decoration: none;
   color: #fff;
@@ -601,17 +603,17 @@ button.sk-btn { border: 0; cursor: pointer; }
 .sk-project-demo:hover { color: #fff; background: #ff2a40; }
 .sk-project.is-new .sk-project-badge { background: var(--sk-red); border-color: var(--sk-red); }
 .sk-art-gen-a { background: linear-gradient(135deg, #2b1203, #0a0604); }
-.sk-art-gen-a .sk-art-orb { background: #f97316; }
-.sk-art-gen-a .sk-art-orb-2 { background: #e5192e; }
+.sk-art-gen-a .sk-art-orb { --orb: #f97316; }
+.sk-art-gen-a .sk-art-orb-2 { --orb: #e5192e; }
 .sk-art-gen-b { background: linear-gradient(135deg, #031f2b, #04080a); }
-.sk-art-gen-b .sk-art-orb { background: #06b6d4; }
-.sk-art-gen-b .sk-art-orb-2 { background: #6366f1; }
+.sk-art-gen-b .sk-art-orb { --orb: #06b6d4; }
+.sk-art-gen-b .sk-art-orb-2 { --orb: #6366f1; }
 .sk-art-gen-c { background: linear-gradient(135deg, #2b0320, #0a0408); }
-.sk-art-gen-c .sk-art-orb { background: #ec4899; }
-.sk-art-gen-c .sk-art-orb-2 { background: #e5192e; }
+.sk-art-gen-c .sk-art-orb { --orb: #ec4899; }
+.sk-art-gen-c .sk-art-orb-2 { --orb: #e5192e; }
 .sk-art-gen-d { background: linear-gradient(135deg, #1d2b03, #070a04); }
-.sk-art-gen-d .sk-art-orb { background: #84cc16; }
-.sk-art-gen-d .sk-art-orb-2 { background: #14b8a6; }
+.sk-art-gen-d .sk-art-orb { --orb: #84cc16; }
+.sk-art-gen-d .sk-art-orb-2 { --orb: #14b8a6; }
 
 /* ---------- Contact form ---------- */
 .cf-layout { display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 28px; align-items: start; }
