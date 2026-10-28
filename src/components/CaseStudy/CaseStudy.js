@@ -35,7 +35,7 @@ function Pipeline({ diagram }) {
             )}
             <motion.div
               role="listitem"
-              className={`cs-node ${s.kind ? `is-${s.kind}` : ""}`}
+              className="cs-node"
               initial={{ opacity: 0, y: 24, scale: 0.94 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, amount: 0.6 }}
