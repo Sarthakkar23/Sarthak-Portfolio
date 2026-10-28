@@ -79,17 +79,21 @@ This project is open source and available under the MIT License.
 - **Images:** `src/assets/avatar.webp` (hero, 3D) and `src/assets/portrait.webp` (About photo).
 - **Case studies:** `src/data/caseStudies.js` (pages at `/work/<slug>`). **Notes / blog:** `src/data/notes.js` (pages at `/notes/<slug>`).
 
-## Turning on the server features (Vercel → Project → Settings → Environment Variables)
+## AI twin (free, no API key)
 
-| Feature | Variable | Where to get it |
-| --- | --- | --- |
-| AI twin chat (`/api/chat`) | `ANTHROPIC_API_KEY` | console.anthropic.com → API keys. Optional: `CHAT_MODEL` (defaults to `claude-opus-5-5`; `claude-haiku-5-5` is far cheaper). |
-| Contact form (`/api/contact`) | `RESEND_API_KEY` | resend.com → API keys (free tier). Optional: `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` (needs a verified domain). |
-| Visitor stats | — | Vercel → Project → **Analytics** → Enable. The script is already in `public/index.html`. |
+The chat in the bottom-right corner runs entirely in the visitor's browser (`src/components/Twin/twinEngine.js`):
+it understands the question, answers from `src/data/resume.js`, `src/data/projects.js` and a small glossary,
+looks general AI/ML terms up on Wikipedia, and points people to your email when it isn't sure.
+Update the résumé data and the twin updates with it.
 
-Redeploy after adding variables. Without `ANTHROPIC_API_KEY` the twin still answers using keyword search over
-`api/_profile.js`; without `RESEND_API_KEY` the form opens the visitor's email app pre-filled. Keep `api/_profile.js`
-in sync with the résumé — it's the twin's only source of truth.
+## Turning on the contact form and stats
+
+| Feature | Where |
+| --- | --- |
+| Contact form (`/api/contact`) | Vercel → Project → Settings → **Environment Variables** → add `RESEND_API_KEY` (from resend.com), then redeploy. Optional: `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` (needs a verified domain). Without the key the form opens the visitor's email app pre-filled. |
+| Visitor stats | Vercel → Project → **Analytics** → Enable. The loader is already in `src/index.js`. |
+
+**Never commit API keys** — this repo is public. Keep them only in Vercel's environment variables.
 
 ## Custom domain
 

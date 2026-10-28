@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { answer } from "./twinEngine";
 import { FiArrowUp, FiX, FiMail } from "react-icons/fi";
 import avatar from "../../assets/avatar.webp";
 import "./TwinChat.css";
@@ -14,7 +16,7 @@ const SUGGESTIONS = [
 const GREETING = {
   role: "assistant",
   content:
-    "Hi! I'm Sarthak's AI twin. I answer from his résumé and projects — ask me about his work, skills or experience.",
+    "Hi! I'm Sarthak's AI twin. I answer from his résumé and projects (and look up general AI terms on the web) — ask me about his work, skills or experience.",
 };
 const STORE = "sk-twin-chat";
 
@@ -24,9 +26,12 @@ function Rich({ text }) {
     const lines = para.split("\n");
     const isList = lines.every((l) => /^\s*([-•*]|\d+\.)\s+/.test(l));
     const inline = (s, k) =>
-      s.split(/(\*\*[^*]+\*\*)/g).map((part, j) =>
-        part.startsWith("**") && part.endsWith("**") ? <strong key={`${k}-${j}`}>{part.slice(2, -2)}</strong> : part
-      );
+      s.split(/(\*\*[^*]+\*\*|_[^_]+_|\*[^*]+\*)/g).map((part, j) => {
+        if (part.startsWith("**") && part.endsWith("**")) return <strong key={`${k}-${j}`}>{part.slice(2, -2)}</strong>;
+        if (part.length > 2 && ((part.startsWith("_") && part.endsWith("_")) || (part.startsWith("*") && part.endsWith("*"))))
+          return <em key={`${k}-${j}`}>{part.slice(1, -1)}</em>;
+        return part;
+      });
     if (isList) {
       return (
         <ul key={i}>
@@ -61,6 +66,7 @@ function TwinChat() {
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const listRef = useRef(null);
+  const topicRef = useRef(null);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -90,24 +96,20 @@ function TwinChat() {
   async function ask(question) {
     const q = question.trim();
     if (!q || busy) return;
-    const next = [...messages, { role: "user", content: q }];
-    setMessages(next);
+    setMessages((m) => [...m, { role: "user", content: q }]);
     setInput("");
     setBusy(true);
     try {
-      const r = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next.filter((m) => m !== GREETING && !m.local) }),
-      });
-      const data = await r.json().catch(() => ({}));
-      const answer =
-        data.answer || data.error || `I'm having trouble right now. You can reach Sarthak at ${EMAIL}.`;
-      setMessages((m) => [...m, { role: "assistant", content: answer }]);
+      const started = Date.now();
+      const a = await answer(q, { topic: topicRef.current });
+      topicRef.current = a.topic || topicRef.current;
+      // A short, natural pause so instant answers don't feel robotic.
+      await new Promise((r) => setTimeout(r, Math.max(0, 450 - (Date.now() - started))));
+      setMessages((m) => [...m, { role: "assistant", content: a.text, links: a.links }]);
     } catch (e) {
       setMessages((m) => [
         ...m,
-        { role: "assistant", content: `I'm offline at the moment. You can reach Sarthak at ${EMAIL}.`, local: true },
+        { role: "assistant", content: `Something went wrong on my side. You can reach Sarthak at **${EMAIL}**.` },
       ]);
     } finally {
       setBusy(false);
@@ -135,7 +137,7 @@ function TwinChat() {
               <div>
                 <strong>Sarthak's AI twin</strong>
                 <span>
-                  <span className="sk-dot" /> Answers from his résumé · powered by Claude
+                  <span className="sk-dot" /> Answers from his résumé & the web
                 </span>
               </div>
               <button className="tw-icon" onClick={() => setOpen(false)} aria-label="Close chat">
@@ -147,6 +149,21 @@ function TwinChat() {
               {messages.map((m, i) => (
                 <div key={i} className={`tw-msg is-${m.role}`}>
                   <Rich text={m.content} />
+                  {m.links && m.links.length > 0 && (
+                    <div className="tw-links">
+                      {m.links.map((l) =>
+                        l.to ? (
+                          <Link key={l.label} to={l.to} onClick={() => setOpen(false)}>
+                            {l.label} →
+                          </Link>
+                        ) : (
+                          <a key={l.label} href={l.href} {...(l.href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}>
+                            {l.label} ↗
+                          </a>
+                        )
+                      )}
+                    </div>
+                  )}
                 </div>
               ))}
               {busy && (

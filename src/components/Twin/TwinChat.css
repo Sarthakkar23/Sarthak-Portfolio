@@ -85,6 +85,19 @@
 .tw-msg ul { margin: 0 0 8px; padding-left: 18px; }
 .tw-msg li { margin-bottom: 4px; }
 .tw-msg strong { color: #fff; }
+.tw-msg em { color: #a1a1aa; }
+.tw-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.tw-links a {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(229, 25, 46, 0.16);
+  border: 1px solid rgba(229, 25, 46, 0.45);
+}
+.tw-links a:hover { background: #e5192e; color: #fff; }
 .tw-msg.is-user { align-self: flex-end; background: #e5192e; color: #fff; border-bottom-left-radius: 18px; border-bottom-right-radius: 6px; }
 .tw-typing { display: inline-flex; gap: 4px; padding: 14px; }
 .tw-typing span { width: 6px; height: 6px; border-radius: 50%; background: #8b8b92; animation: tw-dot 1.2s infinite ease-in-out; }

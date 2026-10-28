@@ -20,7 +20,7 @@ const sections = [
   ],
   [
     "AI twin chat",
-    "Questions you type into the AI twin are sent to Anthropic's Claude API to generate an answer from my résumé, and aren't stored by this site. Please don't type personal or confidential information into the chat.",
+    "The AI twin runs entirely in your browser and answers from my résumé — your questions aren't sent to this site's server. When you ask about a general topic (for example \"What is LoRA?\"), the topic is looked up on Wikipedia, so Wikipedia receives that search. Please don't type personal or confidential information into the chat.",
   ],
   [
     "GitHub",
