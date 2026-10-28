@@ -1,61 +1,26 @@
-.resume-section {
-  position: relative !important;
-  padding-top: 110px !important;
-  padding-bottom: 30px !important;
-  background-image: var(--section-background-color) !important;
-  color: white !important;
-}
-
-.resume {
-  padding-top: 50px;
-  padding-bottom: 50px;
+.rs-page { padding-bottom: 40px; }
+.rs-head { padding-top: 150px; display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+.rs-title { margin-bottom: 0; }
+.rs-actions { margin-top: 0; }
+.rs-viewer { padding-top: 48px; display: flex; flex-direction: column; align-items: center; }
+.rs-frame {
+  width: 100%;
+  max-width: 960px;
+  display: flex;
   justify-content: center;
-}
-
-.resume-card {
   padding: 20px;
-  margin: 20px;
-  background-color: transparent !important;
-  border: 1px solid #e5192e !important;
-  color: white !important;
-  box-shadow: 0 0 10px #e5192e !important;
+  border-radius: 24px;
+  background: #141416;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 50px 100px -40px rgba(229, 25, 46, 0.35);
 }
-
-.resume .react-pdf__Document {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.resume .react-pdf__Page {
-  margin: 1em;
-  box-shadow: 0 0 20px rgba(0, 238, 255, 0.5);
-  border-radius: 5px;
-}
-
-.resume .react-pdf__Page__canvas {
-  border-radius: 5px;
-}
-
-.resume-controls {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  gap: 10px;
-}
-
-.resume-page-info {
-  color: white;
-  text-align: center;
-  margin-top: 10px;
-}
-
-@media (max-width: 767px) {
-  .resume-section {
-    padding-top: 80px !important;
-  }
-  
-  .resume .react-pdf__Page {
-    margin: 0;
-  }
+.rs-frame .react-pdf__Page { border-radius: 8px; overflow: hidden; box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.8); }
+.rs-frame .react-pdf__Page canvas { max-width: 100%; height: auto !important; }
+.rs-loading { color: #a1a1aa; padding: 80px 20px; text-align: center; }
+.rs-loading a { color: #e5192e; }
+.rs-pager { display: flex; align-items: center; gap: 16px; margin-top: 22px; color: #a1a1aa; }
+.rs-pager .sk-btn:disabled { opacity: 0.4; }
+@media (max-width: 640px) {
+  .rs-head { padding-top: 120px; }
+  .rs-frame { padding: 10px; border-radius: 18px; }
 }

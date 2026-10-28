@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
+import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { FiArrowUpRight, FiStar, FiExternalLink } from "react-icons/fi";
+import { FiArrowUpRight, FiStar, FiExternalLink, FiGithub } from "react-icons/fi";
 
 function ProjectArt({ kind }) {
   return (
@@ -21,13 +22,17 @@ function ProjectCard({ p, i = 0 }) {
     <motion.article
       ref={ref}
       className={`sk-project ${p.badge === "New" ? "is-new" : ""}`}
-      data-cursor="View"
+      data-cursor={p.slug ? "Read" : "View"}
       initial={{ opacity: 0, y: 60 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: (i % 2) * 0.12 }}
     >
-      <a className="sk-project-stretch" href={p.link} target="_blank" rel="noreferrer" aria-label={`${p.name} on GitHub`} />
+      {p.slug ? (
+        <Link className="sk-project-stretch" to={`/work/${p.slug}`} aria-label={`${p.name} case study`} />
+      ) : (
+        <a className="sk-project-stretch" href={p.link} target="_blank" rel="noreferrer" aria-label={`${p.name} on GitHub`} />
+      )}
       <motion.div
         className="sk-project-media"
         initial={{ clipPath: "inset(18% 10% 18% 10% round 24px)" }}
@@ -67,6 +72,12 @@ function ProjectCard({ p, i = 0 }) {
                 <FiStar /> {p.stars}
               </span>
             )}
+            {p.slug && p.repo && (
+              <a href={p.link} target="_blank" rel="noreferrer" className="sk-project-gh" aria-label="Code on GitHub">
+                <FiGithub /> Code
+              </a>
+            )}
+            {p.slug && <span className="sk-project-cs">Case study →</span>}
             {p.demo && (
               <a href={p.demo} target="_blank" rel="noreferrer" className="sk-project-demo" data-cursor="Demo">
                 Live demo <FiExternalLink />

@@ -32,6 +32,7 @@ import avatar from "../../assets/avatar.webp";
 import portrait from "../../assets/portrait.webp";
 import resumePdf from "../../assets/resume/Sarthak Kar Resume.pdf";
 import ProjectCard from "../Projects/ProjectCard";
+import ContactForm from "./ContactForm";
 import useGithubProjects from "../../hooks/useGithubProjects";
 import { profile, experience } from "../../data/resume";
 import config from "../../config";
@@ -419,6 +420,12 @@ function HomeNew({ ready = true }) {
                 Résumé <FiDownload />
               </a>
             </div>
+            <button
+              className="sk-faq-twin"
+              onClick={() => window.dispatchEvent(new CustomEvent("twin:ask", { detail: "Is Sarthak a fit for an ML engineer role?" }))}
+            >
+              Or ask my AI twin →
+            </button>
           </motion.div>
         </div>
       </section>
@@ -430,46 +437,48 @@ function HomeNew({ ready = true }) {
           className="sk-heading sk-heading-xl"
           lines={[<>Let's <span className="sk-red">build</span></>, "intelligent things", "together."]}
         />
-        <div className="sk-contact-grid">
-          <a href={`mailto:${profile.email}`}>
-            <span className="sk-muted">Email</span>
-            <strong>{profile.email}</strong>
-          </a>
-          <a href={config.socialMedia.linkedin} target="_blank" rel="noreferrer">
-            <span className="sk-muted">LinkedIn</span>
-            <strong>in/sarthak-kar</strong>
-          </a>
-          <div>
-            <span className="sk-muted">Elsewhere</span>
-            <div className="sk-socials">
-              <a href={config.socialMedia.github} target="_blank" rel="noreferrer" aria-label="GitHub">
-                <AiFillGithub />
+        <div className="cf-layout">
+          <ContactForm />
+          <div className="cf-side">
+            <button
+              className="cf-twin"
+              onClick={() => window.dispatchEvent(new CustomEvent("twin:ask"))}
+              data-cursor="Ask"
+            >
+              <img src={avatar} alt="" />
+              <span>
+                <strong>Just exploring?</strong>
+                <small>Ask my AI twin anything about my work →</small>
+              </span>
+            </button>
+            <div className="sk-contact-grid cf-details">
+              <a href={`mailto:${profile.email}`}>
+                <span className="sk-muted">Email</span>
+                <strong>{profile.email}</strong>
               </a>
-              <a href={config.socialMedia.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn">
-                <FaLinkedinIn />
+              <a href={config.socialMedia.linkedin} target="_blank" rel="noreferrer">
+                <span className="sk-muted">LinkedIn</span>
+                <strong>in/sarthak-kar</strong>
               </a>
-              <a href={config.socialMedia.instagram} target="_blank" rel="noreferrer" aria-label="Instagram">
-                <AiFillInstagram />
-              </a>
+              <div>
+                <span className="sk-muted">Elsewhere</span>
+                <div className="sk-socials">
+                  <a href={config.socialMedia.github} target="_blank" rel="noreferrer" aria-label="GitHub">
+                    <AiFillGithub />
+                  </a>
+                  <a href={config.socialMedia.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn">
+                    <FaLinkedinIn />
+                  </a>
+                  <a href={config.socialMedia.instagram} target="_blank" rel="noreferrer" aria-label="Instagram">
+                    <AiFillInstagram />
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <a
-        className="sk-float-cta"
-        href="#contact"
-        onClick={(e) => {
-          e.preventDefault();
-          scrollToId("contact");
-        }}
-      >
-        <img src={avatar} alt="" />
-        <span>
-          <strong>Hiring? Let's talk</strong>
-          <small>Email or LinkedIn</small>
-        </span>
-      </a>
     </main>
   );
 }

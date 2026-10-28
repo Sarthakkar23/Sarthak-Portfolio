@@ -14,6 +14,15 @@ root.render(
   </React.StrictMode>
 );
 
+// Vercel Web Analytics — the script only exists on Vercel deployments (enable it in the dashboard → Analytics).
+if (process.env.NODE_ENV === "production") {
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  const s = document.createElement("script");
+  s.defer = true;
+  s.src = "/_vercel/insights/script.js";
+  document.head.appendChild(s);
+}
+
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

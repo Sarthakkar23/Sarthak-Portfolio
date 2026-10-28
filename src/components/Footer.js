@@ -16,6 +16,7 @@ function Footer() {
           <Link to="/">Home</Link>
           <Link to="/about">About</Link>
           <Link to="/project">Projects</Link>
+          <Link to="/notes">Notes</Link>
           <Link to="/resume">Resume</Link>
         </div>
         <div className="sk-footer-col">

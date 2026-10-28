@@ -9,13 +9,14 @@ export const curatedProjects = [
   {
     repo: null,
     name: "AMRIP-India",
+    slug: "amrip-india",
     subtitle: "AI-Centric Medical Record Interoperability Platform",
     badge: "Capstone · In progress",
     summary:
       "LLM pipeline that turns phone photos of Indian prescriptions and lab reports into ABDM-compliant FHIR R4 health records — with a verifier that rejects any field it can't trace back to the source image.",
     tags: ["LangGraph", "LoRA / PEFT", "LayoutLMv3", "TrOCR", "FastAPI", "PostgreSQL"],
     metrics: [
-      ["9-stage", "OCR → NER → LLM pipeline"],
+      ["Multi-stage", "OCR → NER → LLM pipeline"],
       ["2.5 lakh", "drug names for TrOCR"],
       ["4-bit", "LoRA on ≤3B LLMs"],
     ],
@@ -25,6 +26,7 @@ export const curatedProjects = [
   {
     repo: "Cloud-Resource-Optimizer",
     name: "CloudOptima",
+    slug: "cloudoptima",
     subtitle: "Multi-Cloud Resource Orchestrator",
     badge: "Published · SSRN preprint",
     summary:
@@ -41,6 +43,7 @@ export const curatedProjects = [
   {
     repo: "Clear-Pixel-AI",
     name: "ClearPixel AI",
+    slug: "clearpixel-ai",
     subtitle: "Digital Image Restoration Suite",
     badge: "Computer Vision",
     summary:
@@ -57,6 +60,7 @@ export const curatedProjects = [
   {
     repo: null,
     name: "Fraud Detection",
+    slug: "fraud-detection",
     subtitle: "Credit Card Fraud Detection",
     badge: "Imbalanced ML",
     summary:

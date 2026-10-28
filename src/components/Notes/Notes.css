@@ -1,0 +1,86 @@
+.nt-page { padding-bottom: 40px; }
+.nt-head { padding-top: 150px; }
+.nt-lead { margin-top: 0; }
+.nt-list { display: flex; flex-direction: column; gap: 16px; }
+.nt-item {
+  position: relative;
+  display: block;
+  padding: 30px 90px 30px 30px;
+  border-radius: 24px;
+  background: #141416;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+  color: #fff;
+  transition: border-color 0.3s, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nt-item:hover { color: #fff; border-color: rgba(229, 25, 46, 0.6); transform: translateY(-4px); }
+.nt-item h2 { font-family: "Archivo", sans-serif; font-weight: 800; font-size: clamp(1.4rem, 3vw, 2.2rem); letter-spacing: -0.02em; margin: 10px 0; }
+.nt-item p { color: #b4b4bb; line-height: 1.6; margin: 0 0 16px; max-width: 760px; }
+.nt-item-meta { display: flex; gap: 14px; flex-wrap: wrap; color: #8b8b92; font-size: 0.82rem; }
+.nt-arrow {
+  position: absolute;
+  right: 28px;
+  top: 30px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  color: #000;
+  transition: transform 0.35s, background 0.35s, color 0.35s;
+}
+.nt-item:hover .nt-arrow { background: #e5192e; color: #fff; transform: rotate(45deg); }
+
+/* ---------- Article ---------- */
+.nt-article { position: relative; max-width: 760px; margin: 0 auto; padding: 150px 24px 0; }
+.nt-progress {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #e5192e;
+  transform-origin: top;
+  z-index: 50;
+}
+.nt-title {
+  font-family: "Archivo", sans-serif;
+  font-weight: 900;
+  font-size: clamp(2.2rem, 5.5vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: #fff;
+  margin: 18px 0 20px;
+}
+.nt-summary { color: #d4d4d8; font-size: 1.2rem; line-height: 1.6; margin: 0 0 40px; padding-bottom: 32px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+.nt-body { color: #c4c4ca; font-size: 1.08rem; line-height: 1.8; }
+.nt-body h2 { font-family: "Archivo", sans-serif; font-weight: 800; color: #fff; font-size: 1.6rem; letter-spacing: -0.02em; margin: 48px 0 14px; }
+.nt-body p { margin: 0 0 20px; }
+.nt-body ul,
+.nt-body ol { margin: 0 0 22px; padding-left: 22px; }
+.nt-body li { margin-bottom: 10px; }
+.nt-body li::marker { color: #e5192e; }
+.nt-body strong { color: #fff; }
+.nt-body a { color: #fff; text-decoration-color: #e5192e; text-underline-offset: 4px; }
+.nt-body a:hover { color: #e5192e; }
+.nt-body code { font-family: "JetBrains Mono", monospace; font-size: 0.88em; background: #1c1c1f; padding: 2px 6px; border-radius: 6px; color: #ff8a95; }
+.nt-body pre { background: #111113; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 18px; overflow-x: auto; }
+.nt-body pre code { background: none; padding: 0; color: #e4e4e7; }
+.nt-body blockquote {
+  margin: 32px 0;
+  padding: 4px 0 4px 22px;
+  border-left: 3px solid #e5192e;
+  font-family: "Archivo", sans-serif;
+  font-size: 1.45rem;
+  line-height: 1.35;
+  color: #fff;
+}
+.nt-paper { margin-top: 16px; }
+.nt-more { max-width: 1240px; }
+@media (max-width: 640px) {
+  .nt-head, .nt-article { padding-top: 120px; }
+  .nt-article { padding-left: 16px; padding-right: 16px; }
+  .nt-item { padding: 24px 24px 76px; }
+  .nt-arrow { top: auto; bottom: 20px; right: 20px; }
+}
