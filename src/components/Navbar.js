@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { FiArrowUpRight, FiMenu, FiX } from "react-icons/fi";
-import avatar from "../assets/homedown.png";
+import avatar from "../assets/avatar.png";
+import { scrollToId } from "./Cinema/Cinema";
 import "./Navbar.css";
 
 const links = [
@@ -30,11 +31,11 @@ function NavBar() {
   // Section links live on the home page: go there first, then scroll.
   const goToSection = (hash) => {
     setOpen(false);
-    const scroll = () => document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" });
+    const scroll = () => scrollToId(hash);
     if (location.pathname === "/") scroll();
     else {
       navigate("/");
-      setTimeout(scroll, 400);
+      setTimeout(scroll, 900);
     }
   };
 

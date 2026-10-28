@@ -1,6 +1,14 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
+import { MaskText, SceneLabel, scrollToId } from "../Cinema/Cinema";
 import {
   SiPython,
   SiPytorch,
@@ -20,7 +28,8 @@ import {
 import { AiFillGithub, AiFillInstagram } from "react-icons/ai";
 import { FaLinkedinIn } from "react-icons/fa";
 import { FiArrowUpRight, FiPlus, FiMinus, FiDownload } from "react-icons/fi";
-import avatar from "../../assets/homedown.png";
+import avatar from "../../assets/avatar.png";
+import portrait from "../../assets/portrait.png";
 import resumePdf from "../../assets/resume/Sarthak Kar Resume.pdf";
 import config from "../../config";
 import "./HomeNew.css";
@@ -203,48 +212,127 @@ function ProjectArt({ kind }) {
   );
 }
 
-function HomeNew() {
+function ProjectCard({ p, i }) {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const artY = useTransform(scrollYProgress, [0, 1], ["-12%", "12%"]);
+  return (
+    <motion.a
+      ref={ref}
+      href={p.link}
+      target="_blank"
+      rel="noreferrer"
+      className="sk-project"
+      data-cursor="View"
+      initial={{ opacity: 0, y: 60 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: (i % 2) * 0.12 }}
+    >
+      <motion.div
+        className="sk-project-media"
+        initial={{ clipPath: "inset(18% 10% 18% 10% round 24px)" }}
+        whileInView={{ clipPath: "inset(0% 0% 0% 0% round 0px)" }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 1.3, ease: [0.76, 0, 0.24, 1], delay: 0.1 + (i % 2) * 0.12 }}
+      >
+        <motion.div className="sk-art-parallax" style={{ y: artY }}>
+          <ProjectArt kind={p.art} />
+        </motion.div>
+        <span className="sk-project-badge">{p.badge}</span>
+        <span className="sk-project-title-overlay">{p.name}</span>
+        <span className="sk-project-arrow">
+          <FiArrowUpRight />
+        </span>
+      </motion.div>
+      <div className="sk-project-meta">
+        <h3>
+          {p.name} <small>{p.subtitle}</small>
+        </h3>
+        <p className="sk-project-desc">{p.description}</p>
+        <div className="sk-metrics">
+          {p.metrics.map(([v, l]) => (
+            <div key={l}>
+              <strong>{v}</strong>
+              <span>{l}</span>
+            </div>
+          ))}
+        </div>
+        <p className="sk-project-tags">{p.tags.join(" · ")}</p>
+      </div>
+    </motion.a>
+  );
+}
+
+function HomeNew({ ready = true }) {
   const [activeService, setActiveService] = useState(0);
   const [openFaq, setOpenFaq] = useState(0);
+
+  // Hero: the title drifts and shrinks, the avatar rises slower, everything fades as you scroll away.
+  const heroRef = useRef(null);
+  const { scrollYProgress: heroP } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const titleY = useTransform(heroP, [0, 1], ["0%", "35%"]);
+  const titleScale = useTransform(heroP, [0, 1], [1, 0.82]);
+  const avatarY = useTransform(heroP, [0, 1], ["0%", "-12%"]);
+  const heroFade = useTransform(heroP, [0, 0.75], [1, 0]);
+  const glowOpacity = useTransform(heroP, [0, 1], [1, 0.2]);
+
+  // Hero: subtle 3D tilt that follows the mouse.
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const tiltY = useSpring(useTransform(mx, [-0.5, 0.5], [-8, 8]), { stiffness: 80, damping: 20 });
+  const tiltX = useSpring(useTransform(my, [-0.5, 0.5], [6, -6]), { stiffness: 80, damping: 20 });
+  const onHeroMove = (e) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    mx.set((e.clientX - r.left) / r.width - 0.5);
+    my.set((e.clientY - r.top) / r.height - 0.5);
+  };
 
   return (
     <main className="sk-home">
       {/* ---------- HERO ---------- */}
-      <section className="sk-hero" id="home">
-        <div className="sk-hero-glow" />
-        <h1 className="sk-hero-title">
-          <motion.span
-            className="sk-line sk-line-white"
-            initial={{ opacity: 0, y: 80 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 1.3, ease: [0.22, 1, 0.36, 1] }}
-          >
-            Think
-          </motion.span>
-          <motion.span
-            className="sk-line sk-line-red"
-            initial={{ opacity: 0, y: 80 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 1.45, ease: [0.22, 1, 0.36, 1] }}
-          >
-            Intelligently
-          </motion.span>
-        </h1>
+      <section className="sk-hero" id="home" ref={heroRef} onMouseMove={onHeroMove}>
+        <motion.div className="sk-hero-glow" style={{ opacity: glowOpacity }} />
+        <motion.div className="sk-hero-stage" style={{ y: titleY, scale: titleScale, opacity: heroFade }}>
+          <h1 className="sk-hero-title" aria-label="Think Intelligently">
+            {[
+              ["Think", "sk-line-white"],
+              ["Intelligently", "sk-line-red"],
+            ].map(([word, cls], li) => (
+              <span className={`sk-line ${cls}`} key={word} aria-hidden="true">
+                {word.split("").map((ch, i) => (
+                  <span className="cn-mask" key={i}>
+                    <motion.span
+                      initial={{ y: "105%" }}
+                      animate={ready ? { y: 0 } : { y: "105%" }}
+                      transition={{ duration: 1.1, delay: 0.1 + li * 0.18 + i * 0.035, ease: [0.76, 0, 0.24, 1] }}
+                    >
+                      {ch}
+                    </motion.span>
+                  </span>
+                ))}
+              </span>
+            ))}
+          </h1>
+        </motion.div>
 
-        <motion.img
-          src={avatar}
-          alt="Sarthak Kar avatar"
-          className="sk-hero-avatar"
-          initial={{ opacity: 0, scale: 0.85, y: 40 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        />
+        <motion.div className="sk-hero-avatar-wrap" style={{ y: avatarY, rotateX: tiltX, rotateY: tiltY, transformPerspective: 900 }}>
+          <motion.img
+            src={avatar}
+            alt="Sarthak Kar avatar"
+            className="sk-hero-avatar"
+            initial={{ opacity: 0, scale: 1.15, y: 80, filter: "blur(14px)" }}
+            animate={ready ? { opacity: 1, scale: 1, y: 0, filter: "blur(0px)" } : {}}
+            transition={{ duration: 1.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          />
+        </motion.div>
 
         <motion.div
           className="sk-hero-bottom"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 1.9 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={ready ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.9, delay: 1.1 }}
+          style={{ opacity: heroFade }}
         >
           <p className="sk-hero-tagline">
             AI/ML engineer in the making — <br />
@@ -255,10 +343,21 @@ function HomeNew() {
             <span className="sk-status">
               <span className="sk-dot" /> Open to AI/ML roles
             </span>
-            <a className="sk-btn sk-btn-red" href="#contact">
+            <button className="sk-btn sk-btn-red" onClick={() => scrollToId("contact")}>
               Let's talk <FiArrowUpRight />
-            </a>
+            </button>
           </div>
+        </motion.div>
+
+        <motion.div
+          className="sk-scroll-cue"
+          initial={{ opacity: 0 }}
+          animate={ready ? { opacity: 1 } : {}}
+          transition={{ delay: 1.6 }}
+          style={{ opacity: heroFade }}
+        >
+          <span>Scroll</span>
+          <span className="sk-scroll-line" />
         </motion.div>
 
         <div className="sk-marquee" aria-label="Tools I use">
@@ -274,44 +373,11 @@ function HomeNew() {
 
       {/* ---------- PROJECTS ---------- */}
       <section className="sk-section" id="work">
-        <motion.h2 className="sk-heading" {...reveal}>
-          Latest <span className="sk-red">Projects</span>
-        </motion.h2>
+        <SceneLabel n={1}>Selected work</SceneLabel>
+        <MaskText className="sk-heading" lines={[<>Latest <span className="sk-red">Projects</span></>]} />
         <div className="sk-projects">
           {projects.map((p, i) => (
-            <motion.a
-              href={p.link}
-              target="_blank"
-              rel="noreferrer"
-              className="sk-project"
-              key={p.name}
-              {...reveal}
-              transition={{ ...reveal.transition, delay: (i % 2) * 0.1 }}
-            >
-              <div className="sk-project-media">
-                <ProjectArt kind={p.art} />
-                <span className="sk-project-badge">{p.badge}</span>
-                <span className="sk-project-title-overlay">{p.name}</span>
-                <span className="sk-project-arrow">
-                  <FiArrowUpRight />
-                </span>
-              </div>
-              <div className="sk-project-meta">
-                <h3>
-                  {p.name} <small>{p.subtitle}</small>
-                </h3>
-                <p className="sk-project-desc">{p.description}</p>
-                <div className="sk-metrics">
-                  {p.metrics.map(([v, l]) => (
-                    <div key={l}>
-                      <strong>{v}</strong>
-                      <span>{l}</span>
-                    </div>
-                  ))}
-                </div>
-                <p className="sk-project-tags">{p.tags.join(" · ")}</p>
-              </div>
-            </motion.a>
+            <ProjectCard p={p} i={i} key={p.name} />
           ))}
         </div>
         <div className="sk-center">
@@ -324,10 +390,11 @@ function HomeNew() {
       {/* ---------- SERVICES / SKILLS ---------- */}
       <section className="sk-section sk-services" id="services">
         <motion.div className="sk-services-left" {...reveal}>
-          <h2 className="sk-heading">
-            What I help <br />
-            you <span className="sk-red">Build…</span>
-          </h2>
+          <SceneLabel n={2}>Skills</SceneLabel>
+          <MaskText
+            className="sk-heading"
+            lines={["What I help", <>you <span className="sk-red">Build…</span></>]}
+          />
           <p className="sk-muted">Tools that I use</p>
           <div className="sk-tool-grid">
             {tools.map(({ icon: Icon, name }) => (
@@ -369,13 +436,14 @@ function HomeNew() {
 
       {/* ---------- ABOUT ---------- */}
       <section className="sk-section" id="about">
-        <motion.h2 className="sk-heading" {...reveal}>
-          Building systems <br />
-          <span className="sk-red">that make sense.</span>
-        </motion.h2>
+        <SceneLabel n={3}>About</SceneLabel>
+        <MaskText
+          className="sk-heading"
+          lines={["Building systems", <span className="sk-red">that make sense.</span>]}
+        />
         <div className="sk-about">
           <motion.div className="sk-about-photo" {...reveal}>
-            <img src={avatar} alt="Sarthak Kar" />
+            <img src={portrait} alt="Sarthak Kar" />
             <div className="sk-about-card">
               <strong>Sarthak Kar</strong>
               <span>B.Tech CSE (AI/ML) · SRMIST · Chennai, India</span>
@@ -419,9 +487,7 @@ function HomeNew() {
           </motion.div>
         </div>
 
-        <motion.h3 className="sk-subheading" {...reveal}>
-          My <span className="sk-red">journey</span>
-        </motion.h3>
+        <MaskText as="h3" className="sk-subheading" lines={[<>My <span className="sk-red">journey</span></>]} />
         <div className="sk-timeline">
           {timeline.map((t, i) => (
             <motion.div
@@ -452,9 +518,8 @@ function HomeNew() {
 
       {/* ---------- FAQ ---------- */}
       <section className="sk-section" id="faq">
-        <motion.h2 className="sk-heading" {...reveal}>
-          FAQs
-        </motion.h2>
+        <SceneLabel n={4}>Questions</SceneLabel>
+        <MaskText className="sk-heading" lines={["FAQs"]} />
         <div className="sk-faq-wrap">
           <div className="sk-faq">
             {faqs.map((f, i) => (
@@ -496,10 +561,11 @@ function HomeNew() {
 
       {/* ---------- CONTACT ---------- */}
       <section className="sk-section sk-contact" id="contact">
-        <motion.h2 className="sk-heading sk-heading-xl" {...reveal}>
-          Let's <span className="sk-red">build</span> <br />
-          intelligent things together.
-        </motion.h2>
+        <SceneLabel n={5}>Contact</SceneLabel>
+        <MaskText
+          className="sk-heading sk-heading-xl"
+          lines={[<>Let's <span className="sk-red">build</span></>, "intelligent things", "together."]}
+        />
         <div className="sk-contact-grid">
           <a href={`mailto:${EMAIL}`}>
             <span className="sk-muted">Email</span>
@@ -526,7 +592,14 @@ function HomeNew() {
         </div>
       </section>
 
-      <a className="sk-float-cta" href="#contact">
+      <a
+        className="sk-float-cta"
+        href="#contact"
+        onClick={(e) => {
+          e.preventDefault();
+          scrollToId("contact");
+        }}
+      >
         <img src={avatar} alt="" />
         <span>
           <strong>Speak to me</strong>

@@ -5,7 +5,15 @@ import "./style.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Preloader from "./components/Preloader";
+import {
+  Intro,
+  INTRO_MS,
+  FilmOverlay,
+  ScrollProgress,
+  SmoothScroll,
+  Cursor,
+  RouteCurtain,
+} from "./components/Cinema/Cinema";
 
 // Implement code splitting with lazy loading for better performance
 const HomeNew = lazy(() => import("./components/Home/HomeNew"));
@@ -20,25 +28,24 @@ function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoad(false);
-    }, 1200);
+    }, INTRO_MS);
 
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <>
-      <Preloader load={load} />
+      <Intro show={load} />
+      <SmoothScroll />
+      <FilmOverlay />
+      <ScrollProgress />
+      <Cursor />
+      <RouteCurtain />
       <div className="App" id={load ? "no-scroll" : "scroll"}>
         <Navbar />
-        <Suspense fallback={
-          <div className="loading-fallback">
-            <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </div>
-        }>
+        <Suspense fallback={<div className="loading-fallback" />}>
           <Routes>
-            <Route path="/" element={<HomeNew />} />
+            <Route path="/" element={<HomeNew ready={!load} />} />
             <Route path="/about" element={<About />} />
             <Route path="/project" element={<Projects />} />
             <Route path="/resume" element={<Resume />} />

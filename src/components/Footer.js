@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { AiFillGithub, AiFillInstagram } from "react-icons/ai";
 import { FaLinkedinIn } from "react-icons/fa";
 import config from "../config";
@@ -36,9 +37,24 @@ function Footer() {
           <Link to="/privacy">Privacy Policy</Link>
         </div>
       </div>
-      <div className="sk-footer-name" aria-hidden="true">
-        SARTHAK KAR
-      </div>
+      <motion.div
+        className="sk-footer-name"
+        aria-hidden="true"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.5 }}
+      >
+        {"SARTHAK KAR".split("").map((ch, i) => (
+          <span className="cn-mask" key={i}>
+            <motion.span
+              variants={{ hidden: { y: "100%" }, show: { y: 0 } }}
+              transition={{ duration: 1, delay: i * 0.05, ease: [0.76, 0, 0.24, 1] }}
+            >
+              {ch === " " ? "\u00A0" : ch}
+            </motion.span>
+          </span>
+        ))}
+      </motion.div>
     </footer>
   );
 }
