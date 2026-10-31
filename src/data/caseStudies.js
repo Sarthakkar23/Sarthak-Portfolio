@@ -53,6 +53,54 @@ export const caseStudies = {
     ],
   },
 
+  masksight: {
+    name: "MaskSight",
+    title: "Defect masks without a single defect label",
+    role: "Personal research project · open source (MIT)",
+    stack: ["Python", "PyTorch", "WideResNet-50", "PatchCore", "PaDiM", "NumPy", "FastAPI", "Gradio", "Docker", "GitHub Actions"],
+    art: "mask",
+    problem: [
+      "Unsupervised anomaly detectors like PatchCore and PaDiM are excellent at ranking pixels — pixel AUROC is about 0.98. But a production line needs a binary mask, and a mask needs a threshold.",
+      "Papers usually pick that threshold on the labelled test set, which a real deployment can't do. The honest label-free alternative, a high quantile of normal-image scores, gives poor masks: Dice 0.12 on leather, 0.22 on grid.",
+    ],
+    approach: [
+      ["Learn only what 'good' looks like", "PatchCore and PaDiM re-implemented from their papers: WideResNet-50 patch features, a greedy k-center coreset with random projection and chunked GPU nearest-neighbour search, and per-position Gaussians scored by Mahalanobis distance."],
+      ["Paint defects that come with free masks", "10% of the normal training images are held out and painted with Perlin-noise defects — foreign texture, displaced structure or a stain, placed on the object's foreground. The exact mask of every fake defect is known."],
+      ["Threshold relative to the peak", "A pixel is defective only if its score beats a floor (the 99.9th percentile of normal pixels, so clean parts stay clean) and α times the highest score in that image. α is chosen to maximise Dice on the synthetic defects."],
+      ["Why relative transfers", "Fake defects are never exactly as loud as real ones, so an absolute threshold learned on them does worse than the baseline. How fast a defect's heatmap falls off from its peak depends on the backbone and smoothing, not on how strong the defect is — so α carries over."],
+      ["Benchmark honestly, then ship", "A YAML-driven, resumable benchmark runs every number on one free Colab T4. The model is served by a FastAPI /predict endpoint and a Gradio app, packaged in Docker, with CPU tests and ruff in GitHub Actions CI."],
+    ],
+    diagram: {
+      caption: "How SynthCal turns a heatmap into a mask without labels",
+      stages: [
+        { label: "Normal images", detail: "Good parts only · no defect labels", kind: "io" },
+        { label: "Fit the detector", detail: "PatchCore / PaDiM on 90%" },
+        { label: "Synthetic defects", detail: "Perlin shapes on the held-out 10% · exact masks free" },
+        { label: "Heatmaps", detail: "Floor = 99.9th percentile of normal scores" },
+        { label: "SynthCal", detail: "Choose α maximising Dice of score > max(floor, α · peak)", kind: "accent" },
+        { label: "Mask + verdict", detail: "FastAPI /predict · score, verdict, mask", kind: "io" },
+      ],
+    },
+    results: {
+      metrics: [
+        ["0.397 → 0.517", "label-free mask Dice with PatchCore (+30%)"],
+        ["0.517 vs 0.466", "beats an oracle threshold tuned on the real test labels"],
+        ["15 / 15", "categories beat the label-free baseline"],
+        ["0.990 / 0.978", "image / pixel AUROC"],
+        ["96%", "of the best label-tuned α, reached with no labels"],
+      ],
+      notes: [
+        "MVTec AD, all 15 categories, WideResNet-50 features, one free Colab T4. Every threshold except the oracle is label-free.",
+        "Ablations: layer-2-only features give the sharpest masks (Dice 0.554) at 14 ms, and the gain holds with a ResNet-18 backbone at 10 ms.",
+      ],
+    },
+    next: [
+      "Sharpen thin defects such as scratches and cut leads, which come out blobby because masks are upsampled from a 28×28 feature grid.",
+      "Close the gap on the hardest categories — screw, capsule and grid — where small defects sit on highly variable textures.",
+      "Widen the synthetic-defect generator so categories whose real defects look nothing like it, such as missing parts on transistors, gain more.",
+    ],
+  },
+
   cloudoptima: {
     name: "CloudOptima",
     title: "Cheaper, greener cloud scheduling with deep reinforcement learning",
@@ -181,4 +229,4 @@ export const caseStudies = {
   },
 };
 
-export const caseStudyOrder = ["amrip-india", "cloudoptima", "clearpixel-ai", "fraud-detection"];
+export const caseStudyOrder = ["amrip-india", "masksight", "cloudoptima", "clearpixel-ai", "fraud-detection"];

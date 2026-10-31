@@ -15,7 +15,7 @@ const rise = {
 // Highlight projects (with a case study and an illustration) render as full-width editorial panels;
 // repos that arrive automatically from GitHub render as quiet index rows.
 function ProjectCard({ p, i = 0 }) {
-  const ART = { med: "med", cloud: "cloud", pixel: "pixel", fraud: "fraud" };
+  const ART = { med: "med", mask: "mask", cloud: "cloud", pixel: "pixel", fraud: "fraud" };
   const hasVisual = Boolean(ART[p.art]);
 
   if (!hasVisual) {

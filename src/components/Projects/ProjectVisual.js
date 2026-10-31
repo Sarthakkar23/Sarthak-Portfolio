@@ -272,8 +272,60 @@ function FraudVisual() {
   );
 }
 
-const VISUALS = { med: AmripVisual, cloud: CloudVisual, pixel: PixelVisual, fraud: FraudVisual };
+
+/* ---------- MaskSight: normal surface → anomaly heatmap → threshold → binary mask ---------- */
+const MASK_STEPS = [
+  "Surface under inspection",
+  "Anomaly heatmap from normal-only training",
+  "Keep pixels above max(floor, α · peak)",
+  "Binary defect mask, no labels used",
+];
+function MaskVisual() {
+  const ref = useRef(null);
+  const [step, setStep] = useState(reduced() ? 3 : 0);
+  useVisibleInterval(ref, () => setStep((s) => (s + 1) % MASK_STEPS.length), 1500);
+  return (
+    <div className={`pv-mask is-step-${step}`} ref={ref}>
+      <svg viewBox="0 0 160 110" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <pattern id="pv-weave" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+            <line x1="0" y1="0" x2="0" y2="6" stroke="rgba(239,230,216,0.10)" strokeWidth="1.6" />
+          </pattern>
+          <radialGradient id="pv-heat">
+            <stop offset="0" stopColor="#efe6d8" stopOpacity="0.95" />
+            <stop offset="0.35" stopColor="#d9727f" stopOpacity="0.85" />
+            <stop offset="1" stopColor="#8a1c2b" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        <rect width="160" height="110" fill="url(#pv-weave)" />
+        {/* the defect: a crack across the surface */}
+        <path className="pv-crack" d="M58 38 C 66 44, 70 46, 76 52 S 88 62, 94 66 L 99 72" />
+        {/* strong response on the crack, weak noise elsewhere that the floor removes */}
+        <g className="pv-heat">
+          <circle cx="66" cy="44" r="13" />
+          <circle cx="78" cy="54" r="16" />
+          <circle cx="92" cy="65" r="13" />
+        </g>
+        <g className="pv-noise">
+          <circle cx="26" cy="24" r="9" />
+          <circle cx="132" cy="84" r="10" />
+          <circle cx="128" cy="22" r="7" />
+        </g>
+        <path
+          className="pv-maskpath"
+          d="M55 33 C 64 33, 74 41, 82 47 C 92 54, 101 61, 103 70 C 104 77, 96 78, 90 73 C 82 66, 72 60, 64 53 C 56 47, 48 37, 55 33 Z"
+        />
+      </svg>
+      <span className="pv-tag pv-tag-l pv-mask-step" key={step}>
+        {MASK_STEPS[step]}
+      </span>
+    </div>
+  );
+}
+
+const VISUALS = { med: AmripVisual, mask: MaskVisual, cloud: CloudVisual, pixel: PixelVisual, fraud: FraudVisual };
 const CAPTIONS = {
+  mask: "Illustration: a heatmap becomes a mask by thresholding against its own peak. Not MaskSight output.",
   med: "Illustration: each field is located, verified, then written as FHIR.",
   cloud: "Illustration: the scheduler packs tasks; a failing VM is flagged and its work moved.",
   pixel: "Illustration of noise removal; drag to compare. Not actual ClearPixel output.",

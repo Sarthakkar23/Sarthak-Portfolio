@@ -30,6 +30,7 @@ const ALIASES = {
   cloudoptima: ["cloudoptima", "cloud optim", "cloud resource", "resource optim", "autoscal", "auto-scal", "dqn", "deep q", "scheduler", "vm "],
   "clearpixel-ai": ["clearpixel", "clear pixel", "image restor", "denois", "deoldify", "coloris", "coloriz", "psnr", "photo restor"],
   "fraud-detection": ["fraud", "credit card", "transaction", "imbalanced", "smote"],
+  masksight: ["masksight", "mask sight", "defect", "anomaly", "segmentation", "patchcore", "padim", "mvtec", "synthcal", "inspection"],
 };
 const PROJECTS = curatedProjects.map((c) => {
   const r = resumeProjects.find((p) => p.name === c.name) || {};

@@ -47,7 +47,8 @@
 .pv-amrip,
 .pv-cloud,
 .pv-pixel,
-.pv-fraud {
+.pv-fraud,
+.pv-mask {
   position: relative;
   aspect-ratio: 16 / 11;
   border: 1px solid var(--line-strong);
@@ -93,6 +94,24 @@
 /* Fraud */
 .pv-fraud canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .pv-tag-model { left: 62%; top: 12px; transform: translateX(-50%); }
+
+/* MaskSight: each step reveals one layer of the same surface */
+.pv-mask svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.pv-crack { fill: none; stroke: rgba(239, 230, 216, 0.55); stroke-width: 1.4; stroke-linecap: round; }
+.pv-heat circle { fill: url(#pv-heat); }
+.pv-noise circle { fill: url(#pv-heat); opacity: 0.32; }
+.pv-heat,
+.pv-noise { opacity: 0; transition: opacity 0.7s var(--ease-out); mix-blend-mode: screen; }
+.pv-maskpath { fill: rgba(239, 230, 216, 0.14); stroke: var(--ivory); stroke-width: 0.8; stroke-dasharray: 3 2.4; opacity: 0; transition: opacity 0.6s var(--ease-out), stroke-dasharray 0.6s var(--ease-out); }
+.pv-mask.is-step-1 .pv-heat,
+.pv-mask.is-step-1 .pv-noise,
+.pv-mask.is-step-2 .pv-heat { opacity: 1; }
+.pv-mask.is-step-2 .pv-maskpath { opacity: 1; }
+.pv-mask.is-step-3 .pv-maskpath { opacity: 1; fill: rgba(239, 230, 216, 0.9); stroke-dasharray: 0; }
+.pv-mask.is-step-3 .pv-crack { stroke: var(--ink); }
+/* plain case, so small caps never turn α into A */
+.pv-mask-step { font-variant-caps: normal; letter-spacing: 0.02em; font-size: 0.78rem; animation: pv-step-in 0.5s var(--ease-out); }
+@keyframes pv-step-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 
 /* ---------- Auto-synced repos: quiet index rows ---------- */
 .pp-row {

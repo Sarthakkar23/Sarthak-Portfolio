@@ -193,7 +193,7 @@ function HomeNew({ ready = true }) {
       <section className="sk-section lx-lede-wrap" aria-label="Selected results">
         <motion.p className="lx-lede" {...reveal}>
           Recent work cut simulated cloud compute cost by <em>34%</em>, caught card fraud at <em>0.83 F1</em> in data
-          that is only 0.17% fraud, restored noisy images to <em>31.2 dB</em>, and became a co-authored{" "}
+          that is only 0.17% fraud, restored noisy images to <em>31.2 dB</em>, made label-free defect masks <em>30%</em> sharper, and became a co-authored{" "}
           <a href="https://papers.ssrn.com/abstract=6957438" target="_blank" rel="noreferrer">
             SSRN preprint
           </a>

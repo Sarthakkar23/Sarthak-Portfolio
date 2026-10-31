@@ -24,6 +24,23 @@ export const curatedProjects = [
     art: "med",
   },
   {
+    repo: "MaskSight",
+    name: "MaskSight",
+    slug: "masksight",
+    subtitle: "Label-Free Defect Segmentation",
+    badge: "Computer Vision · Open source",
+    summary:
+      "Learns what a good product looks like from normal images only, then masks scratches, cracks and contamination pixel by pixel. It sets its own threshold on synthetic defects, so it never needs a single defect label.",
+    tags: ["PyTorch", "PatchCore", "PaDiM", "FastAPI", "Gradio", "Docker"],
+    metrics: [
+      ["+30%", "label-free mask Dice (0.397 → 0.517)"],
+      ["15 / 15", "MVTec AD categories improved"],
+      ["29 ms", "per image on a T4"],
+    ],
+    category: "Vision",
+    art: "mask",
+  },
+  {
     repo: "Cloud-Resource-Optimizer",
     name: "CloudOptima",
     slug: "cloudoptima",

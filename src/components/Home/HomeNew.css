@@ -195,6 +195,9 @@ button.sk-btn { border: 0; cursor: pointer; }
 .sk-art-fraud { background: linear-gradient(135deg, var(--ink-3), var(--ink)); }
 .sk-art-fraud .sk-art-orb { --orb: rgba(138, 28, 43, 0.85); }
 .sk-art-fraud .sk-art-orb-2 { --orb: rgba(239, 230, 216, 0.22); }
+.sk-art-mask { background: linear-gradient(135deg, var(--ink-3), var(--ink)); }
+.sk-art-mask .sk-art-orb { --orb: rgba(138, 28, 43, 0.85); }
+.sk-art-mask .sk-art-orb-2 { --orb: rgba(239, 230, 216, 0.22); }
 
 /* ---------- Services ---------- */
 .sk-services { display: grid; grid-template-columns: 1fr 1.15fr; gap: 64px; align-items: start; }
