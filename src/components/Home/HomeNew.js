@@ -31,7 +31,8 @@ import resumePdf from "../../assets/resume/Sarthak Kar Resume.pdf";
 import ProjectCard from "../Projects/ProjectCard";
 import ContactForm from "./ContactForm";
 import useGithubProjects from "../../hooks/useGithubProjects";
-import { profile, experience } from "../../data/resume";
+import { profile, experience, facts } from "../../data/resume";
+import { NowBand, Journey, HomeNotes } from "./HomeExtras";
 import config from "../../config";
 import "./HomeNew.css";
 
@@ -116,7 +117,7 @@ const reveal = {
 function HomeNew({ ready = true }) {
   const [activeService, setActiveService] = useState(0);
   const [openFaq, setOpenFaq] = useState(0);
-  const { curated, auto, status } = useGithubProjects();
+  const { curated, auto, all, status } = useGithubProjects();
   // Highlights, plus the two newest repos so fresh work shows up on the home page too.
   const homeProjects = [...curated, ...auto.slice(0, 2)];
 
@@ -220,6 +221,8 @@ function HomeNew({ ready = true }) {
         </div>
       </section>
 
+      <NowBand repos={all} />
+
       {/* ---------- EXPERTISE ---------- */}
       <section className="sk-section sk-services" id="services">
         <motion.div className="sk-services-left" {...reveal}>
@@ -253,6 +256,8 @@ function HomeNew({ ready = true }) {
           ))}
         </div>
       </section>
+
+      <Journey />
 
       {/* ---------- ABOUT ---------- */}
       <section className="sk-section" id="about">
@@ -293,6 +298,8 @@ function HomeNew({ ready = true }) {
         </div>
       </section>
 
+      <HomeNotes />
+
       {/* ---------- FAQ ---------- */}
       <section className="sk-section" id="faq">
         <MaskText className="sk-heading" lines={["Quick answers."]} />
@@ -325,7 +332,15 @@ function HomeNew({ ready = true }) {
             <h3>
               Hiring for <span className="sk-red">AI/ML?</span>
             </h3>
-            <p>Everything you need is on one page of my résumé, or just say hello.</p>
+            <dl className="lx-facts">
+              {facts.map(([k, v]) => (
+                <div key={k}>
+                  <dt>{k}</dt>
+                  <dd>{v}</dd>
+                </div>
+              ))}
+            </dl>
+            <p>Everything else is on one page of my résumé, or just say hello.</p>
             <div className="sk-row sk-row-tight">
               <a className="sk-link" href={`mailto:${profile.email}`}>
                 Email me <FiArrowUpRight />

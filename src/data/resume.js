@@ -132,3 +132,10 @@ export const timeline = [
   ["Now", "Building AMRIP-India, an LLM pipeline for health records"],
   ["May 2027", "Graduating — ready for applied AI/ML roles"],
 ];
+
+// The "Now" line on the home page. Edit this whenever your focus changes.
+export const now = {
+  text: "Building AMRIP-India, my capstone: an LLM pipeline that turns photographed prescriptions into verified FHIR health records.",
+  link: "/work/amrip-india",
+  updated: "Nov 2026",
+};
