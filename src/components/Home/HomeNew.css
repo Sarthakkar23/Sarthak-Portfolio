@@ -51,7 +51,8 @@
     radial-gradient(90% 60% at 20% 110%, rgba(239, 230, 216, 0.05), transparent 60%);
 }
 .lx-hero-canvas { position: absolute; inset: 0; z-index: -1; }
-.lx-hero-canvas canvas { display: block; }
+/* the canvas never sizes its box: the box sizes the canvas */
+.lx-hero-canvas canvas { position: absolute; inset: 0; display: block; }
 /* the crisp record that settles over the particle ink, and the seal that stamps it */
 .lx-record {
   position: absolute;
@@ -353,9 +354,22 @@ button.sk-btn { border: 0; cursor: pointer; }
   .lx-hero-meta { max-width: 520px; padding-bottom: 0; }
 }
 @media (max-width: 640px) {
-  .lx-hero { padding: 0 16px 92px; align-items: end; }
+  /* phones: no text over moving ink. Name and actions first, then the record in its own frame */
+  .lx-hero { min-height: 0; display: flex; flex-direction: column; align-items: stretch; padding: 120px 16px 72px; }
+  .lx-hero-copy { order: 1; }
+  .lx-hero-canvas {
+    position: relative;
+    inset: auto;
+    order: 2;
+    z-index: 0;
+    height: min(76vw, 340px);
+    margin-top: 56px;
+    overflow: hidden;
+    border: 1px solid var(--line-strong);
+    background: radial-gradient(120% 90% at 30% 20%, var(--ink-3), var(--ink) 70%);
+  }
   .lx-hero-name { font-size: clamp(3.6rem, 21vw, 6rem); }
-  .lx-hero-caption { top: 92px; left: 16px; right: 16px; max-width: none; text-align: left; font-size: 0.74rem; }
+  .lx-hero-caption { order: 3; position: static; max-width: none; margin-top: 14px; text-align: left; font-size: 0.78rem; }
   /* on phones the seal sits in the record's empty bottom-right corner, clear of the caption and the name */
   .lx-seal { width: 64px; top: auto; bottom: 4%; right: 0; }
 }

@@ -217,10 +217,12 @@ function PrescriptionHero({ ready = true, onPhase }) {
     function build() {
       const w = mount.clientWidth;
       const h = mount.clientHeight;
+      if (!w || !h) return;
       const mobile = w < 760;
       const recLines = mobile ? FHIR_SHORT : FHIR_FULL;
       setLines(recLines);
-      cardW = Math.round(Math.min(mobile ? w * 0.88 : w * 0.34, 560));
+      // on phones the record must also fit the framed box's height
+      cardW = Math.round(Math.min(mobile ? Math.min(w * 0.88, (h * 0.86) / 0.62) : w * 0.34, 560));
       cardH = Math.round(cardW * (mobile ? 0.62 : 0.7));
       const n = mobile ? 15000 : 26000;
       uniforms.uSize.value = (mobile ? 1.25 : 1.4) * renderer.getPixelRatio();
@@ -287,7 +289,8 @@ function PrescriptionHero({ ready = true, onPhase }) {
       camera.bottom = -h / 2;
       camera.updateProjectionMatrix();
       const gx = mobile ? 0 : w * 0.245;
-      const gy = mobile ? h * 0.16 : h * 0.135;
+      // on phones the canvas is its own framed box below the copy, so the record sits centred in it
+      const gy = mobile ? 0 : h * 0.135;
       group.position.set(gx, gy, 0);
       renderer.setSize(w, h, false);
       renderer.domElement.style.width = "100%";
@@ -311,7 +314,14 @@ function PrescriptionHero({ ready = true, onPhase }) {
     const onLeave = () => uniforms.uMouse.value.set(9999, 9999);
     let visible = true;
     const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting), { threshold: 0.01 });
-    const onResize = () => build();
+    // rebuild when the hero's own box changes size (the phone frame is not tied to the window)
+    let lastSize = "";
+    const ro = new ResizeObserver(() => {
+      const size = `${mount.clientWidth}x${mount.clientHeight}`;
+      if (size === lastSize) return;
+      lastSize = size;
+      build();
+    });
     const clock = new THREE.Clock();
     let started = null;
     let raf;
@@ -319,7 +329,7 @@ function PrescriptionHero({ ready = true, onPhase }) {
 
     const loop = () => {
       raf = requestAnimationFrame(loop);
-      if (!visible || document.hidden) return;
+      if (!visible || document.hidden || !points) return;
       uniforms.uTime.value += clock.getDelta();
       if (reduced) {
         if (record) {
@@ -373,7 +383,8 @@ function PrescriptionHero({ ready = true, onPhase }) {
       window.addEventListener("pointermove", onMove, { passive: true });
       mount.addEventListener("pointerleave", onLeave);
       io.observe(mount);
-      window.addEventListener("resize", onResize);
+      lastSize = `${mount.clientWidth}x${mount.clientHeight}`;
+      ro.observe(mount);
       loop();
     });
 
@@ -382,7 +393,7 @@ function PrescriptionHero({ ready = true, onPhase }) {
       cancelAnimationFrame(raf);
       io.disconnect();
       window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("resize", onResize);
+      ro.disconnect();
       mount.removeEventListener("pointerleave", onLeave);
       if (points) {
         points.geometry.dispose();
