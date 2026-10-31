@@ -58,6 +58,30 @@ function inkPoints(draw, w, h) {
   return { pts, meta };
 }
 
+// Offset of an element from an ancestor, ignoring CSS transforms (the hero copy drifts on scroll).
+function offsetIn(el, root) {
+  let x = 0;
+  let y = 0;
+  while (el && el !== root) {
+    x += el.offsetLeft;
+    y += el.offsetTop;
+    el = el.offsetParent;
+  }
+  return { x, y };
+}
+
+// Draw the DOM name exactly where it sits, in its own face, so the ink can gather into it.
+function drawName(g, hero) {
+  hero.querySelectorAll(".lx-hero-word").forEach((word) => {
+    const cs = getComputedStyle(word);
+    const x = offsetIn(word, hero).x;
+    const y = offsetIn(word.querySelector(".lx-baseline"), hero).y;
+    g.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+    if ("letterSpacing" in g) g.letterSpacing = cs.letterSpacing;
+    g.fillText(word.firstChild.textContent, x, y);
+  });
+}
+
 function drawPrescription(g, w, h) {
   g.lineWidth = 1.5;
   g.strokeRect(6, 6, w - 12, h - 12);
@@ -111,9 +135,12 @@ function fit(pts, n) {
 const vertex = /* glsl */ `
   attribute vec3 aTo;
   attribute vec3 aScatter;
+  attribute vec3 aName;
   attribute float aSeed;
   uniform float uMorph;
   uniform float uAssemble;
+  uniform float uName;
+  uniform float uNameCrisp;
   uniform float uTime;
   uniform vec2 uMouse;
   uniform float uSize;
@@ -131,15 +158,19 @@ const vertex = /* glsl */ `
     float flight = sin(3.14159 * t);
     p.x += sin(aSeed * 40.0 + uTime * 1.3) * 24.0 * flight;
     p.y += cos(aSeed * 31.0 + uTime * 1.1) * 16.0 * flight;
+    // ink first gathers into the name (desktop), then flows on into the prescription
+    float g = ease(clamp(uName * 1.4 - aSeed * 0.4, 0.0, 1.0));
+    vec3 pre = mix(aScatter, aName, g);
     float a = ease(clamp(uAssemble * 1.4 - aSeed * 0.4, 0.0, 1.0));
-    p = mix(aScatter, p, a);
+    p = mix(pre, p, a);
+    p.y += sin(3.14159 * a) * g * (aSeed - 0.5) * 80.0;
     vec2 toM = p.xy - uMouse;
     float dist = length(toM);
     p.xy += normalize(toM + 0.0001) * smoothstep(110.0, 0.0, dist) * 30.0;
 
     float s = abs(p.y - uScan);
     vGlow = smoothstep(26.0, 0.0, s);
-    vAlpha = (0.42 + 0.38 * a) * (1.0 - uFade * 0.8);
+    vAlpha = (0.42 + 0.38 * max(a, g)) * (1.0 - uFade * 0.8) * (1.0 - uNameCrisp * (1.0 - a) * 0.92);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
     gl_PointSize = uSize * (1.0 + vGlow * 0.9);
   }
@@ -202,9 +233,13 @@ function PrescriptionHero({ ready = true, onPhase }) {
     scene.add(group);
 
     let points, boxLines, scanLine, scanGlow, cardH, cardW;
+    let inkName = false;
+    let nameShown = false;
     const uniforms = {
       uMorph: { value: reduced ? 1 : 0 },
       uAssemble: { value: reduced ? 1 : 0 },
+      uName: { value: 0 },
+      uNameCrisp: { value: 0 },
       uTime: { value: 0 },
       uMouse: { value: new THREE.Vector2(9999, 9999) },
       uSize: { value: 1.4 },
@@ -225,6 +260,10 @@ function PrescriptionHero({ ready = true, onPhase }) {
       cardW = Math.round(Math.min(mobile ? Math.min(w * 0.88, (h * 0.86) / 0.62) : w * 0.34, 560));
       cardH = Math.round(cardW * (mobile ? 0.62 : 0.7));
       const n = mobile ? 15000 : 26000;
+      const gx = mobile ? 0 : w * 0.245;
+      // on phones the canvas is its own framed box below the copy, so the record sits centred in it;
+      // on desktop the record sits high and right, clear of the one-line name along the bottom
+      const gy = mobile ? 0 : h * 0.2;
       uniforms.uSize.value = (mobile ? 1.25 : 1.4) * renderer.getPixelRatio();
 
       const rx = inkPoints((g) => drawPrescription(g, cardW, cardH), cardW, cardH);
@@ -245,6 +284,24 @@ function PrescriptionHero({ ready = true, onPhase }) {
         scatter[i * 3 + 1] = (Math.random() - 0.5) * h * 1.2;
         seeds[i] = Math.random();
       }
+      // Desktop: the ink starts by gathering into the name, which only the hero can draw in place.
+      const hero = mount.parentElement;
+      const nameEl = hero && hero.querySelector(".lx-hero-name");
+      // only claim the name if it hasn't already been revealed without us
+      inkName = Boolean(!mobile && !reduced && nameEl && (started === null ? !nameEl.classList.contains("is-shown") : inkName));
+      let named = scatter;
+      if (inkName) {
+        nameEl.dataset.ink = "1";
+        const pts = inkPoints((g) => drawName(g, hero), w, h).pts;
+        if (pts.length) {
+          named = fit(pts, n);
+          for (let i = 0; i < n; i++) {
+            named[i * 3] -= gx;
+            named[i * 3 + 1] -= gy;
+          }
+        }
+      }
+      geo.setAttribute("aName", new THREE.BufferAttribute(named, 3));
       geo.setAttribute("aScatter", new THREE.BufferAttribute(scatter, 3));
       geo.setAttribute("aSeed", new THREE.BufferAttribute(seeds, 1));
       points = new THREE.Points(
@@ -288,9 +345,6 @@ function PrescriptionHero({ ready = true, onPhase }) {
       camera.top = h / 2;
       camera.bottom = -h / 2;
       camera.updateProjectionMatrix();
-      const gx = mobile ? 0 : w * 0.245;
-      // on phones the canvas is its own framed box below the copy, so the record sits centred in it
-      const gy = mobile ? 0 : h * 0.135;
       group.position.set(gx, gy, 0);
       renderer.setSize(w, h, false);
       renderer.domElement.style.width = "100%";
@@ -346,8 +400,23 @@ function PrescriptionHero({ ready = true, onPhase }) {
       }
       if (started === null) started = uniforms.uTime.value;
       const t = uniforms.uTime.value - started;
-      uniforms.uAssemble.value = Math.min(1, t / 1.6);
-      const tl = timeline(Math.max(0, t - 0.6));
+      const clamp01 = (v) => Math.min(1, Math.max(0, v));
+      let tl;
+      if (inkName) {
+        // 0–1.3 s ink gathers into the name · the crisp name resolves · 2.1 s the ink flows on
+        uniforms.uName.value = clamp01(t / 1.3);
+        if (t > 1.35 && !nameShown) {
+          nameShown = true;
+          const nameEl = mount.parentElement.querySelector(".lx-hero-name");
+          if (nameEl) nameEl.classList.add("is-shown");
+        }
+        uniforms.uNameCrisp.value = clamp01((t - 1.35) / 0.9);
+        uniforms.uAssemble.value = clamp01((t - 2.1) / 1.6);
+        tl = timeline(Math.max(0, t - 2.7));
+      } else {
+        uniforms.uAssemble.value = Math.min(1, t / 1.6);
+        tl = timeline(Math.max(0, t - 0.6));
+      }
       uniforms.uMorph.value = tl.morph;
       uniforms.uFade.value = tl.crisp;
       const scanY = tl.scan < 0 ? -9999 : cardH / 2 - tl.scan * cardH;
@@ -375,6 +444,7 @@ function PrescriptionHero({ ready = true, onPhase }) {
           document.fonts.load(`40px ${HAND}`),
           document.fonts.load(`500 20px ${MONO}`),
           document.fonts.load(`italic 400 40px "Bodoni Moda Variable"`),
+          document.fonts.load(`500 40px "Bodoni Moda Variable"`),
         ]).catch(() => null)
       : Promise.resolve();
     fonts.then(() => {
@@ -385,6 +455,7 @@ function PrescriptionHero({ ready = true, onPhase }) {
       io.observe(mount);
       lastSize = `${mount.clientWidth}x${mount.clientHeight}`;
       ro.observe(mount);
+      window.addEventListener("lx-name-fit", build);
       loop();
     });
 
@@ -394,6 +465,7 @@ function PrescriptionHero({ ready = true, onPhase }) {
       io.disconnect();
       window.removeEventListener("pointermove", onMove);
       ro.disconnect();
+      window.removeEventListener("lx-name-fit", build);
       mount.removeEventListener("pointerleave", onLeave);
       if (points) {
         points.geometry.dispose();

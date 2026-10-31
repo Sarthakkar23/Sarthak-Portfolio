@@ -89,23 +89,47 @@
 .lx-seal-rule { fill: none; stroke: rgba(239, 230, 216, 0.45); stroke-width: 0.8; }
 .lx-seal-ring { fill: rgba(239, 230, 216, 0.88); font-family: var(--font-body); font-size: 8.6px; font-weight: 600; letter-spacing: 1.9px; }
 .lx-seal-mono { fill: var(--ivory); font-family: var(--font-display); font-style: italic; font-size: 28px; }
-.lx-hero-copy { position: relative; display: grid; grid-template-columns: 1.15fr 0.85fr; align-items: end; gap: clamp(24px, 4vw, 64px); }
+.lx-hero-copy { position: relative; }
+/* one line, fitted to the column in JS; weight 500 and a lower optical size keep the hairlines alive on ink */
 .lx-hero-name {
-  margin: 0;
+  position: relative;
+  margin: 0 0 clamp(40px, 6vh, 64px);
   font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(4.2rem, 13.5vw, 13rem);
-  line-height: 0.86;
+  font-weight: 500;
+  font-size: 13vw;
+  line-height: 0.9;
   letter-spacing: -0.035em;
-  font-variation-settings: "opsz" 96;
+  font-variation-settings: "opsz" 48;
   color: var(--ivory);
-  display: flex;
-  flex-direction: column;
+  white-space: nowrap;
 }
-.lx-hero-word { display: block; padding-bottom: 0.06em; }
-.lx-hero-word .sk-red { padding-left: 0.42em; }
-.lx-hero-meta { max-width: 420px; padding-bottom: 1.4vw; }
-.lx-hero-line { font-size: clamp(1.05rem, 1.35vw, 1.25rem); line-height: 1.5; color: var(--ivory-2); margin: 0 0 26px; text-wrap: pretty; }
+.lx-name-line { display: inline-block; }
+.lx-hero-word { display: inline-block; transition: opacity 1.1s var(--ease-out), filter 1.1s var(--ease-out), transform 1.1s var(--ease-out); }
+.lx-hero-word + .lx-hero-word { margin-left: 0.16em; }
+.lx-hero-word.sk-red { font-style: italic; font-weight: 400; }
+.lx-hero-name:not(.is-shown) .lx-hero-word { opacity: 0; filter: blur(14px); transform: translateY(0.04em); }
+.lx-baseline { display: inline-block; width: 0; height: 0; vertical-align: baseline; }
+/* the signature writes itself in, left to right, once the name has settled */
+.lx-sign {
+  position: absolute;
+  right: 2%;
+  bottom: -0.3em;
+  font-family: "Homemade Apple", cursive;
+  font-size: 0.15em;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1;
+  color: var(--seal-ink);
+  transform: rotate(-7deg);
+  clip-path: inset(-20% 100% -20% 0);
+  transition: clip-path 1.8s cubic-bezier(0.45, 0, 0.2, 1) 0.9s;
+  pointer-events: none;
+}
+.lx-hero-name.is-shown .lx-sign { clip-path: inset(-20% -5% -20% 0); }
+.lx-hero-meta { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; column-gap: 32px; }
+.lx-hero-meta .lx-hero-line { max-width: 30em; }
+.lx-hero-meta .lx-hero-actions { grid-row: 1 / span 2; grid-column: 2; align-self: end; }
+.lx-hero-line { font-size: clamp(1.05rem, 1.35vw, 1.25rem); line-height: 1.5; color: var(--ivory-2); margin: 0; text-wrap: pretty; }
 .lx-hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 .lx-hero-status { display: flex; align-items: center; gap: 10px; margin: 22px 0 0; font-size: 0.78rem; color: var(--ivory-3); letter-spacing: 0.04em; }
 .lx-hero-caption {
@@ -353,8 +377,8 @@ button.sk-btn { border: 0; cursor: pointer; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
-  .lx-hero-copy { grid-template-columns: 1fr; }
-  .lx-hero-meta { max-width: 520px; padding-bottom: 0; }
+  .lx-hero-meta { grid-template-columns: 1fr; row-gap: 22px; }
+  .lx-hero-meta .lx-hero-actions { grid-row: auto; grid-column: auto; }
 }
 @media (max-width: 640px) {
   /* phones: no text over moving ink. Name and actions first, then the record in its own frame */
@@ -371,10 +395,11 @@ button.sk-btn { border: 0; cursor: pointer; }
     border: 1px solid var(--line-strong);
     background: radial-gradient(120% 90% at 30% 20%, var(--ink-3), var(--ink) 70%);
   }
-  .lx-hero-name { font-size: clamp(3.6rem, 21vw, 6rem); }
   .lx-hero-caption { order: 3; position: static; max-width: none; margin-top: 14px; text-align: left; font-size: 0.78rem; }
   /* on phones the seal sits in the record's empty bottom-right corner, clear of the caption and the name */
   .lx-seal { width: 64px; top: auto; bottom: 4%; right: 0; }
+  .lx-hero-name { margin-bottom: 44px; }
+  .lx-sign { font-size: 0.3em; bottom: -0.72em; right: 0; }
 }
 @media (max-width: 900px) {
   .sk-services,
@@ -496,4 +521,9 @@ button.sk-btn { border: 0; cursor: pointer; }
 }
 @media (prefers-reduced-motion: reduce) {
   .lx-journey-item.is-now .lx-journey-node { animation: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lx-hero-word,
+  .lx-sign { transition: none; }
 }

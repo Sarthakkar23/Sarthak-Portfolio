@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useRef, useState } from "react";
+import React, { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   motion,
@@ -128,6 +128,40 @@ function HomeNew({ ready = true }) {
   const heroFade = useTransform(heroP, [0, 0.7], [1, 0]);
   const [phase, setPhase] = useState("prescription");
 
+  // The name is set on one line that exactly fills the column, re-fitted on resize.
+  const nameRef = useRef(null);
+  useEffect(() => {
+    const h1 = nameRef.current;
+    if (!h1) return undefined;
+    const line = h1.querySelector(".lx-name-line");
+    const fit = () => {
+      h1.style.fontSize = "100px";
+      const ratio = h1.clientWidth / line.getBoundingClientRect().width;
+      h1.style.fontSize = `${Math.min(100 * ratio, 280)}px`;
+      window.dispatchEvent(new Event("lx-name-fit"));
+    };
+    let alive = true;
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => alive && fit());
+    window.addEventListener("resize", fit);
+    return () => {
+      alive = false;
+      window.removeEventListener("resize", fit);
+    };
+  }, []);
+
+  // Reveal the name. On desktop the ink hero claims it (data-ink) and reveals it once the
+  // particles have gathered; everywhere else, or if the hero never loads, it fades in here.
+  useEffect(() => {
+    const h1 = nameRef.current;
+    if (!h1 || !ready) return undefined;
+    const soon = setTimeout(() => !h1.dataset.ink && h1.classList.add("is-shown"), 250);
+    const failsafe = setTimeout(() => h1.classList.add("is-shown"), 4500);
+    return () => {
+      clearTimeout(soon);
+      clearTimeout(failsafe);
+    };
+  }, [ready]);
+
   return (
     <main className="sk-home">
       {/* ---------- HERO ---------- */}
@@ -136,19 +170,19 @@ function HomeNew({ ready = true }) {
           <PrescriptionHero ready={ready} onPhase={setPhase} />
         </Suspense>
         <motion.div className="lx-hero-copy" style={{ y: copyY, opacity: heroFade }}>
-          <h1 className="lx-hero-name" aria-label="Sarthak Kar, AI and ML engineer">
-            {["Sarthak", "Kar"].map((word, wi) => (
-              <span className="cn-mask lx-hero-word" key={word}>
-                <motion.span
-                  className={wi === 1 ? "sk-red" : undefined}
-                  initial={{ y: "105%" }}
-                  animate={ready ? { y: 0 } : { y: "105%" }}
-                  transition={{ duration: 1.3, delay: 0.15 + wi * 0.12, ease: [0.16, 1, 0.3, 1] }}
-                >
+          <h1 className="lx-hero-name" ref={nameRef} aria-label="Sarthak Kar, AI and ML engineer">
+            <span className="lx-name-line">
+              {["Sarthak", "Kar"].map((word, wi) => (
+                <span className={`lx-hero-word ${wi === 1 ? "sk-red" : ""}`} key={word}>
                   {word}
-                </motion.span>
-              </span>
-            ))}
+                  {/* zero-size marker on the baseline: the ink canvas reads it to draw the name in place */}
+                  <span className="lx-baseline" />
+                </span>
+              ))}
+            </span>
+            <span className="lx-sign" aria-hidden="true">
+              Sarthak
+            </span>
           </h1>
           <motion.div
             className="lx-hero-meta"
