@@ -356,16 +356,18 @@ button.sk-btn { border: 0; cursor: pointer; }
   .lx-hero { padding: 0 16px 92px; align-items: end; }
   .lx-hero-name { font-size: clamp(3.6rem, 21vw, 6rem); }
   .lx-hero-caption { top: 92px; left: 16px; right: 16px; max-width: none; text-align: left; font-size: 0.74rem; }
+  /* on phones the seal sits in the record's empty bottom-right corner, clear of the caption and the name */
+  .lx-seal { width: 64px; top: auto; bottom: 4%; right: 0; }
 }
 @media (max-width: 900px) {
   .sk-services,
   .sk-about,
   .sk-faq-wrap,
-  .sk-services-left,
+  .cf-layout { grid-template-columns: 1fr; }
+  .sk-services-left { position: static; }
   .sk-section { padding-top: 88px; }
   .sk-about-photo { max-width: 420px; }
-    .cf-layout { grid-template-columns: 1fr; }
-    }
+}
 @media (max-width: 640px) {
   .sk-section { padding-left: 16px; padding-right: 16px; }
   .sk-contact-grid { grid-template-columns: 1fr; }
@@ -387,4 +389,6 @@ button.sk-btn { border: 0; cursor: pointer; }
 .sk-about-media figcaption span { display: block; color: var(--ivory-3); font-size: 0.85rem; margin-top: 2px; }
 .cf-twin strong { color: var(--ivory); font-weight: 600; }
 @media (max-width: 900px) { .sk-faq-card { position: static; } .sk-about-media { max-width: 420px; } }
-.sk-chip + .sk-chip::before { content: "·"; margin: 0 0.6em; color: var(--ivory-3); }
+/* a separator may end a line but never start one */
+.sk-chip { white-space: nowrap; }
+.sk-chip:not(:last-child)::after { content: "·"; margin: 0 0.6em; color: var(--ivory-3); }

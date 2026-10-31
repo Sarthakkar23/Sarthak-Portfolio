@@ -59,7 +59,7 @@
 .pv-amrip { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
 .pv-paper { position: relative; margin: 9% 6% 9% 9%; padding: 7% 7% 5%; background: #e9dfcf; color: #2a2420; box-shadow: 0 30px 50px -30px rgba(0, 0, 0, 0.9); transform: rotate(-1.4deg); }
 .pv-rx { display: block; font-family: var(--font-display); font-style: italic; font-size: 1.7rem; line-height: 1; margin-bottom: 10px; }
-.pv-hand { position: relative; margin: 0 0 10px; font-family: "Homemade Apple", cursive; font-size: clamp(0.78rem, 1.15vw, 1rem); line-height: 1.35; }
+.pv-hand { position: relative; margin: 0 0 10px; font-family: "Homemade Apple", cursive; font-size: clamp(0.6rem, 0.82vw, 0.8rem); white-space: nowrap; line-height: 1.35; }
 .pv-hand::after { content: ""; position: absolute; inset: -3px -5px; border: 1px solid var(--seal); opacity: 0; transform: scale(1.04); transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out); }
 .pv-hand.is-boxed::after { opacity: 1; transform: none; }
 .pv-paper-note { position: absolute; right: 8%; bottom: 6%; font-size: 0.78rem; letter-spacing: 0.08em; font-variant-caps: all-small-caps; color: #7a6f63; }

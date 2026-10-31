@@ -197,13 +197,6 @@ function FraudVisual() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     let w = 0;
     let h = 0;
-    const size = () => {
-      w = box.clientWidth;
-      h = box.clientHeight;
-      c.width = w * dpr;
-      c.height = h * dpr;
-    };
-    size();
     const g = c.getContext("2d");
     const lanes = 9;
     const dots = Array.from({ length: 70 }, () => ({
@@ -214,13 +207,9 @@ function FraudVisual() {
     }));
     let raf;
     let visible = true;
-    let painted = false;
-    const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting));
-    io.observe(box);
-    const draw = () => {
-      raf = requestAnimationFrame(draw);
-      if (!visible && painted) return;
-      painted = true;
+    // Paint one frame; `advance` moves the stream. Resizing a canvas wipes it, so every resize
+    // repaints immediately — the illustration is never an empty box, on screen or off.
+    const paint = (advance) => {
       g.setTransform(dpr, 0, 0, dpr, 0, 0);
       g.clearRect(0, 0, w, h);
       const line = w * 0.62;
@@ -232,7 +221,7 @@ function FraudVisual() {
       g.stroke();
       g.setLineDash([]);
       dots.forEach((d) => {
-        if (!reduced()) d.x += d.v;
+        if (advance && !reduced()) d.x += d.v;
         if (d.x > 1.05) {
           d.x = -0.05;
           d.fraud = Math.random() < 0.045;
@@ -252,12 +241,27 @@ function FraudVisual() {
         }
       });
     };
-    draw();
-    window.addEventListener("resize", size);
+    const size = () => {
+      w = box.clientWidth;
+      h = box.clientHeight;
+      c.width = w * dpr;
+      c.height = h * dpr;
+      paint(false);
+    };
+    const loop = () => {
+      raf = requestAnimationFrame(loop);
+      if (visible) paint(true);
+    };
+    size();
+    const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting));
+    io.observe(box);
+    const ro = new ResizeObserver(size);
+    ro.observe(box);
+    loop();
     return () => {
       cancelAnimationFrame(raf);
       io.disconnect();
-      window.removeEventListener("resize", size);
+      ro.disconnect();
     };
   }, []);
   return (

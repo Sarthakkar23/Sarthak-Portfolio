@@ -1,0 +1,443 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-31T14:24:44+00:00",
+  "title": "Design System: Sarthak Kar",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "neutral",
+        "displayName": "Noir",
+        "canonical": "#0d0b0a",
+        "tonalRamp": [
+          "#0d0b0a",
+          "#15120f",
+          "#1e1a16",
+          "#2e2822",
+          "#4a423a",
+          "#7a7066",
+          "#b3a99c",
+          "#ece4d8"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Noir Raised",
+        "canonical": "#15120f",
+        "tonalRamp": [
+          "#0d0b0a",
+          "#15120f",
+          "#1e1a16",
+          "#2e2822",
+          "#4a423a",
+          "#7a7066",
+          "#b3a99c",
+          "#ece4d8"
+        ]
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Noir Lifted",
+        "canonical": "#1e1a16",
+        "tonalRamp": [
+          "#0d0b0a",
+          "#15120f",
+          "#1e1a16",
+          "#2e2822",
+          "#4a423a",
+          "#7a7066",
+          "#b3a99c",
+          "#ece4d8"
+        ]
+      },
+      "ivory": {
+        "role": "neutral",
+        "displayName": "Ivory",
+        "canonical": "#efe6d8",
+        "tonalRamp": [
+          "#2a2621",
+          "#4a443c",
+          "#6e665b",
+          "#a39b8f",
+          "#cfc6b8",
+          "#e2d9cb",
+          "#efe6d8",
+          "#f8f3ec"
+        ]
+      },
+      "ivory-2": {
+        "role": "neutral",
+        "displayName": "Bone",
+        "canonical": "#cfc6b8",
+        "tonalRamp": [
+          "#2a2621",
+          "#4a443c",
+          "#6e665b",
+          "#a39b8f",
+          "#cfc6b8",
+          "#e2d9cb",
+          "#efe6d8",
+          "#f8f3ec"
+        ]
+      },
+      "ivory-3": {
+        "role": "neutral",
+        "displayName": "Ash",
+        "canonical": "#a39b8f",
+        "tonalRamp": [
+          "#2a2621",
+          "#4a443c",
+          "#6e665b",
+          "#a39b8f",
+          "#cfc6b8",
+          "#e2d9cb",
+          "#efe6d8",
+          "#f8f3ec"
+        ]
+      },
+      "seal": {
+        "role": "primary",
+        "displayName": "Oxblood Seal",
+        "canonical": "#8a1c2b",
+        "tonalRamp": [
+          "#2e070d",
+          "#5c0f1b",
+          "#8a1c2b",
+          "#a83444",
+          "#c2414f",
+          "#d9727f",
+          "#e8a6ae",
+          "#f5d9dc"
+        ]
+      },
+      "seal-deep": {
+        "role": "primary",
+        "displayName": "Dried Oxblood",
+        "canonical": "#5c0f1b",
+        "tonalRamp": [
+          "#2e070d",
+          "#5c0f1b",
+          "#8a1c2b",
+          "#a83444",
+          "#c2414f",
+          "#d9727f",
+          "#e8a6ae",
+          "#f5d9dc"
+        ]
+      },
+      "seal-ink": {
+        "role": "primary",
+        "displayName": "Seal Ink",
+        "canonical": "#d9727f",
+        "tonalRamp": [
+          "#2e070d",
+          "#5c0f1b",
+          "#8a1c2b",
+          "#a83444",
+          "#c2414f",
+          "#d9727f",
+          "#e8a6ae",
+          "#f5d9dc"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "rgba(239, 230, 216, 0.12)",
+        "tonalRamp": [
+          "#2a2621",
+          "#4a443c",
+          "#6e665b",
+          "#a39b8f",
+          "#cfc6b8",
+          "#e2d9cb",
+          "#efe6d8",
+          "#f8f3ec"
+        ]
+      },
+      "line-strong": {
+        "role": "neutral",
+        "displayName": "Strong Hairline",
+        "canonical": "rgba(239, 230, 216, 0.28)",
+        "tonalRamp": [
+          "#2a2621",
+          "#4a443c",
+          "#6e665b",
+          "#a39b8f",
+          "#cfc6b8",
+          "#e2d9cb",
+          "#efe6d8",
+          "#f8f3ec"
+        ]
+      },
+      "paper": {
+        "role": "illustration",
+        "displayName": "Prescription Paper",
+        "canonical": "#e9dfcf",
+        "tonalRamp": [
+          "#2a2420",
+          "#4b4239",
+          "#7a6f63",
+          "#a69a8b",
+          "#cbbfae",
+          "#e9dfcf",
+          "#f2ebdf",
+          "#faf6ef"
+        ]
+      },
+      "paper-ink": {
+        "role": "illustration",
+        "displayName": "Paper Ink",
+        "canonical": "#2a2420",
+        "tonalRamp": [
+          "#2a2420",
+          "#4b4239",
+          "#7a6f63",
+          "#a69a8b",
+          "#cbbfae",
+          "#e9dfcf",
+          "#f2ebdf",
+          "#faf6ef"
+        ]
+      },
+      "verified": {
+        "role": "illustration",
+        "displayName": "Verified Sage",
+        "canonical": "#9cc3a5",
+        "tonalRamp": [
+          "#1c2b20",
+          "#2f4636",
+          "#4a6a52",
+          "#6b8f73",
+          "#9cc3a5",
+          "#bcd8c2",
+          "#d8eadb",
+          "#eef6ef"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero name only; footer wordmark echoes it."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headings."
+      },
+      "project-title": {
+        "displayName": "Project Title",
+        "purpose": "Project panel names."
+      },
+      "lede": {
+        "displayName": "Lede",
+        "purpose": "Results written as a sentence."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Service rows, FAQ questions, pager links, note titles."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Italic didone numerals for measured results."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Prose in Bone."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Buttons, nav action, middot runs, illustration tags (all-small-caps)."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Figure captions and the hero sample note."
+      },
+      "hand": {
+        "displayName": "Hand",
+        "purpose": "Handwriting inside the synthetic prescription only."
+      }
+    },
+    "shadows": [
+      {
+        "name": "desk",
+        "value": "0 18px 40px -22px rgba(0, 0, 0, 0.9)",
+        "purpose": "Under the seal button and twin launcher."
+      },
+      {
+        "name": "paper",
+        "value": "0 30px 50px -30px rgba(0, 0, 0, 0.9)",
+        "purpose": "Under the synthetic prescription sheet."
+      },
+      {
+        "name": "seal-drop",
+        "value": "drop-shadow(0 10px 18px rgba(0, 0, 0, 0.6))",
+        "purpose": "Filter under the wax seal stamp."
+      },
+      {
+        "name": "floating-chrome",
+        "value": "0 10px 40px -10px rgba(0, 0, 0, 0.6)",
+        "purpose": "Nav capsule once the page scrolls."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The only easing for UI transitions."
+      },
+      {
+        "name": "duration-state",
+        "value": "0.3s-0.35s",
+        "purpose": "Button, link and field colour changes."
+      },
+      {
+        "name": "duration-reveal",
+        "value": "0.45s-0.6s",
+        "purpose": "Row indents, underline draws, illustration steps, seal stamp."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce",
+        "purpose": "Hero and illustrations render their finished state; ambient loops stop."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "mobile",
+        "value": "640px"
+      },
+      {
+        "name": "nav-fold",
+        "value": "760px"
+      },
+      {
+        "name": "tablet",
+        "value": "900px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Seal Button",
+      "kind": "button",
+      "refersTo": "button-seal",
+      "description": "The primary action; one per viewport.",
+      "html": "<button class=\"ds-btn-seal\">Download résumé</button>",
+      "css": ".ds-btn-seal { display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; border: 0; border-radius: 2px; background: var(--seal, #8a1c2b); color: var(--ivory, #efe6d8); font-family: var(--font-label); font-weight: 600; font-size: 1.014rem; letter-spacing: 0.08em; font-variant-caps: all-small-caps; box-shadow: 0 18px 40px -22px rgba(0,0,0,0.9); cursor: pointer; transition: background 0.35s cubic-bezier(0.16,1,0.3,1); } .ds-btn-seal:hover { background: var(--seal-deep, #5c0f1b); } .ds-btn-seal:focus-visible { outline: 1px solid var(--ivory, #efe6d8); outline-offset: 3px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary action; inverts to ivory on hover.",
+      "html": "<button class=\"ds-btn-ghost\">Get in touch</button>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; border: 1px solid var(--line-strong, rgba(239,230,216,0.28)); border-radius: 2px; background: transparent; color: var(--ivory, #efe6d8); font-family: var(--font-label); font-weight: 600; font-size: 1.014rem; letter-spacing: 0.08em; font-variant-caps: all-small-caps; cursor: pointer; transition: background 0.35s cubic-bezier(0.16,1,0.3,1), color 0.35s cubic-bezier(0.16,1,0.3,1), border-color 0.35s cubic-bezier(0.16,1,0.3,1); } .ds-btn-ghost:hover { background: var(--ivory, #efe6d8); color: var(--ink, #0d0b0a); border-color: var(--ivory, #efe6d8); } .ds-btn-ghost:focus-visible { outline: 1px solid var(--ivory, #efe6d8); outline-offset: 3px; }"
+    },
+    {
+      "name": "Ivory Button",
+      "kind": "button",
+      "refersTo": "button-ivory",
+      "description": "Solid ivory action where the seal is already in view.",
+      "html": "<button class=\"ds-btn-ivory\">Read the case study</button>",
+      "css": ".ds-btn-ivory { display: inline-flex; padding: 14px 24px; border: 0; border-radius: 2px; background: var(--ivory, #efe6d8); color: var(--ink, #0d0b0a); font-family: var(--font-label); font-weight: 600; font-size: 1.014rem; letter-spacing: 0.08em; font-variant-caps: all-small-caps; cursor: pointer; transition: background 0.35s cubic-bezier(0.16,1,0.3,1); } .ds-btn-ivory:hover { background: var(--ivory-2, #cfc6b8); } .ds-btn-ivory:focus-visible { outline: 1px solid var(--ivory, #efe6d8); outline-offset: 3px; }"
+    },
+    {
+      "name": "Underline Field",
+      "kind": "input",
+      "refersTo": "input-underline",
+      "description": "Boxless field with a single hairline underline.",
+      "html": "<label class=\"ds-field\"><span>Your email</span><input placeholder=\"name@company.com\"></label>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 8px; } .ds-field span { color: var(--ivory-3, #a39b8f); font-size: 0.8rem; letter-spacing: 0.04em; } .ds-field input { background: transparent; border: 0; border-bottom: 1px solid var(--line-strong, rgba(239,230,216,0.28)); border-radius: 0; padding: 12px 0; color: var(--ivory, #efe6d8); font: inherit; font-size: 1.02rem; outline: none; transition: border-color 0.3s cubic-bezier(0.16,1,0.3,1); } .ds-field input:focus { border-color: var(--ivory, #efe6d8); }"
+    },
+    {
+      "name": "Nav Capsule",
+      "kind": "nav",
+      "refersTo": "nav-capsule",
+      "description": "Floating glass capsule with monogram, links and a small-caps action.",
+      "html": "<nav class=\"ds-nav\"><span class=\"ds-nav-mono\">SK</span><a href=\"#\" class=\"is-active\">Work</a><a href=\"#\">About</a><a href=\"#\">Notes</a><button class=\"ds-nav-cta\">Contact</button></nav>",
+      "css": ".ds-nav { display: inline-flex; align-items: center; gap: 4px; padding: 6px 6px 6px 8px; border-radius: 999px; background: rgba(13,11,10,0.55); backdrop-filter: blur(10px); border: 1px solid var(--line, rgba(239,230,216,0.12)); font-family: var(--font-body); } .ds-nav-mono { display: grid; place-items: center; width: 32px; height: 32px; margin-right: 8px; border: 1px solid var(--line-strong, rgba(239,230,216,0.28)); border-radius: 50%; font-family: var(--font-display); font-style: italic; font-size: 0.86rem; color: var(--ivory, #efe6d8); } .ds-nav a { color: var(--ivory-3, #a39b8f); text-decoration: none; font-size: 0.85rem; font-weight: 500; padding: 8px 12px; border-radius: 999px; transition: color 0.2s, background 0.2s; } .ds-nav a:hover, .ds-nav a.is-active { color: var(--ivory, #efe6d8); } .ds-nav a:hover { background: rgba(255,255,255,0.06); } .ds-nav-cta { border: 1px solid var(--line-strong, rgba(239,230,216,0.28)); background: transparent; color: var(--ivory, #efe6d8); font-weight: 600; font-size: 0.936rem; letter-spacing: 0.08em; font-variant-caps: all-small-caps; padding: 9px 16px; border-radius: 999px; cursor: pointer; transition: background 0.2s; } .ds-nav-cta:hover { background: var(--ivory, #efe6d8); color: var(--ink, #0d0b0a); }"
+    },
+    {
+      "name": "Middot Run",
+      "kind": "chip",
+      "refersTo": "middot-run",
+      "description": "Metadata as small caps separated by middots, in place of chips.",
+      "html": "<div class=\"ds-run\"><span>PyTorch</span><span>FHIR R4</span><span>LLM pipelines</span><span>ABDM</span></div>",
+      "css": ".ds-run { display: flex; flex-wrap: wrap; gap: 2px 0; } .ds-run span { white-space: nowrap; font-size: 0.92rem; color: var(--ivory-2, #cfc6b8); font-variant-caps: all-small-caps; letter-spacing: 0.06em; } .ds-run span:not(:last-child)::after { content: \"\\00B7\"; margin: 0 0.6em; color: var(--ivory-3, #a39b8f); }"
+    },
+    {
+      "name": "Project Panel",
+      "kind": "card",
+      "refersTo": "project-panel",
+      "description": "Full-width hairline-ruled row; text opposite a captioned illustration.",
+      "html": "<article class=\"ds-panel\"><div><h3 class=\"ds-panel-name\"><a href=\"#\">CloudOptima</a></h3><p class=\"ds-panel-sub\">Deep RL scheduler &middot; <span>SSRN preprint</span></p><p class=\"ds-panel-sum\">A reinforcement-learning scheduler that cuts simulated compute cost while holding availability.</p><p class=\"ds-panel-res\"><span><strong>&minus;34%</strong> compute cost</span><span><strong>99.2%</strong> availability</span></p></div><figure class=\"ds-panel-fig\"><div></div><figcaption>Illustration, not a screenshot.</figcaption></figure></article>",
+      "css": ".ds-panel { display: grid; grid-template-columns: minmax(0,0.92fr) minmax(0,1.08fr); gap: 48px; align-items: center; padding: 56px 0; border-top: 1px solid var(--line, rgba(239,230,216,0.12)); border-bottom: 1px solid var(--line, rgba(239,230,216,0.12)); } .ds-panel-name { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 2.6rem; line-height: 0.98; letter-spacing: -0.025em; } .ds-panel-name a { color: var(--ivory, #efe6d8); text-decoration: none; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size 0.6s cubic-bezier(0.16,1,0.3,1); } .ds-panel-name a:hover, .ds-panel-name a:focus-visible { background-size: 100% 1px; } .ds-panel-sub { margin: 14px 0 0; color: var(--ivory-3, #a39b8f); font-size: 0.92rem; } .ds-panel-sub span { color: var(--ivory-2, #cfc6b8); } .ds-panel-sum { margin: 20px 0 0; color: var(--ivory-2, #cfc6b8); font-size: 1.05rem; line-height: 1.7; } .ds-panel-res { display: flex; flex-wrap: wrap; column-gap: 26px; margin: 22px 0 0; color: var(--ivory-3, #a39b8f); font-size: 0.9rem; } .ds-panel-res strong { font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: 1.45rem; color: var(--ivory, #efe6d8); margin-right: 4px; } .ds-panel-fig { margin: 0; } .ds-panel-fig div { aspect-ratio: 16/11; border: 1px solid var(--line-strong, rgba(239,230,216,0.28)); background: radial-gradient(120% 90% at 30% 20%, var(--ink-3, #1e1a16), var(--ink, #0d0b0a) 70%); } .ds-panel-fig figcaption { margin-top: 14px; color: var(--ivory-3, #a39b8f); font-size: 0.76rem; }"
+    },
+    {
+      "name": "Index Row",
+      "kind": "custom",
+      "description": "Hairline-ruled list row that indents on hover (notes, repos).",
+      "html": "<a class=\"ds-row\" href=\"#\"><strong>Reading prescriptions with an LLM</strong><span>Why the verifier rejects what it cannot trace.</span><em>&rarr;</em></a>",
+      "css": ".ds-row { display: grid; grid-template-columns: 1fr 1.6fr 24px; gap: 24px; align-items: baseline; padding: 26px 0; border-bottom: 1px solid var(--line, rgba(239,230,216,0.12)); color: var(--ivory, #efe6d8); text-decoration: none; transition: padding 0.5s cubic-bezier(0.16,1,0.3,1); } .ds-row:hover, .ds-row:focus-visible { padding-left: 10px; } .ds-row strong { font-family: var(--font-display); font-weight: 400; font-size: 1.6rem; line-height: 1.1; } .ds-row span { color: var(--ivory-2, #cfc6b8); font-size: 0.95rem; line-height: 1.55; } .ds-row em { font-style: normal; color: var(--ivory-3, #a39b8f); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Private Dossier",
+    "overview": "The site reads like a sealed file handed across a dark desk: a warm noir ground with a brown undertone, ivory type in three tiers, and a single oxblood seal that marks the one thing that matters in each viewport. A high-contrast didone carries every name, heading and number; a quiet grotesque carries the reading; labels drop into true small caps. The work leads; the chrome recedes.\n\nStructure comes from hairline ivory rules, not boxes. Sections are editorial rows separated by 1px lines, projects are full-width panels that alternate text and illustration, lists are indexes that indent on hover. Metadata runs as middot-separated small-caps sequences rather than chips. Results are written as sentences or as italic didone numerals inline, never as a stat strip. Illustrations are code-drawn, framed by a single strong hairline, and always captioned as illustrations or synthetic samples.\n\nMotion is ease-out only, slow enough to feel deliberate (0.3s to 0.6s), and every animated surface honours reduced motion with a static end state.",
+    "keyCharacteristics": [
+      "Warm noir ground, never pure black; ivory text tiers all at or above 4.5:1.",
+      "One oxblood seal per viewport: the primary action, the hero stamp, or a reading-progress rule.",
+      "Didone for names, headings and figures; grotesque for prose; small caps for labels and actions.",
+      "Hairlines instead of cards; square (2px) corners on every rectangle.",
+      "Middot runs instead of chips; sentences instead of stat strips.",
+      "Ease-out motion; reduced motion respected; illustrations labelled as illustrations."
+    ],
+    "rules": [
+      {
+        "name": "The One Seal Rule",
+        "body": "Oxblood appears at most once per viewport as a solid. If a second seal-coloured element enters the frame, one of them becomes ivory or ghost.",
+        "section": "colors"
+      },
+      {
+        "name": "The Never Black Rule",
+        "body": "The ground is the warm noir, never #000; shadows may use black, surfaces may not.",
+        "section": "colors"
+      },
+      {
+        "name": "The Italic Numeral Rule",
+        "body": "Numbers that prove something are set in italic didone at title size beside a small Ash label; they never get their own tile.",
+        "section": "typography"
+      },
+      {
+        "name": "The Small Caps Rule",
+        "body": "Labels and actions use true all-small-caps with 0.08em tracking, not uppercase.",
+        "section": "typography"
+      },
+      {
+        "name": "The Objects Only Rule",
+        "body": "A shadow means an object lying on the dossier. Layout containers never get one.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep the ground at Noir and step up through ink-2 and ink-3 for any raised plate.",
+      "Do give each viewport at most one solid oxblood element.",
+      "Do separate sections, rows and panels with 1px hairlines (line or line-strong) instead of boxes.",
+      "Do set actions and labels in all-small-caps Hanken Grotesk, 600, 0.08em tracking, on 2px-cornered rectangles.",
+      "Do write results as sentences or italic didone numerals beside Ash labels.",
+      "Do run metadata as middot-separated small caps.",
+      "Do use cubic-bezier(0.16, 1, 0.3, 1) for every transition and provide a static end state under prefers-reduced-motion.",
+      "Do caption every illustration as an illustration or synthetic sample."
+    ],
+    "donts": [
+      "Don't use cards, nested cards, or side-stripe borders to group content.",
+      "Don't add eyebrows, kickers or section numbers above headings.",
+      "Don't build stat strips or metric tiles.",
+      "Don't use rounded chips or pill tags for metadata; use a middot run.",
+      "Don't lift, scale or bounce on hover; shift colour, underline or indent instead.",
+      "Don't add gradient orbs or decorative blurred blobs; light comes from one radial pool behind the hero.",
+      "Don't use pure black (#000) surfaces or uppercase labels.",
+      "Don't present an illustration as a screenshot or real result."
+    ]
+  }
+}
