@@ -59,10 +59,10 @@
 .pv-amrip { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
 .pv-paper { position: relative; margin: 9% 6% 9% 9%; padding: 7% 7% 5%; background: #e9dfcf; color: #2a2420; box-shadow: 0 30px 50px -30px rgba(0, 0, 0, 0.9); transform: rotate(-1.4deg); }
 .pv-rx { display: block; font-family: var(--font-display); font-style: italic; font-size: 1.7rem; line-height: 1; margin-bottom: 10px; }
-.pv-hand { position: relative; margin: 0 0 10px; font-family: "Bradley Hand", "Segoe Script", "Snell Roundhand", cursive; font-size: clamp(0.78rem, 1.15vw, 1rem); line-height: 1.35; }
+.pv-hand { position: relative; margin: 0 0 10px; font-family: "Homemade Apple", cursive; font-size: clamp(0.78rem, 1.15vw, 1rem); line-height: 1.35; }
 .pv-hand::after { content: ""; position: absolute; inset: -3px -5px; border: 1px solid var(--seal); opacity: 0; transform: scale(1.04); transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out); }
 .pv-hand.is-boxed::after { opacity: 1; transform: none; }
-.pv-paper-note { position: absolute; right: 8%; bottom: 6%; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: #7a6f63; }
+.pv-paper-note { position: absolute; right: 8%; bottom: 6%; font-size: 0.78rem; letter-spacing: 0.08em; font-variant-caps: all-small-caps; color: #7a6f63; }
 .pv-json { display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 0 9% 0 4%; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: clamp(0.62rem, 0.9vw, 0.78rem); color: var(--ivory-3); }
 .pv-json span { opacity: 0.35; transition: opacity 0.5s var(--ease-out), color 0.5s var(--ease-out); white-space: nowrap; }
 .pv-json span:first-child,
@@ -86,7 +86,7 @@
 .pv-pixel canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 22%; filter: grayscale(1); }
 .pv-divider { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--ivory); box-shadow: 0 0 0 4px rgba(13, 11, 10, 0.25); pointer-events: none; }
 .pv-range { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; }
-.pv-tag { position: absolute; padding: 5px 10px; background: rgba(13, 11, 10, 0.72); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ivory-2); }
+.pv-tag { position: absolute; padding: 5px 10px; background: rgba(13, 11, 10, 0.72); font-size: 0.858rem; letter-spacing: 0.08em; font-variant-caps: all-small-caps; color: var(--ivory-2); }
 .pv-tag-l { left: 12px; bottom: 12px; }
 .pv-tag-r { right: 12px; bottom: 12px; }
 

@@ -22,6 +22,6 @@ STORY: In seconds the visitor sees who Sarthak is and watches his flagship work 
 
 FIRST VIEWPORT: Full-bleed WebGL field. A synthetic prescription of ivory ink particles sits centre-right; an oxblood scan line reads it, fields lock in, and the ink re-forms as a FHIR record; the pointer disturbs the ink. "Sarthak Kar" in the didone spans the lower left at display scale; one line of positioning and the résumé + contact actions sit beside it; a small caption labels the sample synthetic and links the case study.
 
-FORM: Pinned by the user (noir dossier + signature data-morph hero); concept roll not run. seed: none (unavailable)
+FORM: Pinned by the user (noir dossier + signature data-morph hero); the concept roll was run afterwards for the record and the pinned direction beat it, per the rule that a user-pinned direction wins. seed:cdbf7410b6d80ca4
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance

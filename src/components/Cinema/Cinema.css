@@ -30,9 +30,9 @@ html.lenis body { height: auto; }
 .cn-intro-kicker {
   display: block;
   color: var(--ivory-3);
-  font-size: 0.78rem;
-  letter-spacing: 0.35em;
-  text-transform: uppercase;
+  font-size: 1.014rem;
+  letter-spacing: 0.08em;
+  font-variant-caps: all-small-caps;
   margin-bottom: 14px;
 }
 .cn-intro-name {

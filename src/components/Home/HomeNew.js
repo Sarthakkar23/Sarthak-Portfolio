@@ -26,7 +26,6 @@ import {
 import { AiFillGithub, AiFillInstagram } from "react-icons/ai";
 import { FaLinkedinIn } from "react-icons/fa";
 import { FiArrowUpRight, FiPlus, FiMinus, FiDownload } from "react-icons/fi";
-import avatar from "../../assets/avatar.webp";
 import portrait from "../../assets/portrait.webp";
 import resumePdf from "../../assets/resume/Sarthak Kar Resume.pdf";
 import ProjectCard from "../Projects/ProjectCard";
@@ -160,7 +159,7 @@ function HomeNew({ ready = true }) {
               AI / ML engineer. I build systems that read messy, real-world data and prove what they found.
             </p>
             <div className="lx-hero-actions">
-              <button className="sk-btn sk-btn-red" onClick={() => scrollToId("contact")}>
+              <button className="sk-btn sk-btn-white" onClick={() => scrollToId("contact")}>
                 Get in touch <FiArrowUpRight />
               </button>
               <a className="sk-btn sk-btn-ghost" href={resumePdf} download="Sarthak-Kar-Resume.pdf">
@@ -259,13 +258,14 @@ function HomeNew({ ready = true }) {
       <section className="sk-section" id="about">
         <MaskText className="sk-heading" lines={["Engineer first.", <span className="sk-red">Always shipping.</span>]} />
         <div className="sk-about">
-          <motion.div className="sk-about-photo" {...reveal}>
-            <img src={portrait} alt="Sarthak Kar" />
-            <div className="sk-about-card">
-              <strong>{profile.name}</strong>
-              <span>B.Tech CSE (AI & ML) · SRMIST · {profile.location}</span>
+          <motion.figure className="sk-about-media" {...reveal}>
+            <div className="sk-about-photo">
+              <img src={portrait} alt="Sarthak Kar" />
             </div>
-          </motion.div>
+            <figcaption>
+              {profile.name} <span>B.Tech CSE (AI & ML), SRMIST, {profile.location}</span>
+            </figcaption>
+          </motion.figure>
           <motion.div className="sk-about-text" {...reveal}>
             <p>
               I'm a final-year <b>Computer Science (AI & ML)</b> student at <b>SRM Institute of Science and
@@ -281,20 +281,6 @@ function HomeNew({ ready = true }) {
               Previously: <b>{experience[0].role}</b> at {experience[0].org}. Outside the code I lead
               sponsorship for SRMIST's national cultural festival and TEDxSRMIST.
             </p>
-            <div className="sk-stats">
-              <div>
-                <strong>4</strong>
-                <span>End-to-end ML projects</span>
-              </div>
-              <div>
-                <strong>1</strong>
-                <span>Research preprint</span>
-              </div>
-              <div>
-                <strong>60K+</strong>
-                <span>Attendee festival — sponsorship lead</span>
-              </div>
-            </div>
             <div className="sk-row">
               <Link to="/about" className="sk-btn sk-btn-red">
                 Full story <FiArrowUpRight />
@@ -335,28 +321,26 @@ function HomeNew({ ready = true }) {
               </div>
             ))}
           </div>
-          <motion.div className="sk-faq-card" {...reveal}>
-            <img src={avatar} alt="" />
+          <motion.aside className="sk-faq-card" {...reveal}>
             <h3>
-              Hiring for <br />
-              AI/ML?
+              Hiring for <span className="sk-red">AI/ML?</span>
             </h3>
-            <p>Everything you need is on one page of my résumé — or just say hello.</p>
+            <p>Everything you need is on one page of my résumé, or just say hello.</p>
             <div className="sk-row sk-row-tight">
-              <a className="sk-btn sk-btn-white" href={`mailto:${profile.email}`}>
+              <a className="sk-link" href={`mailto:${profile.email}`}>
                 Email me <FiArrowUpRight />
               </a>
-              <a className="sk-btn sk-btn-outline-white" href={resumePdf} download="Sarthak-Kar-Resume.pdf">
-                Résumé <FiDownload />
+              <a className="pp-code" href={resumePdf} download="Sarthak-Kar-Resume.pdf">
+                Download the résumé
               </a>
             </div>
             <button
               className="sk-faq-twin"
               onClick={() => window.dispatchEvent(new CustomEvent("twin:ask", { detail: "Is Sarthak a fit for an ML engineer role?" }))}
             >
-              Or ask my AI twin →
+              Or ask my AI twin
             </button>
-          </motion.div>
+          </motion.aside>
         </div>
       </section>
 
@@ -374,10 +358,8 @@ function HomeNew({ ready = true }) {
               onClick={() => window.dispatchEvent(new CustomEvent("twin:ask"))}
               data-cursor="Ask"
             >
-              <img src={avatar} alt="" />
               <span>
-                <strong>Just exploring?</strong>
-                <small>Ask my AI twin anything about my work →</small>
+                <strong>Just exploring?</strong> Ask my AI twin anything about my work.
               </span>
             </button>
             <div className="sk-contact-grid cf-details">

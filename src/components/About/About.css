@@ -63,7 +63,7 @@
   flex-direction: column;
   gap: 6px;
 }
-.ab-facts span { color: var(--ivory-3); font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; }
+.ab-facts span { color: var(--ivory-3); font-size: 1.014rem; letter-spacing: 0.2em; font-variant-caps: all-small-caps; }
 .ab-facts strong { color: var(--ivory); font-size: 1.1rem; font-weight: 600; }
 
 /* ---------- Ticker ---------- */
@@ -126,7 +126,7 @@
 }
 .ab-skill-row h4 { color: var(--ivory); font-size: 1.05rem; font-weight: 700; margin: 4px 0 0; }
 .ab-skill-row .sk-chip { transition: background 0.2s, color 0.2s; }
-.ab-skill-row .sk-chip:hover { background: var(--seal); color: var(--ivory); }
+
 
 /* ---------- Projects ---------- */
 .ab-projects { display: flex; flex-direction: column; gap: 12px; }
@@ -158,11 +158,11 @@
 .ab-project-body .sk-link { margin-bottom: 26px; }
 
 /* ---------- Publication ---------- */
-.ab-pub { display: block; text-decoration: none; border-radius: 2px; padding: clamp(32px, 5vw, 56px); background: linear-gradient(160deg, var(--seal), var(--seal-deep)); color: var(--ivory); position: relative; overflow: hidden; transition: background 0.6s var(--ease-out); }
-.ab-pub:hover { color: var(--ivory); transform: none; }
+.ab-pub { display: block; text-decoration: none; padding: clamp(36px, 5vw, 56px) 0; border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong); color: var(--ivory); background: transparent; transition: border-color 0.5s var(--ease-out); }
+.ab-pub:hover { color: var(--ivory); border-color: var(--ivory); }
 .ab-pub h3 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2rem, 5vw, 4rem); line-height: 1; letter-spacing: -0.025em; margin: 0 0 18px; }
-.ab-pub p { color: rgba(255, 255, 255, 0.88); font-size: 1.05rem; margin: 0 0 22px; }
-.ab-pub-link { display: inline-flex; gap: 8px; align-items: center; font-weight: 600; border-bottom: 1px solid rgba(255, 255, 255, 0.5); padding-bottom: 4px; }
+.ab-pub p { color: var(--ivory-2); font-size: 1.05rem; margin: 0 0 22px; }
+.ab-pub-link { display: inline-flex; gap: 8px; align-items: center; font-weight: 500; border-bottom: 1px solid var(--seal); padding-bottom: 5px; }
 
 .ab-certs {
   margin-top: 22px;

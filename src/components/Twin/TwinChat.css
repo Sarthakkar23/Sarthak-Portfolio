@@ -2,7 +2,7 @@
 .tw-launch:hover { border-color: var(--ivory); transform: none; }
 .tw-launch img { width: 32px; height: 32px; border-radius: 2px; object-fit: cover; object-position: top; background: var(--ink-3); }
 .tw-launch span { display: flex; flex-direction: column; line-height: 1.15; }
-.tw-launch strong { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; }
+.tw-launch strong { font-size: 0.936rem; letter-spacing: 0.08em; font-variant-caps: all-small-caps; font-weight: 600; }
 .tw-launch small { display: none; }
 .tw-launch.is-open { border-color: var(--line-strong); }
 

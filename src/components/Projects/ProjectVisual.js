@@ -214,11 +214,13 @@ function FraudVisual() {
     }));
     let raf;
     let visible = true;
+    let painted = false;
     const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting));
     io.observe(box);
     const draw = () => {
       raf = requestAnimationFrame(draw);
-      if (!visible) return;
+      if (!visible && painted) return;
+      painted = true;
       g.setTransform(dpr, 0, 0, dpr, 0, 0);
       g.clearRect(0, 0, w, h);
       const line = w * 0.62;
