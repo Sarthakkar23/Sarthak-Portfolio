@@ -144,6 +144,8 @@
   text-align: left;
 }
 .lx-hero-caption em { font-style: normal; color: var(--ivory-2); }
+.lx-hero-about { display: block; }
+.lx-hero-about b { font-weight: 500; color: var(--ivory); }
 .lx-hero-caption a { color: var(--ivory); text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 4px; }
 .lx-hero-phase {
   display: block;

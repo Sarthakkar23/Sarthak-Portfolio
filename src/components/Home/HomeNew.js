@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useRef, useState } from "react";
+import React, { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   motion,
@@ -36,8 +36,10 @@ import { NowBand, Journey, HomeNotes } from "./HomeExtras";
 import config from "../../config";
 import "./HomeNew.css";
 
+import { heroSpecimens } from "../../data/heroSpecimens";
+
 // three.js only loads with the hero, after the page text has rendered.
-const PrescriptionHero = lazy(() => import("./PrescriptionHero"));
+const InkHero = lazy(() => import("./InkHero"));
 
 const tools = [
   { icon: SiPython, name: "Python" },
@@ -126,7 +128,10 @@ function HomeNew({ ready = true }) {
   const { scrollYProgress: heroP } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const copyY = useTransform(heroP, [0, 1], ["0%", "-18%"]);
   const heroFade = useTransform(heroP, [0, 0.7], [1, 0]);
-  const [phase, setPhase] = useState("prescription");
+  // which hero specimen is on screen, and how far along it is (0 input · 1 reading · 2 result)
+  const [shown, setShown] = useState({ phase: 0, index: 0 });
+  const onPhase = useCallback((phase, index) => setShown({ phase, index }), []);
+  const spec = heroSpecimens[shown.index] || heroSpecimens[0];
 
   // The name is set on one line that exactly fills the column, re-fitted on resize.
   const nameRef = useRef(null);
@@ -167,7 +172,7 @@ function HomeNew({ ready = true }) {
       {/* ---------- HERO ---------- */}
       <section className="lx-hero" id="home" ref={heroRef}>
         <Suspense fallback={<div className="lx-hero-canvas" aria-hidden="true" />}>
-          <PrescriptionHero ready={ready} onPhase={setPhase} />
+          <InkHero ready={ready} onPhase={onPhase} />
         </Suspense>
         <motion.div className="lx-hero-copy" style={{ y: copyY, opacity: heroFade }}>
           <h1 className="lx-hero-name" ref={nameRef} aria-label="Sarthak Kar, AI and ML engineer">
@@ -214,12 +219,20 @@ function HomeNew({ ready = true }) {
           style={{ opacity: heroFade }}
           aria-live="polite"
         >
-          <span className="lx-hero-phase">
-            {phase === "record" ? "Verified FHIR record" : phase === "reading" ? "Reading every field" : "Handwritten prescription"}
-          </span>
-          AMRIP-India, my capstone, turns a photographed prescription into a record a hospital system can trust.
-          <em> Synthetic sample.</em>{" "}
-          <Link to="/work/amrip-india">See how it works</Link>
+          <span className="lx-hero-phase">{spec.phases[shown.phase]}</span>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={spec.slug}
+              className="lx-hero-about"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <b>{spec.name}.</b> {spec.line}
+              <em> {spec.note}</em> <Link to={`/work/${spec.slug}`}>See how it works</Link>
+            </motion.span>
+          </AnimatePresence>
         </motion.p>
       </section>
 

@@ -1,47 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import { heroSpecimens } from "../../data/heroSpecimens";
+import { specimenDrawers, HAND, MONO } from "./specimens";
+import portrait from "../../assets/portrait.webp";
 
-// The signature hero: a synthetic handwritten prescription, made of ink particles, is read by a
-// scan line, its fields lock in, and the ink re-forms as the FHIR record AMRIP-India would produce.
-// When the record lands, crisp type settles over the ink and an oxblood seal stamps it verified.
-// Everything shown is a synthetic sample: no real patient or prescription data.
+// The signature hero. On desktop the ink first gathers into the name; then it cycles through
+// heroSpecimens: each project's messy input is drawn in ink particles, read by a scan line, its
+// fields lock in, and the ink re-forms as the result. Records get crisp type and a wax seal.
+// Everything shown is a synthetic sample or an illustration: no real patient or customer data.
 
 const SEAL = new THREE.Color("#a3263a");
 const IVORY = new THREE.Color("#efe6d8");
-const HAND = '"Homemade Apple", cursive';
-const MONO = '"Hanken Grotesk Variable", system-ui, sans-serif';
 const SCALE = 2; // offscreen canvases render at 2x so sampled ink keeps its strokes
-
-const RX_LINES = [
-  { text: "Tab. Paracetamol 650 mg", note: "1-0-1  x  5 days" },
-  { text: "Cap. Amoxicillin 500 mg", note: "1-1-1  x  7 days" },
-  { text: "Syp. Ambroxol 10 ml", note: "TDS after food" },
-];
-const FHIR_FULL = [
-  "{",
-  '  "resourceType": "MedicationRequest",',
-  '  "subject": "Patient/synthetic-34F",',
-  '  "medication": "Paracetamol 650 mg",',
-  '  "dosage": "1-0-1 · 5 days",',
-  '  "evidence": "ocr span + box matched",',
-  '  "status": "verified"',
-  "}",
-];
-const FHIR_SHORT = [
-  "{",
-  '  "resourceType": "MedicationRequest",',
-  '  "medication": "Paracetamol 650 mg",',
-  '  "dosage": "1-0-1 · 5 days",',
-  '  "status": "verified"',
-  "}",
-];
 
 // Draw onto a 2x offscreen canvas and return the CSS-pixel coordinates of every inked pixel.
 function inkPoints(draw, w, h) {
   const c = document.createElement("canvas");
   c.width = w * SCALE;
   c.height = h * SCALE;
-  const g = c.getContext("2d");
+  const g = c.getContext("2d", { willReadFrequently: true });
   g.fillStyle = "#000";
   g.fillRect(0, 0, c.width, c.height);
   g.scale(SCALE, SCALE);
@@ -80,39 +57,6 @@ function drawName(g, hero) {
     if ("letterSpacing" in g) g.letterSpacing = cs.letterSpacing;
     g.fillText(word.firstChild.textContent, x, y);
   });
-}
-
-function drawPrescription(g, w, h) {
-  g.lineWidth = 1.5;
-  g.strokeRect(6, 6, w - 12, h - 12);
-  g.font = `italic 400 ${h * 0.13}px "Bodoni Moda Variable", Georgia, serif`;
-  g.fillText("Rx", 26, h * 0.2);
-  g.font = `500 ${h * 0.042}px ${MONO}`;
-  g.fillText("SYNTHETIC SAMPLE  ·  PT. 34 F", w * 0.44, h * 0.12);
-  g.fillRect(26, h * 0.255, w - 52, 1);
-  const boxes = [];
-  RX_LINES.forEach((l, i) => {
-    const y = h * (0.39 + i * 0.165);
-    g.font = `${h * 0.06}px ${HAND}`;
-    g.fillText(l.text, 32, y);
-    g.font = `${h * 0.045}px ${HAND}`;
-    g.fillText(l.note, 52, y + h * 0.066);
-    boxes.push({ x: 22, y: y - h * 0.07, w: w - 44, h: h * 0.158 });
-  });
-  g.font = `${h * 0.055}px ${HAND}`;
-  g.fillText("Dr. A. Rao", w * 0.6, h * 0.93);
-  return { boxes };
-}
-
-function drawRecord(g, w, h, lines) {
-  const lh = h / (lines.length + 1.2);
-  let size = lh * 0.6;
-  g.font = `500 ${size}px ${MONO}`;
-  const widest = Math.max(...lines.map((l) => g.measureText(l).width));
-  if (widest > w - 28) size *= (w - 28) / widest;
-  g.font = `500 ${size}px ${MONO}`;
-  lines.forEach((l, i) => g.fillText(l, 14, lh * (i + 1.25)));
-  return { lh, size };
 }
 
 // Pick n distinct points (shuffled, no replacement); repeat only when a shape has fewer pixels than n.
@@ -158,7 +102,7 @@ const vertex = /* glsl */ `
     float flight = sin(3.14159 * t);
     p.x += sin(aSeed * 40.0 + uTime * 1.3) * 24.0 * flight;
     p.y += cos(aSeed * 31.0 + uTime * 1.1) * 16.0 * flight;
-    // ink first gathers into the name (desktop), then flows on into the prescription
+    // ink first gathers into the name (desktop), then flows on into the specimen
     float g = ease(clamp(uName * 1.4 - aSeed * 0.4, 0.0, 1.0));
     vec3 pre = mix(aScatter, aName, g);
     float a = ease(clamp(uAssemble * 1.4 - aSeed * 0.4, 0.0, 1.0));
@@ -191,22 +135,23 @@ const fragment = /* glsl */ `
   }
 `;
 
-// The loop, in seconds.
-const LOOP = 13;
-function timeline(t) {
-  const k = t % LOOP;
+// One specimen's life, in seconds: assemble · scan · fields lock · morph · crisp · disperse.
+const CYCLE = 11.6;
+function timeline(k) {
   const s = (a, b) => Math.min(1, Math.max(0, (k - a) / (b - a)));
-  const scan = k > 1.4 && k < 3.8 ? s(1.4, 3.8) : -1;
-  const boxes = k < 1.6 ? 0 : k < 4.2 ? s(1.6, 3.9) : k < 5.6 ? 1 - s(4.6, 5.6) : 0;
-  const morph = k < 4.4 ? 0 : k < 6.6 ? s(4.4, 6.6) : k < 10 ? 1 : 1 - s(10, 12.4);
-  const crisp = k < 6.7 ? 0 : k < 7.4 ? s(6.7, 7.4) : k < 9.5 ? 1 : 1 - s(9.5, 10.1);
-  return { morph, scan, boxes, crisp };
+  const assemble = k < 10.2 ? s(0, 1.6) : 1 - s(10.2, 11.4);
+  const scan = k > 2 && k < 4.4 ? s(2, 4.4) : -1;
+  const boxes = k < 2.2 ? 0 : k < 4.8 ? s(2.2, 4.5) : k < 6.2 ? 1 - s(5.2, 6.2) : 0;
+  const morph = k < 5 ? 0 : s(5, 7.2);
+  const crisp = k < 7.3 ? 0 : k < 8 ? s(7.3, 8) : k < 9.6 ? 1 : 1 - s(9.6, 10.2);
+  return { assemble, morph, scan, boxes, crisp };
 }
 
-function PrescriptionHero({ ready = true, onPhase }) {
+function InkHero({ ready = true, onPhase }) {
   const mountRef = useRef(null);
   const recordRef = useRef(null);
-  const [lines, setLines] = useState(FHIR_FULL);
+  const [lines, setLines] = useState([]);
+  const [seal, setSeal] = useState("");
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -220,7 +165,6 @@ function PrescriptionHero({ ready = true, onPhase }) {
       renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: "high-performance" });
     } catch (e) {
       mount.classList.add("is-fallback");
-      if (record) record.style.opacity = 1;
       return undefined;
     }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
@@ -232,7 +176,10 @@ function PrescriptionHero({ ready = true, onPhase }) {
     const group = new THREE.Group();
     scene.add(group);
 
-    let points, boxLines, scanLine, scanGlow, cardH, cardW;
+    let points, geo, boxLines, scanLine, scanGlow, cardH, cardW, n, mobile;
+    let image = null;
+    let current = 0; // index into heroSpecimens
+    let hasRecord = false;
     let inkName = false;
     let nameShown = false;
     const uniforms = {
@@ -244,39 +191,74 @@ function PrescriptionHero({ ready = true, onPhase }) {
       uMouse: { value: new THREE.Vector2(9999, 9999) },
       uSize: { value: 1.4 },
       uScan: { value: -9999 },
-      uFade: { value: reduced ? 1 : 0 },
+      uFade: { value: 0 },
       uIvory: { value: IVORY },
       uSeal: { value: SEAL },
     };
+    const material = new THREE.ShaderMaterial({
+      uniforms,
+      vertexShader: vertex,
+      fragmentShader: fragment,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
+
+    // Draw specimen `current` into the particle targets, the scan boxes and the crisp record layer.
+    function loadSpecimen() {
+      const spec = heroSpecimens[current];
+      const { before, after } = specimenDrawers(spec);
+      const ctx = { mobile, image };
+      const recLines = spec.record ? (mobile && spec.recordShort) || spec.record : null;
+      hasRecord = Boolean(recLines);
+      setLines(recLines || []);
+      setSeal(spec.seal || "");
+
+      const rx = inkPoints((g) => before(g, cardW, cardH, spec, ctx), cardW, cardH);
+      const rec = inkPoints((g) => after(g, cardW, cardH, spec, ctx, recLines), cardW, cardH);
+      geo.setAttribute("position", new THREE.BufferAttribute(fit(rx.pts, n), 3));
+      geo.setAttribute("aTo", new THREE.BufferAttribute(fit(rec.pts, n), 3));
+
+      if (boxLines) {
+        group.remove(boxLines);
+        boxLines.geometry.dispose();
+      }
+      const seg = [];
+      (rx.meta.boxes || []).forEach((b) => {
+        const x0 = b.x - cardW / 2, x1 = x0 + b.w, y0 = cardH / 2 - b.y, y1 = y0 - b.h;
+        seg.push(x0, y0, 0, x1, y0, 0, x1, y0, 0, x1, y1, 0, x1, y1, 0, x0, y1, 0, x0, y1, 0, x0, y0, 0);
+      });
+      const bg = new THREE.BufferGeometry();
+      bg.setAttribute("position", new THREE.Float32BufferAttribute(seg, 3));
+      boxLines = new THREE.LineSegments(bg, new THREE.LineBasicMaterial({ color: SEAL, transparent: true, opacity: 0 }));
+      group.add(boxLines);
+
+      if (record && recLines) {
+        record.style.setProperty("--lh", `${rec.meta.lh}px`);
+        record.style.setProperty("--fs", `${rec.meta.size}px`);
+      }
+    }
 
     function build() {
       const w = mount.clientWidth;
       const h = mount.clientHeight;
       if (!w || !h) return;
-      const mobile = w < 760;
-      const recLines = mobile ? FHIR_SHORT : FHIR_FULL;
-      setLines(recLines);
+      mobile = w < 760;
       // on phones the record must also fit the framed box's height
       cardW = Math.round(Math.min(mobile ? Math.min(w * 0.88, (h * 0.86) / 0.62) : w * 0.34, 560));
       cardH = Math.round(cardW * (mobile ? 0.62 : 0.7));
-      const n = mobile ? 15000 : 26000;
-      const gx = mobile ? 0 : w * 0.245;
-      // on phones the canvas is its own framed box below the copy, so the record sits centred in it;
-      // on desktop the record sits high and right, clear of the one-line name along the bottom
-      const gy = mobile ? 0 : h * 0.2;
+      n = mobile ? 15000 : 26000;
       uniforms.uSize.value = (mobile ? 1.25 : 1.4) * renderer.getPixelRatio();
-
-      const rx = inkPoints((g) => drawPrescription(g, cardW, cardH), cardW, cardH);
-      const rec = inkPoints((g) => drawRecord(g, cardW, cardH, recLines), cardW, cardH);
+      const gx = mobile ? 0 : w * 0.245;
+      // on phones the canvas is its own framed box below the copy, so the specimen sits centred in it;
+      // on desktop it sits high and right, clear of the one-line name along the bottom
+      const gy = mobile ? 0 : h * 0.2;
 
       if (points) {
         group.remove(points);
         points.geometry.dispose();
-        points.material.dispose();
       }
-      const geo = new THREE.BufferGeometry();
-      geo.setAttribute("position", new THREE.BufferAttribute(fit(rx.pts, n), 3));
-      geo.setAttribute("aTo", new THREE.BufferAttribute(fit(rec.pts, n), 3));
+      geo = new THREE.BufferGeometry();
       const scatter = new Float32Array(n * 3);
       const seeds = new Float32Array(n);
       for (let i = 0; i < n; i++) {
@@ -304,32 +286,8 @@ function PrescriptionHero({ ready = true, onPhase }) {
       geo.setAttribute("aName", new THREE.BufferAttribute(named, 3));
       geo.setAttribute("aScatter", new THREE.BufferAttribute(scatter, 3));
       geo.setAttribute("aSeed", new THREE.BufferAttribute(seeds, 1));
-      points = new THREE.Points(
-        geo,
-        new THREE.ShaderMaterial({
-          uniforms,
-          vertexShader: vertex,
-          fragmentShader: fragment,
-          transparent: true,
-          depthWrite: false,
-          blending: THREE.AdditiveBlending,
-        })
-      );
+      points = new THREE.Points(geo, material);
       group.add(points);
-
-      if (boxLines) {
-        group.remove(boxLines);
-        boxLines.geometry.dispose();
-      }
-      const seg = [];
-      (rx.meta.boxes || []).forEach((b) => {
-        const x0 = b.x - cardW / 2, x1 = x0 + b.w, y0 = cardH / 2 - b.y, y1 = y0 - b.h;
-        seg.push(x0, y0, 0, x1, y0, 0, x1, y0, 0, x1, y1, 0, x1, y1, 0, x0, y1, 0, x0, y1, 0, x0, y0, 0);
-      });
-      const bg = new THREE.BufferGeometry();
-      bg.setAttribute("position", new THREE.Float32BufferAttribute(seg, 3));
-      boxLines = new THREE.LineSegments(bg, new THREE.LineBasicMaterial({ color: SEAL, transparent: true, opacity: 0 }));
-      group.add(boxLines);
 
       if (!scanLine) {
         const mat = (o) => new THREE.MeshBasicMaterial({ color: SEAL, transparent: true, opacity: o, blending: THREE.AdditiveBlending, depthWrite: false });
@@ -350,15 +308,14 @@ function PrescriptionHero({ ready = true, onPhase }) {
       renderer.domElement.style.width = "100%";
       renderer.domElement.style.height = "100%";
 
-      // crisp record layer sits exactly over the particle record
+      // crisp record layer sits exactly over the particle card
       if (record) {
         record.style.left = `${w / 2 + gx - cardW / 2}px`;
         record.style.top = `${h / 2 - gy - cardH / 2}px`;
         record.style.width = `${cardW}px`;
         record.style.height = `${cardH}px`;
-        record.style.setProperty("--lh", `${rec.meta.lh}px`);
-        record.style.setProperty("--fs", `${rec.meta.size}px`);
       }
+      loadSpecimen();
     }
 
     const onMove = (e) => {
@@ -380,16 +337,19 @@ function PrescriptionHero({ ready = true, onPhase }) {
     let started = null;
     let raf;
     let lastPhase = "";
+    let cycle = 0;
 
+    const clamp01 = (v) => Math.min(1, Math.max(0, v));
     const loop = () => {
       raf = requestAnimationFrame(loop);
       if (!visible || document.hidden || !points) return;
       uniforms.uTime.value += clock.getDelta();
       if (reduced) {
         if (record) {
-          record.style.opacity = 1;
+          record.style.opacity = hasRecord ? 1 : 0;
           record.classList.add("is-sealed");
         }
+        if (onPhase) onPhase(2, current);
         renderer.render(scene, camera);
         cancelAnimationFrame(raf);
         return;
@@ -400,25 +360,32 @@ function PrescriptionHero({ ready = true, onPhase }) {
       }
       if (started === null) started = uniforms.uTime.value;
       const t = uniforms.uTime.value - started;
-      const clamp01 = (v) => Math.min(1, Math.max(0, v));
-      let tl;
+
+      // desktop opening: 0–1.3 s ink gathers into the name · the crisp name resolves · 2.1 s it flows on
+      const base = inkName ? 2.1 : 0;
       if (inkName) {
-        // 0–1.3 s ink gathers into the name · the crisp name resolves · 2.1 s the ink flows on
-        uniforms.uName.value = clamp01(t / 1.3);
+        uniforms.uName.value = t < base + 1.7 ? clamp01(t / 1.3) : 0;
         if (t > 1.35 && !nameShown) {
           nameShown = true;
           const nameEl = mount.parentElement.querySelector(".lx-hero-name");
           if (nameEl) nameEl.classList.add("is-shown");
         }
-        uniforms.uNameCrisp.value = clamp01((t - 1.35) / 0.9);
-        uniforms.uAssemble.value = clamp01((t - 2.1) / 1.6);
-        tl = timeline(Math.max(0, t - 2.7));
-      } else {
-        uniforms.uAssemble.value = Math.min(1, t / 1.6);
-        tl = timeline(Math.max(0, t - 0.6));
+        // once the ink has left the name, later cycles must not inherit its dimming
+        uniforms.uNameCrisp.value = t < base + 1.7 ? clamp01((t - 1.35) / 0.9) : 0;
       }
+      const ct = Math.max(0, t - base);
+      const c = Math.floor(ct / CYCLE);
+      if (c !== cycle) {
+        // the ink is fully dispersed here, so the next specimen can be drawn without a visible jump
+        cycle = c;
+        current = c % heroSpecimens.length;
+        uniforms.uMorph.value = 0;
+        loadSpecimen();
+      }
+      const tl = timeline(ct - c * CYCLE);
+      uniforms.uAssemble.value = tl.assemble;
       uniforms.uMorph.value = tl.morph;
-      uniforms.uFade.value = tl.crisp;
+      uniforms.uFade.value = hasRecord ? tl.crisp : 0;
       const scanY = tl.scan < 0 ? -9999 : cardH / 2 - tl.scan * cardH;
       uniforms.uScan.value = scanY;
       scanLine.position.y = scanY;
@@ -427,18 +394,19 @@ function PrescriptionHero({ ready = true, onPhase }) {
       scanGlow.material.opacity = tl.scan < 0 ? 0 : 0.12;
       boxLines.material.opacity = tl.boxes * 0.85;
       if (record) {
-        record.style.opacity = tl.crisp;
+        record.style.opacity = hasRecord ? tl.crisp : 0;
         record.classList.toggle("is-sealed", tl.crisp > 0.6);
       }
-      const phase = tl.morph > 0.5 ? "record" : tl.scan >= 0 ? "reading" : "prescription";
-      if (phase !== lastPhase && onPhase) {
-        lastPhase = phase;
-        onPhase(phase);
+      const phase = tl.morph > 0.5 ? 2 : tl.scan >= 0 ? 1 : 0;
+      const key = `${current}:${phase}`;
+      if (key !== lastPhase && onPhase) {
+        lastPhase = key;
+        onPhase(phase, current);
       }
       renderer.render(scene, camera);
     };
 
-    // Never sample fallback glyphs: wait for the faces the canvases draw with.
+    // Never sample fallback glyphs or a half-loaded photo: wait for every face and image drawn with.
     const fonts = document.fonts
       ? Promise.all([
           document.fonts.load(`40px ${HAND}`),
@@ -447,8 +415,15 @@ function PrescriptionHero({ ready = true, onPhase }) {
           document.fonts.load(`500 40px "Bodoni Moda Variable"`),
         ]).catch(() => null)
       : Promise.resolve();
-    fonts.then(() => {
+    const photo = new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => resolve(null);
+      img.src = portrait;
+    });
+    Promise.all([fonts, photo]).then(([, img]) => {
       if (disposed) return;
+      image = img;
       build();
       window.addEventListener("pointermove", onMove, { passive: true });
       mount.addEventListener("pointerleave", onLeave);
@@ -467,10 +442,8 @@ function PrescriptionHero({ ready = true, onPhase }) {
       ro.disconnect();
       window.removeEventListener("lx-name-fit", build);
       mount.removeEventListener("pointerleave", onLeave);
-      if (points) {
-        points.geometry.dispose();
-        points.material.dispose();
-      }
+      if (points) points.geometry.dispose();
+      material.dispose();
       if (boxLines) boxLines.geometry.dispose();
       renderer.dispose();
       if (renderer.domElement.parentNode) renderer.domElement.parentNode.removeChild(renderer.domElement);
@@ -487,23 +460,25 @@ function PrescriptionHero({ ready = true, onPhase }) {
         {lines.map((l, i) => (
           <span key={i}>{l}</span>
         ))}
-        <svg className="lx-seal" viewBox="0 0 120 120" role="presentation">
-          <defs>
-            <path id="lx-seal-ring" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0" />
-          </defs>
-          <circle cx="60" cy="60" r="56" className="lx-seal-disc" />
-          <circle cx="60" cy="60" r="50" className="lx-seal-rule" />
-          <circle cx="60" cy="60" r="31" className="lx-seal-rule" />
-          <text className="lx-seal-ring">
-            <textPath href="#lx-seal-ring">VERIFIED · AMRIP-INDIA · SYNTHETIC ·</textPath>
-          </text>
-          <text x="60" y="70" textAnchor="middle" className="lx-seal-mono">
-            SK
-          </text>
-        </svg>
+        {seal && (
+          <svg className="lx-seal" viewBox="0 0 120 120" role="presentation">
+            <defs>
+              <path id="lx-seal-ring" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0" />
+            </defs>
+            <circle cx="60" cy="60" r="56" className="lx-seal-disc" />
+            <circle cx="60" cy="60" r="50" className="lx-seal-rule" />
+            <circle cx="60" cy="60" r="31" className="lx-seal-rule" />
+            <text className="lx-seal-ring">
+              <textPath href="#lx-seal-ring">{seal}</textPath>
+            </text>
+            <text x="60" y="70" textAnchor="middle" className="lx-seal-mono">
+              SK
+            </text>
+          </svg>
+        )}
       </div>
     </div>
   );
 }
 
-export default PrescriptionHero;
+export default InkHero;
