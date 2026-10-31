@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { Suspense, lazy, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   motion,
@@ -31,11 +31,13 @@ import portrait from "../../assets/portrait.webp";
 import resumePdf from "../../assets/resume/Sarthak Kar Resume.pdf";
 import ProjectCard from "../Projects/ProjectCard";
 import ContactForm from "./ContactForm";
-import PrescriptionHero from "./PrescriptionHero";
 import useGithubProjects from "../../hooks/useGithubProjects";
 import { profile, experience } from "../../data/resume";
 import config from "../../config";
 import "./HomeNew.css";
+
+// three.js only loads with the hero, after the page text has rendered.
+const PrescriptionHero = lazy(() => import("./PrescriptionHero"));
 
 const tools = [
   { icon: SiPython, name: "Python" },
@@ -130,7 +132,9 @@ function HomeNew({ ready = true }) {
     <main className="sk-home">
       {/* ---------- HERO ---------- */}
       <section className="lx-hero" id="home" ref={heroRef}>
-        <PrescriptionHero ready={ready} onPhase={setPhase} />
+        <Suspense fallback={<div className="lx-hero-canvas" aria-hidden="true" />}>
+          <PrescriptionHero ready={ready} onPhase={setPhase} />
+        </Suspense>
         <motion.div className="lx-hero-copy" style={{ y: copyY, opacity: heroFade }}>
           <h1 className="lx-hero-name" aria-label="Sarthak Kar, AI and ML engineer">
             {["Sarthak", "Kar"].map((word, wi) => (
@@ -222,13 +226,7 @@ function HomeNew({ ready = true }) {
         <motion.div className="sk-services-left" {...reveal}>
           <MaskText className="sk-heading" lines={["What I bring", <>to your <span className="sk-red">team.</span></>]} />
           <p className="sk-muted">Tools I use day to day</p>
-          <div className="sk-tool-grid">
-            {tools.map(({ icon: Icon, name }) => (
-              <span className="sk-tool" key={name} title={name}>
-                <Icon />
-              </span>
-            ))}
-          </div>
+          <p className="lx-tools">{tools.map((t) => t.name).join(" · ")}</p>
           <p className="sk-muted sk-langs">Languages: Python, SQL, Java, C/C++, JavaScript, HTML/CSS</p>
         </motion.div>
         <div className="sk-services-right">
@@ -240,10 +238,9 @@ function HomeNew({ ready = true }) {
               onClick={() => setActiveService(i)}
               {...reveal}
               transition={{ ...reveal.transition, delay: i * 0.06 }}
-              style={{ "--tilt": `${(i % 2 ? 1 : -1) * 1.2}deg` }}
             >
               <h3>
-                <span className="sk-service-num">0{i + 1}</span> {s.title}
+                {s.title}
               </h3>
               <p>{s.body}</p>
               <div className="sk-chips">
@@ -319,7 +316,7 @@ function HomeNew({ ready = true }) {
               <div className={`sk-faq-item ${openFaq === i ? "is-open" : ""}`} key={f.q}>
                 <button onClick={() => setOpenFaq(openFaq === i ? -1 : i)}>
                   <span>
-                    <span className="sk-faq-num">0{i + 1}</span> {f.q}
+                    {f.q}
                   </span>
                   {openFaq === i ? <FiMinus /> : <FiPlus />}
                 </button>

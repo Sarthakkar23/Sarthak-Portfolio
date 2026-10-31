@@ -1,90 +1,87 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { FiArrowUpRight, FiStar, FiExternalLink, FiGithub } from "react-icons/fi";
+import { motion } from "framer-motion";
+import { FiArrowUpRight, FiStar } from "react-icons/fi";
+import ProjectVisual from "./ProjectVisual";
+import "./ProjectPanels.css";
 
-function ProjectArt({ kind }) {
-  return (
-    <div className={`sk-art sk-art-${kind}`} aria-hidden="true">
-      <div className="sk-art-grid" />
-      <div className="sk-art-orb" />
-      <div className="sk-art-orb sk-art-orb-2" />
-    </div>
-  );
-}
+const rise = {
+  initial: { opacity: 0, y: 48 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.2 },
+  transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] },
+};
 
+// Highlight projects (with a case study and an illustration) render as full-width editorial panels;
+// repos that arrive automatically from GitHub render as quiet index rows.
 function ProjectCard({ p, i = 0 }) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const artY = useTransform(scrollYProgress, [0, 1], ["-12%", "12%"]);
+  const ART = { med: "med", cloud: "cloud", pixel: "pixel", fraud: "fraud" };
+  const hasVisual = Boolean(ART[p.art]);
+
+  if (!hasVisual) {
+    return (
+      <motion.a className="pp-row" href={p.link} target="_blank" rel="noreferrer" data-cursor="View" {...rise}>
+        <span className="pp-row-name">{p.name}</span>
+        <span className="pp-row-desc">{p.summary}</span>
+        <span className="pp-row-meta">
+          {p.badge === "New" && <em>New</em>}
+          {p.tags.slice(0, 2).join(" · ")}
+          {typeof p.stars === "number" && p.stars > 0 && (
+            <>
+              {" "}
+              · <FiStar /> {p.stars}
+            </>
+          )}
+        </span>
+        <FiArrowUpRight className="pp-row-arrow" />
+      </motion.a>
+    );
+  }
+
+  const results = (p.metrics || []).map(([v, l]) => (
+    <span key={l}>
+      <strong>{v}</strong> {l}
+    </span>
+  ));
 
   return (
-    <motion.article
-      ref={ref}
-      className={`sk-project ${p.badge === "New" ? "is-new" : ""}`}
-      data-cursor={p.slug ? "Read" : "View"}
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: (i % 2) * 0.12 }}
-    >
-      {p.slug ? (
-        <Link className="sk-project-stretch" to={`/work/${p.slug}`} aria-label={`${p.name} case study`} />
-      ) : (
-        <a className="sk-project-stretch" href={p.link} target="_blank" rel="noreferrer" aria-label={`${p.name} on GitHub`} />
-      )}
-      <motion.div
-        className="sk-project-media"
-        initial={{ clipPath: "inset(18% 10% 18% 10% round 24px)" }}
-        whileInView={{ clipPath: "inset(0% 0% 0% 0% round 0px)" }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 1.3, ease: [0.76, 0, 0.24, 1], delay: 0.1 + (i % 2) * 0.12 }}
-      >
-        <motion.div className="sk-art-parallax" style={{ y: artY }}>
-          <ProjectArt kind={p.art} />
-        </motion.div>
-        <span className="sk-project-badge">{p.badge}</span>
-        <span className="sk-project-title-overlay">{p.name}</span>
-        <span className="sk-project-arrow">
-          <FiArrowUpRight />
-        </span>
-      </motion.div>
-      <div className="sk-project-meta">
-        <h3>
-          {p.name} <small>{p.subtitle}</small>
+    <motion.article className={`pp-panel ${i % 2 ? "is-flipped" : ""}`} {...rise}>
+      <div className="pp-text">
+        <h3 className="pp-name">
+          {p.slug ? (
+            <Link to={`/work/${p.slug}`} data-cursor="Read">
+              {p.name}
+            </Link>
+          ) : (
+            p.name
+          )}
         </h3>
-        <p className="sk-project-desc">{p.summary}</p>
-        {p.metrics && (
-          <div className="sk-metrics">
-            {p.metrics.map(([v, l]) => (
-              <div key={l}>
-                <strong>{v}</strong>
-                <span>{l}</span>
-              </div>
-            ))}
-          </div>
-        )}
-        <div className="sk-project-foot">
-          <p className="sk-project-tags">{p.tags.join(" · ")}</p>
-          <div className="sk-project-links">
-            {typeof p.stars === "number" && p.stars > 0 && (
-              <span className="sk-project-stars">
-                <FiStar /> {p.stars}
-              </span>
-            )}
-            {p.slug && p.repo && (
-              <a href={p.link} target="_blank" rel="noreferrer" className="sk-project-gh" aria-label="Code on GitHub">
-                <FiGithub /> Code
-              </a>
-            )}
-            {p.slug && <span className="sk-project-cs">Case study →</span>}
-            {p.demo && (
-              <a href={p.demo} target="_blank" rel="noreferrer" className="sk-project-demo" data-cursor="Demo">
-                Live demo <FiExternalLink />
-              </a>
-            )}
-          </div>
+        <p className="pp-subtitle">
+          {p.subtitle} <span>· {p.badge}</span>
+        </p>
+        <p className="pp-summary">{p.summary}</p>
+        {results.length > 0 && <p className="pp-results">{results}</p>}
+        <p className="pp-tags">{p.tags.join(" · ")}</p>
+        <div className="pp-links">
+          {p.slug && (
+            <Link to={`/work/${p.slug}`} className="sk-link">
+              Read the case study <FiArrowUpRight />
+            </Link>
+          )}
+          {p.repo && (
+            <a href={p.link} target="_blank" rel="noreferrer" className="pp-code">
+              Code on GitHub
+            </a>
+          )}
+          {p.demo && (
+            <a href={p.demo} target="_blank" rel="noreferrer" className="pp-code">
+              Live demo
+            </a>
+          )}
         </div>
+      </div>
+      <div className="pp-visual">
+        <ProjectVisual kind={ART[p.art]} />
       </div>
     </motion.article>
   );

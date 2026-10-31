@@ -142,7 +142,6 @@ function CaseStudy() {
         <div className="cs-decisions">
           {cs.approach.map(([h, b], i) => (
             <motion.div className="ab-card" key={h} {...rise} transition={{ ...rise.transition, delay: (i % 2) * 0.08 }}>
-              <span className="cs-dec-n">{String(i + 1).padStart(2, "0")}</span>
               <h3>{h}</h3>
               <p>{b}</p>
             </motion.div>

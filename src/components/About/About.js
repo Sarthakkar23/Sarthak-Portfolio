@@ -115,8 +115,7 @@ function About() {
         <div className="ab-ticker-track">
           {Array.from({ length: 2 }).map((_, k) => (
             <span key={k}>
-              LLMs <i>✦</i> Computer Vision <i>✦</i> Deep RL <i>✦</i> Document AI <i>✦</i> Explainable AI <i>✦</i>{" "}
-              MLOps <i>✦</i>{" "}
+              LLM pipelines <i>·</i> Computer vision <i>·</i> Deep RL <i>·</i> Document AI <i>·</i> Explainable AI <i>·</i> Shipping to production <i>·</i>{" "}
             </span>
           ))}
         </div>
@@ -181,7 +180,6 @@ function About() {
             return (
               <motion.div className={`ab-project ${open ? "is-open" : ""}`} key={p.name} {...rise}>
                 <button className="ab-project-head" onClick={() => setOpenProject(open ? -1 : i)}>
-                  <span className="ab-project-n">0{i + 1}</span>
                   <span className="ab-project-name">
                     {p.name}
                     <small>{p.title}</small>

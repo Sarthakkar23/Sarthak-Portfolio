@@ -40,33 +40,21 @@
 .cs-title { font-size: clamp(1.15rem, 2.2vw, 1.6rem); color: var(--ivory); max-width: 780px; margin: 0 0 28px; line-height: 1.35; }
 .cs-meta { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; color: var(--ivory-3); font-size: 0.9rem; }
 
-.cs-glance { padding-top: 32px; }
-.cs-glance .sk-impact small { color: var(--ivory-2); font-size: 0.85rem; margin-top: 8px; }
+.cs-glance { padding-top: 40px; }
+.cs-glance .sk-impact { display: flex; flex-wrap: wrap; gap: 14px 40px; padding-top: 26px; border-top: 1px solid var(--line-strong); }
+.cs-glance .sk-impact > div { display: flex; align-items: baseline; gap: 10px; }
+.cs-glance .sk-impact strong { font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: clamp(1.5rem, 2.4vw, 2.1rem); color: var(--ivory); line-height: 1; }
+.cs-glance .sk-impact small { color: var(--ivory-3); font-size: 0.85rem; max-width: 18em; }
 
 /* ---------- Two-column prose ---------- */
 .cs-two { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 56px; align-items: start; }
 .cs-prose p { color: var(--ivory-2); font-size: 1.08rem; line-height: 1.75; margin: 0 0 18px; }
 .cs-note { border-left: 1px solid var(--line-strong); padding-left: 16px; font-size: 0.98rem !important; color: var(--ivory-3) !important; }
 .cs-results { list-style: none; margin: 0 0 18px; padding: 0; display: flex; flex-direction: column; gap: 12px; }
-.cs-results li {
-  background: var(--ink-2);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 16px 20px;
-  color: var(--ivory-2);
-}
-.cs-results strong { color: var(--ivory); font-family: var(--font-display); font-size: 1.25rem; margin-right: 8px; }
+.cs-results li { background: transparent; border: 0; border-top: 1px solid var(--line-strong); border-radius: 0; padding: 18px 0; color: var(--ivory-2); }
+.cs-results strong { color: var(--ivory); font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: 1.5rem; margin-right: 8px; }
 .cs-next { margin: 0; padding: 0; list-style: none; counter-reset: n; display: flex; flex-direction: column; gap: 12px; }
-.cs-next li {
-  counter-increment: n;
-  position: relative;
-  padding: 18px 20px 18px 64px;
-  background: var(--ink-2);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  color: var(--ivory-2);
-  line-height: 1.6;
-}
+.cs-next li { counter-increment: n; position: relative; padding: 20px 0 20px 52px; background: transparent; border: 0; border-top: 1px solid var(--line-strong); border-radius: 0; color: var(--ivory-2); line-height: 1.6; }
 .cs-next li::before {
   content: counter(n, decimal-leading-zero);
   position: absolute;
@@ -78,15 +66,7 @@
 }
 
 /* ---------- Diagram ---------- */
-.cs-diagram {
-  margin: 0;
-  background: var(--ink);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 28px;
-  padding: 36px 28px 22px;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-  background-size: 22px 22px;
-}
+.cs-diagram { margin: 0; background: var(--ink-2); border: 1px solid var(--line); border-radius: 2px; padding: 36px 28px 22px; }
 .cs-flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: 14px 0; }
 .cs-node {
   position: relative;
@@ -146,24 +126,12 @@
 
 /* ---------- Decisions ---------- */
 .cs-decisions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
-.cs-dec-n { color: var(--ivory); font-family: var(--font-label); font-size: 0.85rem; margin-bottom: 10px; }
 .cs-stack { max-width: 900px; }
 
 /* ---------- Pager ---------- */
 .cs-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-.cs-pager-link {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 28px;
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: var(--ink-2);
-  text-decoration: none;
-  color: var(--ivory);
-  transition: border-color 0.3s, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.cs-pager-link:hover { border-color: var(--line-strong); color: var(--ivory); transform: translateY(-4px); }
+.cs-pager-link { display: flex; flex-direction: column; gap: 8px; padding: 32px 0; border-radius: 0; border: 0; border-top: 1px solid var(--line-strong); background: transparent; text-decoration: none; color: var(--ivory); transition: border-color 0.4s var(--ease-out); }
+.cs-pager-link:hover { border-color: var(--ivory); color: var(--ivory); transform: none; }
 .cs-pager-link span { color: var(--ivory-3); font-size: 0.85rem; display: inline-flex; gap: 6px; align-items: center; }
 .cs-pager-link strong { font-family: var(--font-display); font-size: clamp(1.4rem, 3vw, 2.2rem); letter-spacing: -0.02em; }
 .cs-pager-link.is-next { text-align: right; align-items: flex-end; }
