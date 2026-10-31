@@ -4,6 +4,152 @@
 
 export const notes = [
   {
+    slug: "threshold-without-labels",
+    title: "Choosing a defect threshold without a single defect label",
+    date: "2026-11-01",
+    tags: ["Computer vision", "Anomaly detection", "MaskSight"],
+    summary:
+      "Anomaly detectors rank pixels well but can't tell you where to cut. How MaskSight's SynthCal learns that cut from painted-on fake defects — and why the threshold has to be relative to each image's peak.",
+    body: `
+[MaskSight](https://github.com/Sarthakkar23/MaskSight) learns what a *good* product looks like from normal images only, then predicts a pixel-level mask of anything that deviates: scratches, cracks, contamination, missing parts. This note is about the one decision that makes or breaks it: the threshold.
+
+## Ranking is solved. Cutting isn't.
+
+Unsupervised detectors like **PatchCore** and **PaDiM** produce a heatmap where defective pixels score higher than normal ones. They're very good at that ranking: pixel AUROC is about **0.98** on MVTec AD.
+
+But a production line doesn't want a heatmap. It wants a **binary mask**, and a mask needs a threshold. Papers usually tune that threshold on the labelled test set. A real deployment has no such labels.
+
+The honest label-free option is to take a high quantile of the scores on normal images. It gives poor masks: **Dice 0.12 on leather, 0.22 on grid**.
+
+## Make your own labels
+
+The idea behind **SynthCal** is simple: if you don't have defect labels, paint defects whose masks you already know.
+
+1. Hold out 10% of the normal training images.
+2. Paint Perlin-noise defects on them — foreign texture, displaced structure or a stain, kept to one or two regions on the object's foreground.
+3. Every fake defect comes with its exact mask for free.
+
+## The trap: absolute thresholds don't transfer
+
+The first version learned an absolute score threshold on the fake defects. It did **worse than the baseline** (Dice 0.369 vs 0.397 with PatchCore).
+
+The reason: fake defects are never exactly as conspicuous as real ones. A pasted texture on carpet is far louder than a real thread defect, so a cut-off learned on one is wrong for the other.
+
+## The fix: cut relative to the peak
+
+What *does* transfer is the shape of the response — how quickly the heatmap falls off from its peak. That depends on the backbone's receptive field and the smoothing, not on how strong the defect is. So the rule became:
+
+\`\`\`
+defective  =  score > floor   AND   score > α · max(score in this image)
+\`\`\`
+
+- **floor** is the 99.9th percentile of normal-pixel scores, so clean parts stay clean.
+- **α** is chosen to maximise Dice on the synthetic defects.
+
+Averaged over categories, the α learned on fake defects lands **0.05 away** from the α you'd pick if you could see the real labels.
+
+## Results
+
+On all 15 MVTec AD categories, with WideResNet-50 features on one free Colab T4:
+
+- Label-free mask Dice rose from **0.397 to 0.517** (+30%) with PatchCore, and from 0.366 to 0.480 with PaDiM.
+- That beats an **oracle** threshold tuned on the real test labels (0.466).
+- SynthCal beat the label-free baseline on **15 of 15** categories.
+- It reaches **96%** of the best possible α for this rule, without labels.
+
+## What's still hard
+
+Masks come from a 28×28 feature grid that's upsampled, so thin scratches come out blobby. Screw, capsule and grid stay hard. And where real defects look nothing like the generator's — missing parts on a transistor — SynthCal gains the least.
+
+The code, every benchmark config and the Colab notebook are on [GitHub](https://github.com/Sarthakkar23/MaskSight).
+`,
+  },
+  {
+    slug: "accuracy-lies-at-017",
+    title: "Why 99.8% accuracy was the worst fraud model I trained",
+    date: "2026-11-01",
+    tags: ["Imbalanced ML", "XGBoost", "Fraud"],
+    summary:
+      "When only 0.17% of transactions are fraud, a model that never flags anything looks almost perfect. What I measured instead, and how fraud-class F1 went from 0.68 to 0.83.",
+    body: `
+My fraud-detection project uses 284,807 card transactions. Only **0.17%** of them are fraud. That one number changes how you have to build and judge the model.
+
+## The 99.8% trap
+
+A model that predicts "not fraud" for every single transaction is **99.8% accurate**. It also catches zero fraud. Accuracy rewards the majority class, and here the majority class is everything you don't care about.
+
+So I stopped looking at accuracy and optimised for three things on the fraud class only:
+
+- **Precision** — of the transactions I flag, how many are really fraud? Low precision means blocking honest customers.
+- **Recall** — of the real fraud, how much do I catch? Low recall means money lost.
+- **F1** — the balance of the two, and the number I tuned for.
+
+## Compare honestly
+
+I trained logistic regression, SVM, Random Forest and XGBoost on the same split. Logistic regression set the baseline: fraud-class **F1 0.68**.
+
+## Fix the imbalance
+
+Two tools did most of the work on XGBoost:
+
+1. **SMOTE** — synthesises new fraud examples between real ones, so the model sees enough of the rare class to learn its shape.
+2. **Class weights** — makes a missed fraud cost more than a false alarm during training.
+
+The tuned XGBoost reached **F1 0.83**, with **86.4% precision** and **79.8% recall**.
+
+## Fast enough to matter
+
+A fraud model only helps if it can sit inside a live payment check. On a 56,962-transaction holdout, inference took **3.8 ms per transaction on CPU**.
+
+## What I'd change next
+
+- **Pick the threshold from money, not F1.** A missed fraud and a blocked customer don't cost the same. A cost model should set the cut-off.
+- **Explain each flag.** SHAP values would let an analyst see why a transaction was stopped before they act on it.
+`,
+  },
+  {
+    slug: "classical-before-deep",
+    title: "Tuning the classics before reaching for a deep model",
+    date: "2026-11-01",
+    tags: ["Computer vision", "OpenCV", "ClearPixel AI"],
+    summary:
+      "How ClearPixel AI restores noisy photos to 31.2 dB PSNR in about 110–140 ms per 1080p frame on a CPU — classical filters where they win, deep models only where they don't.",
+    body: `
+[ClearPixel AI](https://github.com/Sarthakkar23/Clear-Pixel-AI) restores old and noisy photos: denoising, sharpening, edge detection and colourisation, all behind one Flask API. The constraint that shaped it: it had to run on a **CPU**, in real time.
+
+## The easy answer is a blur. It's wrong.
+
+A Gaussian blur removes noise, but it removes detail with it. On Set14 at noise level σ=25 it scores **27.1 dB PSNR**. Deep denoisers do better but are slow without a GPU.
+
+## Tune the classics first
+
+Instead of jumping to a neural network, I combined and tuned three classical steps:
+
+1. **CLAHE** — contrast-limited adaptive histogram equalisation, to recover local contrast without blowing out highlights.
+2. **Median filtering** — removes speckle while keeping edges sharper than a blur does.
+3. **OpenCV denoising**, tuned for the noise level.
+
+Together they reach **31.2 dB PSNR and 0.914 SSIM** on Set14 at σ=25 — **4.1 dB** better than the plain blur.
+
+## Make it fast
+
+The filters were rewritten as vectorised NumPy / OpenCV operations instead of Python loops. The classical pipeline now runs in **110–140 ms per 1080p frame** on a CPU.
+
+## Deep models only where they earn it
+
+Some jobs classical filters can't do:
+
+- **HED** (holistically-nested edge detection) for clean, semantic edges — under **2 s** per image on CPU.
+- **DeOldify** for colourising black-and-white photos.
+
+Each task is its own endpoint on the same Flask API.
+
+## What I'd test next
+
+The honest question is where classical filters stop being competitive. The next step is benchmarking against a small learned denoiser, such as a lightweight U-Net, and adding a browser demo so anyone can try it on their own photos.
+`,
+  },
+  {
     slug: "lora-4bit-fhir",
     title: "Teaching a 3B model to write FHIR: LoRA in 4-bit",
     date: "2026-10-29",
