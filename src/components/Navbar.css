@@ -9,11 +9,11 @@
   gap: 8px;
   padding: 6px 6px 6px 8px;
   border-radius: 999px;
-  background: rgba(20, 20, 22, 0.55);
+  background: rgba(13, 11, 10, 0.55);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  font-family: "Inter", system-ui, sans-serif;
+  border: 1px solid var(--line);
+  font-family: var(--font-body);
   transition: background 0.3s, box-shadow 0.3s;
   max-width: calc(100vw - 32px);
 }
@@ -23,21 +23,26 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #fff;
+  color: var(--ivory);
   text-decoration: none;
   font-weight: 700;
   font-size: 0.9rem;
   padding-right: 8px;
   white-space: nowrap;
 }
-.sk-nav-brand:hover { color: #fff; }
-.sk-nav-brand img {
-  width: 30px;
-  height: 30px;
+.sk-nav-brand:hover { color: var(--ivory); }
+.sk-nav-mono {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line-strong);
   border-radius: 50%;
-  object-fit: cover;
-  object-position: top;
-  background: #e5192e;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.86rem;
+  letter-spacing: 0.02em;
+  color: var(--ivory);
 }
 
 .sk-nav-links { display: flex; align-items: center; gap: 2px; }
@@ -45,7 +50,7 @@
 .sk-nav-links button {
   background: none;
   border: 0;
-  color: #a1a1aa;
+  color: var(--ivory-3);
   text-decoration: none;
   font-size: 0.85rem;
   font-weight: 500;
@@ -55,30 +60,32 @@
   transition: color 0.2s, background 0.2s;
 }
 .sk-nav-links a:hover,
-.sk-nav-links button:hover { color: #fff; background: rgba(255, 255, 255, 0.06); }
-.sk-nav-links a.active { color: #fff; }
+.sk-nav-links button:hover { color: var(--ivory); background: rgba(255, 255, 255, 0.06); }
+.sk-nav-links a.active { color: var(--ivory); }
 
 .sk-nav-cta {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  border: 0;
-  background: #e5192e;
-  color: #fff;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--ivory);
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   padding: 9px 16px;
   border-radius: 999px;
   cursor: pointer;
   transition: background 0.2s;
 }
-.sk-nav-cta:hover { background: #ff2a40; }
+.sk-nav-cta:hover { background: var(--ivory); color: var(--ink); border-color: var(--ivory); }
 
 .sk-nav-toggle {
   display: none;
   background: rgba(255, 255, 255, 0.06);
   border: 0;
-  color: #fff;
+  color: var(--ivory);
   width: 38px;
   height: 38px;
   border-radius: 50%;

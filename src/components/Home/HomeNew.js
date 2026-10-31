@@ -5,10 +5,8 @@ import {
   AnimatePresence,
   useScroll,
   useTransform,
-  useMotionValue,
-  useSpring,
 } from "framer-motion";
-import { MaskText, SceneLabel, scrollToId } from "../Cinema/Cinema";
+import { MaskText, scrollToId } from "../Cinema/Cinema";
 import {
   SiPython,
   SiPytorch,
@@ -33,6 +31,7 @@ import portrait from "../../assets/portrait.webp";
 import resumePdf from "../../assets/resume/Sarthak Kar Resume.pdf";
 import ProjectCard from "../Projects/ProjectCard";
 import ContactForm from "./ContactForm";
+import PrescriptionHero from "./PrescriptionHero";
 import useGithubProjects from "../../hooks/useGithubProjects";
 import { profile, experience } from "../../data/resume";
 import config from "../../config";
@@ -53,13 +52,6 @@ const tools = [
   { icon: SiStreamlit, name: "Streamlit" },
   { icon: SiReact, name: "React" },
   { icon: SiGit, name: "Git" },
-];
-
-const impact = [
-  ["34%", "lower compute cost", "CloudOptima · Deep Q-Network scheduler"],
-  ["0.83", "fraud-class F1", "on data that's 0.17% fraud"],
-  ["31.2 dB", "PSNR restoration", "ClearPixel AI on Set14"],
-  ["1", "SSRN preprint", "co-authored, Jul 2026"],
 ];
 
 const expertise = [
@@ -127,142 +119,86 @@ function HomeNew({ ready = true }) {
   // Highlights, plus the two newest repos so fresh work shows up on the home page too.
   const homeProjects = [...curated, ...auto.slice(0, 2)];
 
-  // Hero: the title drifts and shrinks, the avatar rises slower, everything fades as you scroll away.
+  // Hero: the copy drifts up and fades as you scroll into the work.
   const heroRef = useRef(null);
   const { scrollYProgress: heroP } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const titleY = useTransform(heroP, [0, 1], ["0%", "35%"]);
-  const titleScale = useTransform(heroP, [0, 1], [1, 0.82]);
-  const avatarY = useTransform(heroP, [0, 1], ["0%", "-12%"]);
-  const heroFade = useTransform(heroP, [0, 0.75], [1, 0]);
-  const glowOpacity = useTransform(heroP, [0, 1], [1, 0.2]);
-
-  // Hero: subtle 3D tilt that follows the mouse.
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const tiltY = useSpring(useTransform(mx, [-0.5, 0.5], [-8, 8]), { stiffness: 80, damping: 20 });
-  const tiltX = useSpring(useTransform(my, [-0.5, 0.5], [6, -6]), { stiffness: 80, damping: 20 });
-  const onHeroMove = (e) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    mx.set((e.clientX - r.left) / r.width - 0.5);
-    my.set((e.clientY - r.top) / r.height - 0.5);
-  };
+  const copyY = useTransform(heroP, [0, 1], ["0%", "-18%"]);
+  const heroFade = useTransform(heroP, [0, 0.7], [1, 0]);
+  const [phase, setPhase] = useState("prescription");
 
   return (
     <main className="sk-home">
       {/* ---------- HERO ---------- */}
-      <section className="sk-hero" id="home" ref={heroRef} onMouseMove={onHeroMove}>
-        <motion.div className="sk-hero-glow" style={{ opacity: glowOpacity }} />
-        <motion.p
-          className="sk-hero-kicker"
-          initial={{ opacity: 0, y: 12 }}
-          animate={ready ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          style={{ opacity: heroFade }}
-        >
-          Sarthak Kar <span>—</span> AI / ML Engineer
-        </motion.p>
-        <motion.div className="sk-hero-stage" style={{ y: titleY, scale: titleScale, opacity: heroFade }}>
-          <h1 className="sk-hero-title" aria-label="Sarthak Kar, AI/ML Engineer. Think Intelligently.">
-            {[
-              ["Think", "sk-line-white"],
-              ["Intelligently", "sk-line-red"],
-            ].map(([word, cls], li) => (
-              <span className={`sk-line ${cls}`} key={word} aria-hidden="true">
-                {word.split("").map((ch, i) => (
-                  <span className="cn-mask" key={i}>
-                    <motion.span
-                      initial={{ y: "105%" }}
-                      animate={ready ? { y: 0 } : { y: "105%" }}
-                      transition={{ duration: 1.1, delay: 0.1 + li * 0.18 + i * 0.035, ease: [0.76, 0, 0.24, 1] }}
-                    >
-                      {ch}
-                    </motion.span>
-                  </span>
-                ))}
+      <section className="lx-hero" id="home" ref={heroRef}>
+        <PrescriptionHero ready={ready} onPhase={setPhase} />
+        <motion.div className="lx-hero-copy" style={{ y: copyY, opacity: heroFade }}>
+          <h1 className="lx-hero-name" aria-label="Sarthak Kar, AI and ML engineer">
+            {["Sarthak", "Kar"].map((word, wi) => (
+              <span className="cn-mask lx-hero-word" key={word}>
+                <motion.span
+                  className={wi === 1 ? "sk-red" : undefined}
+                  initial={{ y: "105%" }}
+                  animate={ready ? { y: 0 } : { y: "105%" }}
+                  transition={{ duration: 1.3, delay: 0.15 + wi * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  {word}
+                </motion.span>
               </span>
             ))}
           </h1>
-        </motion.div>
-
-        <motion.div
-          className="sk-hero-avatar-wrap"
-          style={{ y: avatarY, rotateX: tiltX, rotateY: tiltY, transformPerspective: 900 }}
-        >
-          <motion.img
-            src={avatar}
-            alt="3D avatar of Sarthak Kar"
-            className="sk-hero-avatar"
-            initial={{ opacity: 0, scale: 1.15, y: 80, filter: "blur(14px)" }}
-            animate={ready ? { opacity: 1, scale: 1, y: 0, filter: "blur(0px)" } : {}}
-            transition={{ duration: 1.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          />
-        </motion.div>
-
-        <motion.div
-          className="sk-hero-bottom"
-          initial={{ opacity: 0, y: 20 }}
-          animate={ready ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.9, delay: 1.1 }}
-          style={{ opacity: heroFade }}
-        >
-          <p className="sk-hero-tagline">
-            I build <b>LLM pipelines</b>, <b>computer vision</b> <br />
-            and <b>ML systems</b> that ship — with <br />
-            results you can measure.
-          </p>
-          <div className="sk-hero-cta">
-            <span className="sk-status">
-              <span className="sk-dot" /> Open to applied AI/ML roles · Graduating May 2027
-            </span>
-            <div className="sk-row sk-row-tight">
-              <a className="sk-btn sk-btn-ghost" href={resumePdf} download="Sarthak-Kar-Resume.pdf">
-                Résumé <FiDownload />
-              </a>
+          <motion.div
+            className="lx-hero-meta"
+            initial={{ opacity: 0, y: 16 }}
+            animate={ready ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 1, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <p className="lx-hero-line">
+              AI / ML engineer. I build systems that read messy, real-world data and prove what they found.
+            </p>
+            <div className="lx-hero-actions">
               <button className="sk-btn sk-btn-red" onClick={() => scrollToId("contact")}>
                 Get in touch <FiArrowUpRight />
               </button>
+              <a className="sk-btn sk-btn-ghost" href={resumePdf} download="Sarthak-Kar-Resume.pdf">
+                Résumé <FiDownload />
+              </a>
             </div>
-          </div>
+            <p className="lx-hero-status">
+              <span className="sk-dot" /> Open to applied AI/ML roles · Graduating May 2027
+            </p>
+          </motion.div>
         </motion.div>
-
-        <motion.div
-          className="sk-scroll-cue"
+        <motion.p
+          className="lx-hero-caption"
           initial={{ opacity: 0 }}
           animate={ready ? { opacity: 1 } : {}}
-          transition={{ delay: 1.6 }}
+          transition={{ delay: 1.2, duration: 1 }}
           style={{ opacity: heroFade }}
+          aria-live="polite"
         >
-          <span>Scroll</span>
-          <span className="sk-scroll-line" />
-        </motion.div>
-
-        <div className="sk-marquee" aria-label="Tools I use">
-          <div className="sk-marquee-track">
-            {[...tools, ...tools].map(({ icon: Icon, name }, i) => (
-              <span className="sk-marquee-item" key={i}>
-                <Icon /> {name}
-              </span>
-            ))}
-          </div>
-        </div>
+          <span className="lx-hero-phase">
+            {phase === "record" ? "Verified FHIR record" : phase === "reading" ? "Reading every field" : "Handwritten prescription"}
+          </span>
+          AMRIP-India, my capstone, turns a photographed prescription into a record a hospital system can trust.
+          <em> Synthetic sample.</em>{" "}
+          <Link to="/work/amrip-india">See how it works</Link>
+        </motion.p>
       </section>
 
-      {/* ---------- IMPACT ---------- */}
-      <section className="sk-section sk-impact-wrap" aria-label="Impact in numbers">
-        <div className="sk-impact">
-          {impact.map(([v, l, s], i) => (
-            <motion.div key={l} {...reveal} transition={{ ...reveal.transition, delay: i * 0.08 }}>
-              <strong>{v}</strong>
-              <span>{l}</span>
-              <small>{s}</small>
-            </motion.div>
-          ))}
-        </div>
+      {/* ---------- LEDE ---------- */}
+      <section className="sk-section lx-lede-wrap" aria-label="Selected results">
+        <motion.p className="lx-lede" {...reveal}>
+          Recent work cut simulated cloud compute cost by <em>34%</em>, caught card fraud at <em>0.83 F1</em> in data
+          that is only 0.17% fraud, restored noisy images to <em>31.2 dB</em>, and became a co-authored{" "}
+          <a href="https://papers.ssrn.com/abstract=6957438" target="_blank" rel="noreferrer">
+            SSRN preprint
+          </a>
+          .
+        </motion.p>
       </section>
 
       {/* ---------- PROJECTS ---------- */}
       <section className="sk-section" id="work">
-        <SceneLabel n={1}>Selected work</SceneLabel>
         <div className="sk-heading-row">
           <MaskText className="sk-heading" lines={["Real problems.", <span className="sk-red">Measured results.</span>]} />
           <span className={`pj-sync is-${status}`}>
@@ -284,7 +220,6 @@ function HomeNew({ ready = true }) {
       {/* ---------- EXPERTISE ---------- */}
       <section className="sk-section sk-services" id="services">
         <motion.div className="sk-services-left" {...reveal}>
-          <SceneLabel n={2}>Expertise</SceneLabel>
           <MaskText className="sk-heading" lines={["What I bring", <>to your <span className="sk-red">team.</span></>]} />
           <p className="sk-muted">Tools I use day to day</p>
           <div className="sk-tool-grid">
@@ -325,7 +260,6 @@ function HomeNew({ ready = true }) {
 
       {/* ---------- ABOUT ---------- */}
       <section className="sk-section" id="about">
-        <SceneLabel n={3}>About</SceneLabel>
         <MaskText className="sk-heading" lines={["Engineer first.", <span className="sk-red">Always shipping.</span>]} />
         <div className="sk-about">
           <motion.div className="sk-about-photo" {...reveal}>
@@ -378,7 +312,6 @@ function HomeNew({ ready = true }) {
 
       {/* ---------- FAQ ---------- */}
       <section className="sk-section" id="faq">
-        <SceneLabel n={4}>For recruiters</SceneLabel>
         <MaskText className="sk-heading" lines={["Quick answers."]} />
         <div className="sk-faq-wrap">
           <div className="sk-faq">
@@ -432,7 +365,6 @@ function HomeNew({ ready = true }) {
 
       {/* ---------- CONTACT ---------- */}
       <section className="sk-section sk-contact" id="contact">
-        <SceneLabel n={5}>Contact</SceneLabel>
         <MaskText
           className="sk-heading sk-heading-xl"
           lines={[<>Let's <span className="sk-red">build</span></>, "intelligent things", "together."]}

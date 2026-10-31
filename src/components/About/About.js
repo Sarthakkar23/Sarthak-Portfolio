@@ -4,7 +4,7 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { FiArrowUpRight, FiDownload, FiPlus, FiMinus } from "react-icons/fi";
 import portrait from "../../assets/portrait.webp";
 import resumePdf from "../../assets/resume/Sarthak Kar Resume.pdf";
-import { MaskText, SceneLabel } from "../Cinema/Cinema";
+import { MaskText } from "../Cinema/Cinema";
 import config from "../../config";
 import {
   profile,
@@ -68,7 +68,6 @@ function About() {
       {/* ---------- Opening ---------- */}
       <section className="ab-hero" ref={heroRef}>
         <div className="ab-hero-text">
-          <SceneLabel n={1}>About me</SceneLabel>
           <MaskText
             as="h1"
             className="ab-title"
@@ -125,7 +124,6 @@ function About() {
 
       {/* ---------- Journey ---------- */}
       <section className="sk-section">
-        <SceneLabel n={2}>The journey</SceneLabel>
         <MaskText className="sk-heading" lines={["How I got", <span className="sk-red">here.</span>]} />
         <Timeline />
       </section>
@@ -133,7 +131,6 @@ function About() {
       {/* ---------- Education + Experience ---------- */}
       <section className="sk-section ab-two">
         <motion.div className="ab-card" {...rise}>
-          <SceneLabel n={3}>Education</SceneLabel>
           <h3>{education.school}</h3>
           <p className="ab-card-sub">
             {education.degree} — {education.spec}
@@ -145,7 +142,6 @@ function About() {
         </motion.div>
         {experience.map((e) => (
           <motion.div className="ab-card" key={e.role} {...rise} transition={{ ...rise.transition, delay: 0.1 }}>
-            <SceneLabel n={4}>Experience</SceneLabel>
             <h3>{e.role}</h3>
             <p className="ab-card-sub">{e.org}</p>
             <p>{e.body}</p>
@@ -159,7 +155,6 @@ function About() {
 
       {/* ---------- Skills ---------- */}
       <section className="sk-section">
-        <SceneLabel n={5}>Technical skills</SceneLabel>
         <MaskText className="sk-heading" lines={["The toolkit", <span className="sk-red">I work with.</span>]} />
         <div className="ab-skills">
           {skills.map(([group, items], i) => (
@@ -179,7 +174,6 @@ function About() {
 
       {/* ---------- Projects in depth ---------- */}
       <section className="sk-section">
-        <SceneLabel n={6}>Projects in depth</SceneLabel>
         <MaskText className="sk-heading" lines={["What I've", <span className="sk-red">built.</span>]} />
         <div className="ab-projects">
           {projects.map((p, i) => {
@@ -234,7 +228,6 @@ function About() {
           data-cursor="Read"
           {...rise}
         >
-          <SceneLabel n={7}>Publication</SceneLabel>
           <h3>{publication.title}</h3>
           <p>
             {publication.cite} <em>{publication.title}</em> {publication.venue}
@@ -247,7 +240,6 @@ function About() {
 
       {/* ---------- Leadership ---------- */}
       <section className="sk-section">
-        <SceneLabel n={8}>Leadership</SceneLabel>
         <MaskText className="sk-heading" lines={["Beyond the", <span className="sk-red">code.</span>]} />
         <div className="ab-two ab-two-tight">
           {leadership.map((l, i) => (
@@ -269,10 +261,9 @@ function About() {
 
       {/* ---------- GitHub activity ---------- */}
       <section className="sk-section">
-        <SceneLabel n={9}>Days I code</SceneLabel>
         <motion.div className="ab-github" {...rise}>
           <img
-            src={`https://ghchart.rshah.org/e5192e/${config.github.username}`}
+            src={`https://ghchart.rshah.org/c96b78/${config.github.username}`}
             alt="Sarthak Kar's GitHub contribution chart"
           />
         </motion.div>

@@ -223,20 +223,3 @@ export function MaskText({ as: Tag = "h2", lines, className = "", delay = 0, pla
     </MotionTag>
   );
 }
-
-/* ---------- Small "scene" label above section headings ---------- */
-export function SceneLabel({ n, children }) {
-  return (
-    <motion.div
-      className="cn-scene"
-      initial={{ opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
-    >
-      <span className="cn-scene-n">{String(n).padStart(2, "0")}</span>
-      <span className="cn-scene-line" />
-      <span>{children}</span>
-    </motion.div>
-  );
-}

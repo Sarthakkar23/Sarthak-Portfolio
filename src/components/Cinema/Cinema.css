@@ -15,51 +15,51 @@ html.lenis body { height: auto; }
   display: grid;
   place-items: center;
   pointer-events: none;
-  font-family: "Inter", system-ui, sans-serif;
+  font-family: var(--font-body);
 }
 .cn-intro-bar {
   position: absolute;
   left: 0;
   right: 0;
   height: 50.5%;
-  background: #050505;
+  background: var(--ink);
 }
 .cn-intro-top { top: 0; }
 .cn-intro-bottom { bottom: 0; }
 .cn-intro-center { position: relative; z-index: 2; width: min(92vw, 900px); }
 .cn-intro-kicker {
   display: block;
-  color: #8b8b92;
+  color: var(--ivory-3);
   font-size: 0.78rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
   margin-bottom: 14px;
 }
 .cn-intro-name {
-  font-family: "Archivo", sans-serif;
-  font-weight: 900;
+  font-family: var(--font-display);
+  font-weight: 400;
   font-size: clamp(2.6rem, 10vw, 8rem);
-  letter-spacing: -0.04em;
+  letter-spacing: -0.025em;
   line-height: 0.9;
-  color: #fff;
+  color: var(--ivory);
   margin: 0;
   display: flex;
 }
 .cn-intro-line {
   height: 2px;
-  background: #e5192e;
+  background: var(--seal);
   transform-origin: left;
   margin: 26px 0 12px;
-  box-shadow: 0 0 20px rgba(229, 25, 46, 0.8);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 1.00);
 }
 .cn-intro-meta {
   display: flex;
   justify-content: space-between;
-  color: #8b8b92;
+  color: var(--ivory-3);
   font-size: 0.78rem;
   letter-spacing: 0.3em;
 }
-.cn-mono { font-family: "JetBrains Mono", ui-monospace, monospace; color: #fff; letter-spacing: 0.05em; }
+.cn-mono { font-family: var(--font-label); color: var(--ivory); letter-spacing: 0.05em; }
 
 .cn-mask { display: inline-block; overflow: hidden; vertical-align: top; }
 .cn-mask > span { display: inline-block; }
@@ -97,10 +97,10 @@ html.lenis body { height: auto; }
   left: 0;
   right: 0;
   height: 2px;
-  background: #e5192e;
+  background: var(--seal);
   transform-origin: left;
   z-index: 9500;
-  box-shadow: 0 0 12px rgba(229, 25, 46, 0.8);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 1.00);
 }
 
 /* ---------- Cursor ---------- */
@@ -115,7 +115,7 @@ html.lenis body { height: auto; }
   pointer-events: none;
   border-radius: 50%;
 }
-.cn-cursor-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; background: #e5192e; }
+.cn-cursor-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; background: var(--seal); }
 .cn-cursor-ring {
   width: 36px;
   height: 36px;
@@ -125,30 +125,17 @@ html.lenis body { height: auto; }
   place-items: center;
   transition: width 0.3s, height 0.3s, margin 0.3s, background 0.3s, border-color 0.3s;
 }
-.cn-cursor-ring.is-hover { width: 56px; height: 56px; margin: -28px 0 0 -28px; border-color: #e5192e; background: rgba(229, 25, 46, 0.12); }
-.cn-cursor-ring.has-label { width: 88px; height: 88px; margin: -44px 0 0 -44px; background: #e5192e; border-color: #e5192e; }
-.cn-cursor-ring span { color: #fff; font: 600 0.78rem "Inter", sans-serif; letter-spacing: 0.05em; }
+.cn-cursor-ring.is-hover { width: 56px; height: 56px; margin: -28px 0 0 -28px; border-color: var(--line-strong); background: rgba(138, 28, 43, 0.12); }
+.cn-cursor-ring.has-label { width: 88px; height: 88px; margin: -44px 0 0 -44px; background: var(--seal); border-color: var(--line-strong); }
+.cn-cursor-ring span { color: var(--ivory); font: 600 0.78rem var(--font-body); letter-spacing: 0.05em; }
 
 /* ---------- Curtain ---------- */
 .cn-curtain { position: fixed; inset: 0; z-index: 9600; pointer-events: none; }
 .cn-curtain-red,
 .cn-curtain-black { position: absolute; inset: 0; transform-origin: top; }
-.cn-curtain-red { background: #e5192e; }
-.cn-curtain-black { background: #0a0a0b; }
+.cn-curtain-red { background: var(--seal); }
+.cn-curtain-black { background: var(--ink); }
 
-/* ---------- Scene label ---------- */
-.cn-scene {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: #8b8b92;
-  font-size: 0.75rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  margin-bottom: 18px;
-}
-.cn-scene-n { color: #e5192e; font-family: "JetBrains Mono", ui-monospace, monospace; letter-spacing: 0; }
-.cn-scene-line { width: 40px; height: 1px; background: rgba(255, 255, 255, 0.25); }
 
 @media (prefers-reduced-motion: reduce) {
   .cn-grain { animation: none; }

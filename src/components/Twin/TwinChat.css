@@ -1,45 +1,26 @@
-.tw-launch {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  z-index: 8500;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 6px 18px 6px 6px;
-  border-radius: 999px;
-  background: rgba(20, 20, 22, 0.88);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
-  cursor: pointer;
-  font-family: "Inter", system-ui, sans-serif;
-  text-align: left;
-  box-shadow: 0 16px 40px -16px rgba(0, 0, 0, 0.8);
-  transition: border-color 0.25s, transform 0.25s;
-}
-.tw-launch:hover { border-color: #e5192e; transform: translateY(-3px); }
-.tw-launch img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; object-position: top; background: #e5192e; }
+.tw-launch { position: fixed; right: 18px; bottom: 18px; z-index: 8500; display: flex; align-items: center; gap: 10px; padding: 5px 14px 5px 5px; border-radius: 3px; background: rgba(13, 11, 10, 0.82); backdrop-filter: blur(8px); border: 1px solid var(--line-strong); color: var(--ivory); cursor: pointer; font-family: var(--font-body); text-align: left; box-shadow: 0 16px 40px -20px rgba(0, 0, 0, 0.9); transition: border-color 0.3s var(--ease-out); }
+.tw-launch:hover { border-color: var(--ivory); transform: none; }
+.tw-launch img { width: 32px; height: 32px; border-radius: 2px; object-fit: cover; object-position: top; background: var(--ink-3); }
 .tw-launch span { display: flex; flex-direction: column; line-height: 1.15; }
-.tw-launch strong { font-size: 0.86rem; }
-.tw-launch small { font-size: 0.7rem; color: #8b8b92; }
-.tw-launch.is-open { border-color: #e5192e; }
+.tw-launch strong { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; }
+.tw-launch small { display: none; }
+.tw-launch.is-open { border-color: var(--line-strong); }
 
 .tw-panel {
   position: fixed;
-  right: 20px;
-  bottom: 86px;
+  right: 18px;
+  bottom: 72px;
   z-index: 8600;
   width: min(400px, calc(100vw - 32px));
   height: min(600px, calc(100vh - 120px));
   display: flex;
   flex-direction: column;
-  background: #111113;
+  background: var(--ink-2);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 24px;
   overflow: hidden;
-  font-family: "Inter", system-ui, sans-serif;
-  box-shadow: 0 40px 80px -24px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(229, 25, 46, 0.08);
+  font-family: var(--font-body);
+  box-shadow: 0 40px 80px -24px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(0, 0, 0, 0.33);
   transform-origin: bottom right;
 }
 .tw-head {
@@ -48,12 +29,12 @@
   gap: 12px;
   padding: 14px 14px 14px 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(135deg, rgba(229, 25, 46, 0.18), transparent 60%);
+  background: linear-gradient(135deg, rgba(138, 28, 43, 0.18), transparent 60%);
 }
-.tw-head img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; object-position: top; background: #e5192e; }
+.tw-head img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; object-position: top; background: var(--seal); }
 .tw-head div { flex: 1; display: flex; flex-direction: column; }
-.tw-head strong { color: #fff; font-size: 0.95rem; }
-.tw-head span { color: #8b8b92; font-size: 0.74rem; display: inline-flex; gap: 6px; align-items: center; }
+.tw-head strong { color: var(--ivory); font-size: 0.95rem; }
+.tw-head span { color: var(--ivory-3); font-size: 0.74rem; display: inline-flex; gap: 6px; align-items: center; }
 .tw-head .sk-dot { width: 6px; height: 6px; }
 .tw-icon {
   width: 34px;
@@ -61,7 +42,7 @@
   border-radius: 50%;
   border: 0;
   background: rgba(255, 255, 255, 0.06);
-  color: #fff;
+  color: var(--ivory);
   display: grid;
   place-items: center;
   cursor: pointer;
@@ -75,8 +56,8 @@
   border-radius: 18px;
   font-size: 0.9rem;
   line-height: 1.55;
-  color: #e4e4e7;
-  background: #1c1c1f;
+  color: var(--ivory);
+  background: var(--ink-3);
   border-bottom-left-radius: 6px;
   word-wrap: break-word;
 }
@@ -84,23 +65,23 @@
 .tw-msg p:last-child, .tw-msg ul:last-child { margin-bottom: 0; }
 .tw-msg ul { margin: 0 0 8px; padding-left: 18px; }
 .tw-msg li { margin-bottom: 4px; }
-.tw-msg strong { color: #fff; }
-.tw-msg em { color: #a1a1aa; }
+.tw-msg strong { color: var(--ivory); }
+.tw-msg em { color: var(--ivory-3); }
 .tw-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 .tw-links a {
   font-size: 0.76rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--ivory);
   text-decoration: none;
   padding: 5px 10px;
   border-radius: 999px;
-  background: rgba(229, 25, 46, 0.16);
-  border: 1px solid rgba(229, 25, 46, 0.45);
+  background: rgba(138, 28, 43, 0.16);
+  border: 1px solid var(--line-strong);
 }
-.tw-links a:hover { background: #e5192e; color: #fff; }
-.tw-msg.is-user { align-self: flex-end; background: #e5192e; color: #fff; border-bottom-left-radius: 18px; border-bottom-right-radius: 6px; }
+.tw-links a:hover { background: var(--seal); color: var(--ivory); }
+.tw-msg.is-user { align-self: flex-end; background: var(--seal); color: var(--ivory); border-bottom-left-radius: 18px; border-bottom-right-radius: 6px; }
 .tw-typing { display: inline-flex; gap: 4px; padding: 14px; }
-.tw-typing span { width: 6px; height: 6px; border-radius: 50%; background: #8b8b92; animation: tw-dot 1.2s infinite ease-in-out; }
+.tw-typing span { width: 6px; height: 6px; border-radius: 50%; background: var(--ivory-3); animation: tw-dot 1.2s infinite ease-in-out; }
 .tw-typing span:nth-child(2) { animation-delay: 0.15s; }
 .tw-typing span:nth-child(3) { animation-delay: 0.3s; }
 @keyframes tw-dot { 0%, 80%, 100% { opacity: 0.3; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
@@ -110,44 +91,44 @@
   text-align: left;
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #d4d4d8;
+  color: var(--ivory-2);
   border-radius: 14px;
   padding: 10px 12px;
   font-size: 0.84rem;
   cursor: pointer;
   transition: border-color 0.2s, color 0.2s, background 0.2s;
 }
-.tw-suggest button:hover { border-color: #e5192e; color: #fff; background: rgba(229, 25, 46, 0.08); }
+.tw-suggest button:hover { border-color: var(--line-strong); color: var(--ivory); background: rgba(138, 28, 43, 0.08); }
 
 .tw-form { display: flex; gap: 8px; padding: 12px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
 .tw-form input {
   flex: 1;
   min-width: 0;
-  background: #1c1c1f;
+  background: var(--ink-3);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
-  color: #fff;
+  color: var(--ivory);
   padding: 10px 16px;
   font-size: 0.9rem;
   outline: none;
 }
-.tw-form input:focus { border-color: rgba(229, 25, 46, 0.6); }
+.tw-form input:focus { border-color: var(--line-strong); }
 .tw-send {
   width: 42px;
   height: 42px;
   flex: 0 0 42px;
   border-radius: 50%;
   border: 0;
-  background: #e5192e;
-  color: #fff;
+  background: var(--seal);
+  color: var(--ivory);
   display: grid;
   place-items: center;
   font-size: 1.1rem;
   cursor: pointer;
 }
 .tw-send:disabled { opacity: 0.4; cursor: default; }
-.tw-mail { display: flex; gap: 6px; align-items: center; justify-content: center; padding: 0 0 12px; font-size: 0.75rem; color: #8b8b92; text-decoration: none; }
-.tw-mail:hover { color: #fff; }
+.tw-mail { display: flex; gap: 6px; align-items: center; justify-content: center; padding: 0 0 12px; font-size: 0.75rem; color: var(--ivory-3); text-decoration: none; }
+.tw-mail:hover { color: var(--ivory); }
 
 @media (max-width: 640px) {
   .tw-launch small { display: none; }

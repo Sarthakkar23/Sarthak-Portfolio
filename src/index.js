@@ -1,5 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import "@fontsource-variable/bodoni-moda/opsz.css";
+import "@fontsource-variable/bodoni-moda/opsz-italic.css";
+import "@fontsource-variable/hanken-grotesk/wght.css";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";

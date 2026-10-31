@@ -10,15 +10,15 @@
   justify-content: center;
   padding: 20px;
   border-radius: 24px;
-  background: #141416;
+  background: var(--ink-2);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 50px 100px -40px rgba(229, 25, 46, 0.35);
+  box-shadow: 0 50px 100px -40px rgba(0, 0, 0, 0.60);
 }
 .rs-frame .react-pdf__Page { border-radius: 8px; overflow: hidden; box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.8); }
 .rs-frame .react-pdf__Page canvas { max-width: 100%; height: auto !important; }
-.rs-loading { color: #a1a1aa; padding: 80px 20px; text-align: center; }
-.rs-loading a { color: #e5192e; }
-.rs-pager { display: flex; align-items: center; gap: 16px; margin-top: 22px; color: #a1a1aa; }
+.rs-loading { color: var(--ivory-3); padding: 80px 20px; text-align: center; }
+.rs-loading a { color: var(--ivory); }
+.rs-pager { display: flex; align-items: center; gap: 16px; margin-top: 22px; color: var(--ivory-3); }
 .rs-pager .sk-btn:disabled { opacity: 0.4; }
 @media (max-width: 640px) {
   .rs-head { padding-top: 120px; }

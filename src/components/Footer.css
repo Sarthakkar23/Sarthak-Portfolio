@@ -1,7 +1,7 @@
 .sk-footer {
-  background: #0a0a0b;
-  color: #f5f5f5;
-  font-family: "Inter", system-ui, sans-serif;
+  background: var(--ink);
+  color: var(--ivory);
+  font-family: var(--font-body);
   padding: 72px 24px 0;
   overflow: hidden;
   position: relative;
@@ -17,9 +17,9 @@
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 .sk-footer-col { display: flex; flex-direction: column; gap: 8px; }
-.sk-footer-col > span { color: #8b8b92; font-size: 0.82rem; margin-bottom: 4px; }
-.sk-footer-col a { color: #e4e4e7; text-decoration: none; font-size: 0.95rem; width: fit-content; transition: color 0.2s; }
-.sk-footer-col a:hover { color: #e5192e; }
+.sk-footer-col > span { color: var(--ivory-3); font-size: 0.82rem; margin-bottom: 4px; }
+.sk-footer-col a { color: var(--ivory); text-decoration: none; font-size: 0.95rem; width: fit-content; transition: color 0.2s; }
+.sk-footer-col a:hover { color: var(--ivory); }
 .sk-footer-right { align-items: flex-end; text-align: right; }
 .sk-footer-socials { display: flex; gap: 10px; }
 .sk-footer-socials a {
@@ -28,23 +28,23 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: #1c1c1f;
+  background: var(--ink-3);
   font-size: 1.05rem;
 }
-.sk-footer-socials a:hover { background: #e5192e; color: #fff; }
+.sk-footer-socials a:hover { background: var(--seal); color: var(--ivory); }
 .sk-footer-name {
-  font-family: "Archivo", "Inter", sans-serif;
-  font-weight: 900;
+  font-family: var(--font-display);
+  font-weight: 400;
   font-size: 13.4vw;
   line-height: 0.8;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.025em;
   text-align: center;
-  color: #e5192e;
+  color: var(--ivory);
   margin-top: 56px;
   margin-bottom: -1.9vw;
   white-space: nowrap;
   user-select: none;
-  text-shadow: 0 0 80px rgba(229, 25, 46, 0.35);
+  text-shadow: 0 0 80px rgba(0, 0, 0, 0.60);
 }
 @media (max-width: 640px) {
   .sk-footer { padding: 56px 16px 0; }

@@ -10,12 +10,12 @@ html {
     rgba(10,10,11,0.9)
   );
   --text-primary: #ffffff;
-  --text-secondary: #8a8fa3;
-  --accent-color: #e5192e;
-  --primary-button-background-color: #e5192e;
-  --secondary-button-background-color: #1c1c1f;
-  --primary-button-hover-color: #b80f22;
-  --secondary-button-hover-color: #2a2a2e;
+  --text-secondary: var(--ivory-3);
+  --accent-color: var(--ivory);
+  --primary-button-background-color: var(--ivory);
+  --secondary-button-background-color: var(--ink-3);
+  --primary-button-hover-color: var(--ivory);
+  --secondary-button-hover-color: var(--ink-3);
   --section-padding: 150px;
 }
 
@@ -42,7 +42,7 @@ button:focus {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #0a0a0b;
+  background: var(--ink);
 }
 
 /* Handle */
@@ -198,7 +198,7 @@ button:focus {
 .wave {
   animation-name: wave-animation; /* Refers to the name of your @keyframes element below */
   animation-duration: 2.1s; /* Change to speed up or slow down */
-  animation-iteration-count: infinite; /* Never stop waving :) */
+  animation-iteration-count: infinite; /* Never stop waving: ) */
   transform-origin: 70% 70%; /* Pivot around the bottom-left palm */
   display: inline-block;
 }
@@ -408,7 +408,7 @@ button:focus {
 }
 
 .blockquote-footer {
-  color: #e5192e !important;
+  color: var(--ivory) !important;
 }
 /* --------- */
 /* Projects */
@@ -487,13 +487,13 @@ button:focus {
 }
 
 .btn-primary {
-  color: #fff !important;
+  color: var(--ivory) !important;
   background-color: var(--primary-button-background-color) !important;
   border-color: var(--primary-button-background-color) !important;
 }
 
 .btn-primary:hover {
-  color: #fff !important;
+  color: var(--ivory) !important;
   background-color: var(--primary-button-hover-color) !important;
   border-color: var(--primary-button-hover-color) !important;
 }
@@ -651,7 +651,7 @@ button:focus {
   border-radius: 50px;
   left: -9px;
   top: 0;
-  background: #fff;
+  background: var(--ivory);
   border: 2px solid var(--accent-color);
 }
 
@@ -721,6 +721,6 @@ button:focus {
 }
 /* Keep bootstrap from forcing a white page */
 body {
-  background: #0a0a0b !important;
-  color: #f5f5f5;
+  background: var(--ink) !important;
+  color: var(--ivory);
 }

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { FiArrowUpRight } from "react-icons/fi";
 import ProjectCard from "./ProjectCard";
 import useGithubProjects from "../../hooks/useGithubProjects";
-import { MaskText, SceneLabel } from "../Cinema/Cinema";
+import { MaskText } from "../Cinema/Cinema";
 import config from "../../config";
 import "../Home/HomeNew.css";
 import "../About/About.css";
@@ -20,7 +20,6 @@ function Projects() {
   return (
     <main className="sk-home pj-page">
       <section className="sk-section pj-head">
-        <SceneLabel n={1}>Projects</SceneLabel>
         <MaskText
           as="h1"
           className="ab-title pj-title"

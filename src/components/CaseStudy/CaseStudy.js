@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { FiArrowLeft, FiArrowRight, FiArrowUpRight, FiGithub, FiCornerUpLeft } from "react-icons/fi";
 import { caseStudies, caseStudyOrder } from "../../data/caseStudies";
 import { curatedProjects } from "../../data/projects";
-import { MaskText, SceneLabel } from "../Cinema/Cinema";
+import { MaskText } from "../Cinema/Cinema";
 import config from "../../config";
 import "../Home/HomeNew.css";
 import "../About/About.css";
@@ -82,7 +82,6 @@ function CaseStudy() {
           <Link to="/project" className="cs-back">
             <FiArrowLeft /> All projects
           </Link>
-          <SceneLabel n={idx + 1}>Case study</SceneLabel>
           <MaskText as="h1" className="cs-name" lines={[cs.name]} />
           <motion.p className="cs-title" {...rise} transition={{ ...rise.transition, delay: 0.3 }}>
             {cs.title}
@@ -120,7 +119,6 @@ function CaseStudy() {
       {/* ---------- Problem ---------- */}
       <section className="sk-section cs-two">
         <div>
-          <SceneLabel n={1}>The problem</SceneLabel>
           <MaskText className="sk-heading" lines={["Why it", <span className="sk-red">matters.</span>]} />
         </div>
         <div className="cs-prose">
@@ -134,14 +132,12 @@ function CaseStudy() {
 
       {/* ---------- Diagram ---------- */}
       <section className="sk-section">
-        <SceneLabel n={2}>Architecture</SceneLabel>
         <MaskText className="sk-heading" lines={["How it", <span className="sk-red">works.</span>]} />
         <Pipeline diagram={cs.diagram} />
       </section>
 
       {/* ---------- Approach ---------- */}
       <section className="sk-section">
-        <SceneLabel n={3}>Approach</SceneLabel>
         <MaskText className="sk-heading" lines={["Key", <span className="sk-red">decisions.</span>]} />
         <div className="cs-decisions">
           {cs.approach.map(([h, b], i) => (
@@ -157,7 +153,6 @@ function CaseStudy() {
       {/* ---------- Results ---------- */}
       <section className="sk-section cs-two">
         <div>
-          <SceneLabel n={4}>Results</SceneLabel>
           <MaskText className="sk-heading" lines={["What it", <span className="sk-red">achieved.</span>]} />
         </div>
         <div className="cs-prose">
@@ -179,7 +174,6 @@ function CaseStudy() {
       {/* ---------- Next ---------- */}
       <section className="sk-section cs-two">
         <div>
-          <SceneLabel n={5}>What's next</SceneLabel>
           <MaskText className="sk-heading" lines={["Where I'd", <span className="sk-red">take it.</span>]} />
         </div>
         <ol className="cs-next">
@@ -193,7 +187,6 @@ function CaseStudy() {
 
       {/* ---------- Stack ---------- */}
       <section className="sk-section">
-        <SceneLabel n={6}>Stack</SceneLabel>
         <div className="sk-chips cs-stack">
           {cs.stack.map((t) => (
             <span className="sk-chip" key={t}>

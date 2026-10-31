@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { FiArrowUpRight, FiMenu, FiX } from "react-icons/fi";
-import avatar from "../assets/avatar.webp";
 import { scrollToId } from "./Cinema/Cinema";
 import "./Navbar.css";
 
@@ -43,7 +42,7 @@ function NavBar() {
   return (
     <header className={`sk-nav ${scrolled ? "is-scrolled" : ""} ${open ? "is-open" : ""}`}>
       <Link to="/" className="sk-nav-brand" onClick={() => window.scrollTo({ top: 0 })}>
-        <img src={avatar} alt="" />
+        <span className="sk-nav-mono" aria-hidden="true">SK</span>
         <span>Sarthak Kar</span>
       </Link>
 

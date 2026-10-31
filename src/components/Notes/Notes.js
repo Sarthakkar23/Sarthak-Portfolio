@@ -3,7 +3,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { FiArrowLeft, FiArrowUpRight } from "react-icons/fi";
 import { notes } from "../../data/notes";
-import { MaskText, SceneLabel } from "../Cinema/Cinema";
+import { MaskText } from "../Cinema/Cinema";
 import "../Home/HomeNew.css";
 import "../About/About.css";
 import "../Projects/Projects.css";
@@ -89,7 +89,6 @@ export function NotesIndex() {
   return (
     <main className="sk-home nt-page">
       <section className="sk-section nt-head">
-        <SceneLabel n={1}>Notes</SceneLabel>
         <MaskText as="h1" className="ab-title" lines={["Notes &", <span className="sk-red">write-ups.</span>]} />
         <p className="pj-lead nt-lead">
           Longer explanations of how and why I built things — the decisions behind the projects, in plain language.
@@ -169,7 +168,6 @@ export function NotePage() {
       </article>
       {others.length > 0 && (
         <section className="sk-section nt-more">
-          <SceneLabel n={2}>Keep reading</SceneLabel>
           <div className="nt-list">
             {others.map((n) => (
               <Link key={n.slug} to={`/notes/${n.slug}`} className="nt-item" data-cursor="Read">

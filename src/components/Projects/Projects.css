@@ -1,7 +1,7 @@
 .pj-page { padding-bottom: 40px; }
 .pj-head { padding-top: 150px; }
 .pj-title { font-size: clamp(2.6rem, 6.5vw, 6rem); }
-.pj-lead { color: #c4c4ca; font-size: 1.08rem; line-height: 1.7; max-width: 680px; margin: 0; }
+.pj-lead { color: var(--ivory-2); font-size: 1.08rem; line-height: 1.7; max-width: 680px; margin: 0; }
 .pj-bar {
   display: flex;
   justify-content: space-between;
@@ -15,8 +15,8 @@
 .pj-filters { display: flex; flex-wrap: wrap; gap: 8px; }
 .pj-filters button {
   border: 1px solid rgba(255, 255, 255, 0.1);
-  background: #141416;
-  color: #d4d4d8;
+  background: var(--ink-2);
+  color: var(--ivory-2);
   border-radius: 999px;
   padding: 9px 16px;
   font-size: 0.88rem;
@@ -27,9 +27,9 @@
   cursor: pointer;
   transition: background 0.25s, color 0.25s, border-color 0.25s;
 }
-.pj-filters button span { font-size: 0.72rem; color: #8b8b92; }
+.pj-filters button span { font-size: 0.72rem; color: var(--ivory-3); }
 .pj-filters button:hover { border-color: rgba(255, 255, 255, 0.3); }
-.pj-filters button.is-active { background: #e5192e; border-color: #e5192e; color: #fff; }
+.pj-filters button.is-active { background: var(--seal); border-color: var(--line-strong); color: var(--ivory); }
 .pj-filters button.is-active span { color: rgba(255, 255, 255, 0.8); }
 .pj-grid-wrap { padding-top: 48px; }
 @media (max-width: 640px) {

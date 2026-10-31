@@ -1,5 +1,5 @@
 import React from "react";
-import { MaskText, SceneLabel } from "../Cinema/Cinema";
+import { MaskText } from "../Cinema/Cinema";
 import "../Home/HomeNew.css";
 import "../About/About.css";
 import "../Notes/Notes.css";
@@ -40,7 +40,6 @@ function Privacy() {
   return (
     <main className="sk-home nt-page">
       <article className="nt-article pv-article">
-        <SceneLabel n={1}>Privacy</SceneLabel>
         <MaskText as="h1" className="nt-title" lines={["Privacy policy"]} />
         <p className="nt-summary">Short version: I collect very little, and only to run this site and reply to you.</p>
         <div className="nt-body">

@@ -4,7 +4,7 @@ import { FiDownload, FiExternalLink, FiChevronLeft, FiChevronRight } from "react
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import resumePdf from "../../assets/resume/Sarthak Kar Resume.pdf";
-import { MaskText, SceneLabel } from "../Cinema/Cinema";
+import { MaskText } from "../Cinema/Cinema";
 import "../Home/HomeNew.css";
 import "../About/About.css";
 import "./Resume.css";
@@ -33,7 +33,6 @@ function PDFResume() {
     <main className="sk-home rs-page">
       <section className="sk-section rs-head">
         <div>
-          <SceneLabel n={1}>Résumé</SceneLabel>
           <MaskText as="h1" className="ab-title rs-title" lines={["One page.", <span className="sk-red">Everything.</span>]} />
         </div>
         <motion.div
